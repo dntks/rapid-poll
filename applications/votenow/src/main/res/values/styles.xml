@@ -1,0 +1,94 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="FBButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@color/white_button_text_color</item>
+        
+        <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/big_text</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button_white</item>
+    </style>
+    
+    <style name="FBWideButtonStyle" parent="@style/FBButtonStyle">
+        <item name="android:minWidth">150dp</item>
+    </style>
+
+    <style name="FBButtonStyle.Blue">
+        <item name="android:textColor">@color/blue_button_text_color</item>
+        <item name="android:background">@drawable/button_blue</item>
+    </style>
+
+    <style name="FBEditText" parent="@android:style/Widget.EditText">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/mid_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">#aaaaaa</item>
+        <item name="android:background">@drawable/edittext_bg</item>
+    </style>
+    
+    <style name="FBMarginedEditText" parent="@style/FBEditText">
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+    </style>
+
+    <style name="FBEditText.OnWhite">
+        <item name="android:textColorHint">#777777</item>
+        <item name="android:textColor">@color/color_on_white</item>
+        <item name="android:background">@drawable/edittext_bg_on_white</item>
+    </style>
+
+    <style name="FBTextView" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/big_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/background_blue</item>
+    </style>
+
+    <style name="FBTextView.White">
+        <item name="android:textColor">@color/foreground</item>
+    </style>
+
+    <style name="RNSmallstar">
+        <item name="android:layout_width">@dimen/small_starsize</item>
+        <item name="android:layout_height">@dimen/small_starsize</item>
+        <item name="android:src">@drawable/star_selected</item>
+        <item name="android:contentDescription">@string/starhint</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="RNRateNumberTextStyle">
+        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/default_value</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CheckBoxStyle">
+        <item name="android:background">@drawable/button_white</item>
+        <item name="android:textColor">@color/white_button_text_color</item>
+    </style>
+
+</resources>
