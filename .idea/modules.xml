@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AppsballProject.iml" filepath="$PROJECT_DIR$/AppsballProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/applications/votenow/votenow.iml" filepath="$PROJECT_DIR$/applications/votenow/votenow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rapid-poll.iml" filepath="$PROJECT_DIR$/rapid-poll.iml" />
     </modules>
   </component>
 </project>
-
