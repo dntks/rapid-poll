@@ -1,1 +1,1 @@
-include ':applications:votenow'
+include ':applications:votenow', ':applications:rapidpoll'
