@@ -10,6 +10,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/applications" />
+            <option value="$PROJECT_DIR$/applications/rapidpoll" />
+            <option value="$PROJECT_DIR$/applications/votenow" />
           </set>
         </option>
       </GradleProjectSettings>
