@@ -3,7 +3,7 @@ package com.appsball.rapidpoll.commons.communication;
 import java.util.List;
 
 public class ResponseContainer<T> {
-    T result;
-    String status;
-    List<String> messages;
+   public T result;
+   public String status;
+   public List<String> messages;
 }

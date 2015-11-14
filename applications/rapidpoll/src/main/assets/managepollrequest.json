@@ -1,0 +1,46 @@
+{
+  "user_id": "11E58A684CDE15E49E7502000029BDFD",
+  "action": "CREATE",
+  "poll": {
+    "name": "WestEndChristmas",
+    "public": "1",
+    "anonymous": "0",
+    "allow_comment": "1",
+    "allow_uncomplete_result": "1",
+    "questions": [
+      {
+        "name": "WhatisyourfavouriteshopinWestEnd?",
+        "multichoice": "1",
+        "alternatives": [
+          {
+            "name": "MediaMarkt"
+          },
+          {
+            "name": "Nike"
+          },
+          {
+            "name": "Budmil"
+          }
+        ]
+      },
+      {
+        "name": "HowmuchdoyouusuallyspendatWestEnd?",
+        "multichoice": "0",
+        "alternatives": [
+          {
+            "name": "1-1000HUF"
+          },
+          {
+            "name": "1000-5000HUF"
+          },
+          {
+            "name": "5000-10000"
+          },
+          {
+            "name": "10000-"
+          }
+        ]
+      }
+    ]
+  }
+}
