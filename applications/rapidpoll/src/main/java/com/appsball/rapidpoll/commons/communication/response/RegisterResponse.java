@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.commons.communication;
+package com.appsball.rapidpoll.commons.communication.response;
 
 import java.util.List;
 
@@ -12,4 +12,8 @@ import java.util.List;
 public class RegisterResponse{
 
     String user_id;
+
+    public String getUserId() {
+        return user_id;
+    }
 }

@@ -1,0 +1,86 @@
+{
+  "result": {
+    "id": 2,
+    "name": "MOM 2015",
+    "public": 1,
+    "anonymous": 1,
+    "allow_comment": 1,
+    "state": "PUBLISHED",
+    "publication_time": "2015-11-06 13:27:00",
+    "expiration_date": "2015-11-20 00:00:00",
+    "owner_id": "31000000000000000000000000000000",
+    "questions": [
+      {
+        "question_id": 5,
+        "question": "Rate our mall?",
+        "multichoice": 0,
+        "alternatives": [
+          {
+            "alternative_id": 17,
+            "alternative_name": "Excellent"
+          },
+          {
+            "alternative_id": 18,
+            "alternative_name": "Good"
+          },
+          {
+            "alternative_id": 19,
+            "alternative_name": "Neutral"
+          },
+          {
+            "alternative_id": 20,
+            "alternative_name": "Bad"
+          }
+        ]
+      },
+      {
+        "question_id": 6,
+        "question": "Which the best shop in the 1st floor?",
+        "multichoice": 0,
+        "alternatives": [
+          {
+            "alternative_id": 21,
+            "alternative_name": "Drogerie Markt"
+          },
+          {
+            "alternative_id": 22,
+            "alternative_name": "Tesco"
+          },
+          {
+            "alternative_id": 23,
+            "alternative_name": "Armani Factory Store"
+          },
+          {
+            "alternative_id": 24,
+            "alternative_name": "Media Markt"
+          }
+        ]
+      },
+      {
+        "question_id": 7,
+        "question": "Vote for our next new brand!",
+        "multichoice": 1,
+        "alternatives": [
+          {
+            "alternative_id": 25,
+            "alternative_name": "Hugo Boss"
+          },
+          {
+            "alternative_id": 26,
+            "alternative_name": "Zara"
+          },
+          {
+            "alternative_id": 27,
+            "alternative_name": "Polo Sport"
+          },
+          {
+            "alternative_id": 28,
+            "alternative_name": "Calvin Klein"
+          }
+        ]
+      }
+    ]
+  },
+  "status": "SUCCESS",
+  "messages": []
+}

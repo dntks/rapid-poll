@@ -9,11 +9,11 @@
     "allow_uncomplete_result": "1",
     "questions": [
       {
-        "name": "WhatisyourfavouriteshopinWestEnd?",
+        "name": "What is your favourite shop in West End?",
         "multichoice": "1",
         "alternatives": [
           {
-            "name": "MediaMarkt"
+            "name": "Media Markt"
           },
           {
             "name": "Nike"
@@ -24,14 +24,14 @@
         ]
       },
       {
-        "name": "HowmuchdoyouusuallyspendatWestEnd?",
+        "name": "How much do you usually spend at West End?",
         "multichoice": "0",
         "alternatives": [
           {
-            "name": "1-1000HUF"
+            "name": "1-1000 HUF"
           },
           {
-            "name": "1000-5000HUF"
+            "name": "1000-5000 HUF"
           },
           {
             "name": "5000-10000"

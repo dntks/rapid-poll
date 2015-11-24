@@ -1,14 +1,14 @@
-package com.appsball.rapidpoll.commons.communication;
+package com.appsball.rapidpoll.commons.communication.request;
 
 import java.util.List;
 
-public class QuestionRequestObject {
+public class QuestionRequestModel {
 
     public final String name;
     public final String multichoice;
-    public final List<AlternativeRequestObject> alternatives;
+    public final List<AlternativeRequestModel> alternatives;
 
-    public QuestionRequestObject(String name, String multichoice, List<AlternativeRequestObject> alternatives) {
+    public QuestionRequestModel(String name, String multichoice, List<AlternativeRequestModel> alternatives) {
         this.name = name;
         this.multichoice = multichoice;
         this.alternatives = alternatives;
@@ -22,7 +22,7 @@ public class QuestionRequestObject {
 
         private String name;
         private String multichoice;
-        private List<AlternativeRequestObject> alternatives;
+        private List<AlternativeRequestModel> alternatives;
 
         public Builder withName(String name) {
             this.name = name;
@@ -34,13 +34,13 @@ public class QuestionRequestObject {
             return this;
         }
 
-        public Builder withAlternatives(List<AlternativeRequestObject> alternatives) {
+        public Builder withAlternatives(List<AlternativeRequestModel> alternatives) {
             this.alternatives = alternatives;
             return this;
         }
 
-        public QuestionRequestObject build() {
-            return new QuestionRequestObject(name, multichoice, alternatives);
+        public QuestionRequestModel build() {
+            return new QuestionRequestModel(name, multichoice, alternatives);
         }
     }
 }

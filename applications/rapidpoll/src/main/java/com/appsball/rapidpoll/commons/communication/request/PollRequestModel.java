@@ -1,10 +1,10 @@
-package com.appsball.rapidpoll.commons.communication;
+package com.appsball.rapidpoll.commons.communication.request;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PollRequestObject {
+public class PollRequestModel {
 
     public final String name;
     @SerializedName("public")
@@ -12,9 +12,9 @@ public class PollRequestObject {
     public final String anonymous;
     public final String allow_comment;
     public final String allow_uncomplete_result;
-    public final List<QuestionRequestObject> questions;
+    public final List<QuestionRequestModel> questions;
 
-    private PollRequestObject(String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_result, List<QuestionRequestObject> questions) {
+    private PollRequestModel(String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_result, List<QuestionRequestModel> questions) {
         this.name = name;
         this.isPublic = isPublic;
         this.anonymous = anonymous;
@@ -35,7 +35,7 @@ public class PollRequestObject {
         private String anonymous;
         private String allow_comment;
         private String allow_uncomplete_result;
-        private List<QuestionRequestObject> questions;
+        private List<QuestionRequestModel> questions;
 
         public Builder withName(String name) {
             this.name = name;
@@ -62,13 +62,13 @@ public class PollRequestObject {
             return this;
         }
 
-        public Builder withQuestions(List<QuestionRequestObject> questions) {
+        public Builder withQuestions(List<QuestionRequestModel> questions) {
             this.questions = questions;
             return this;
         }
 
-        public PollRequestObject build() {
-            return new PollRequestObject(name, isPublic, anonymous, allow_comment, allow_uncomplete_result, questions);
+        public PollRequestModel build() {
+            return new PollRequestModel(name, isPublic, anonymous, allow_comment, allow_uncomplete_result, questions);
         }
     }
 }

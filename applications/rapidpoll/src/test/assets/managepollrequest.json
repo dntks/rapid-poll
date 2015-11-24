@@ -1,16 +1,13 @@
 {
-  "user_id": "11E58A684CDE15E49E7502000029BDFD",
   "action": "CREATE",
   "poll": {
-    "name": "WestEndChristmas",
-    "public": "1",
-    "anonymous": "0",
     "allow_comment": "1",
     "allow_uncomplete_result": "1",
+    "anonymous": "0",
+    "public": "1",
+    "name": "WestEndChristmas",
     "questions": [
       {
-        "name": "What is your favourite shop in West End?",
-        "multichoice": "0",
         "alternatives": [
           {
             "name": "Media Markt"
@@ -21,11 +18,11 @@
           {
             "name": "Budmil"
           }
-        ]
+        ],
+        "multichoice": "1",
+        "name": "What is your favourite shop in West End?"
       },
       {
-        "name": "How much do you usually spend at West End?",
-        "multichoice": "0",
         "alternatives": [
           {
             "name": "1-1000 HUF"
@@ -37,10 +34,13 @@
             "name": "5000-10000"
           },
           {
-            "name": "5000-10000"
+            "name": "10000-"
           }
-        ]
+        ],
+        "multichoice": "0",
+        "name": "How much do you usually spend at West End?"
       }
     ]
-  }
+  },
+  "user_id": "11E58A684CDE15E49E7502000029BDFD"
 }

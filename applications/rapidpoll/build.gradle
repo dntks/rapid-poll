@@ -18,12 +18,15 @@ android {
         }
     }
 }
+task copyResDirectoryToClasses(type: Copy){
+    from "${projectDir}/src/test/assets"
+    into "${buildDir}/intermediates/classes/test/debug/res"
+}
+assembleDebug.dependsOn(copyResDirectoryToClasses)
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.github.orhanobut:wasp:1.15'
-    compile group: 'com.google.guava', name: 'guava', version: '15.0'
+    compile group: 'com.google.guava', name: 'guava', version: '16.0'
 
     androidTestCompile 'junit:junit:4.12'
 
@@ -32,4 +35,9 @@ dependencies {
     testCompile "org.robolectric:robolectric:3.0"
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'com.squareup.okhttp:mockwebserver:2.5.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.github.orhanobut:wasp:1.15'
+    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    compile 'org.apache.commons:commons-lang3:3.0'
+
 }

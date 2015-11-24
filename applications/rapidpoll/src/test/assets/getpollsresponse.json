@@ -1,0 +1,48 @@
+{
+  "result": [
+    {
+      "id": 12,
+      "name": "West End Christmas",
+      "public": 1,
+      "anonymous": 0,
+      "allow_comment": 1,
+      "expiration_date": "2015-11-27 00:00:00",
+      "owner_id": "11E58A684CDE15E49E7502000029BDFD",
+      "state": "DRAFT",
+      "publication_date": null,
+      "number_of_questions": 2,
+      "number_of_answered_questions_by_the_user": 0,
+      "number_of_votes": 0
+    },
+    {
+      "id": 2,
+      "name": "MOM 2015",
+      "public": 1,
+      "anonymous": 1,
+      "allow_comment": 1,
+      "expiration_date": "2015-11-20 00:00:00",
+      "owner_id": "31000000000000000000000000000000",
+      "state": "PUBLISHED",
+      "publication_date": "2015-11-06 13:27:00",
+      "number_of_questions": 3,
+      "number_of_answered_questions_by_the_user": 3,
+      "number_of_votes": 5
+    },
+    {
+      "id": 1,
+      "name": "Avon 2015",
+      "public": 1,
+      "anonymous": 1,
+      "allow_comment": 1,
+      "expiration_date": "2015-11-20 00:00:00",
+      "owner_id": "31000000000000000000000000000000",
+      "state": "DRAFT",
+      "publication_date": null,
+      "number_of_questions": 4,
+      "number_of_answered_questions_by_the_user": 4,
+      "number_of_votes": 3
+    }
+  ],
+  "status": "SUCCESS",
+  "messages": []
+}

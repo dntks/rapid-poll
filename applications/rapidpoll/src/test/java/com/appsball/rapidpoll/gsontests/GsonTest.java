@@ -1,13 +1,13 @@
 package com.appsball.rapidpoll.gsontests;
 
-import com.appsball.rapidpoll.commons.communication.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.request.ManagePollRequest;
 import com.google.gson.Gson;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import static com.appsball.rapidpoll.commons.communication.DefaultBuilders.createManagePollRequest;
+import static com.appsball.rapidpoll.commons.communication.request.DefaultRequestBuilders.createManagePollRequest;
 
 public class GsonTest {
     @Test

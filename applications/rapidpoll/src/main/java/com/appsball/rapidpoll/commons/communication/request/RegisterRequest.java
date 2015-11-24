@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.commons.communication;
+package com.appsball.rapidpoll.commons.communication.request;
 
 public class RegisterRequest {
     public final String device_id;

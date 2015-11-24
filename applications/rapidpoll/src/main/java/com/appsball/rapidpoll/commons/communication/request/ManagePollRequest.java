@@ -1,12 +1,12 @@
-package com.appsball.rapidpoll.commons.communication;
+package com.appsball.rapidpoll.commons.communication.request;
 
 public class ManagePollRequest {
 
     public final String user_id;
     public final String action;
-    public final PollRequestObject poll;
+    public final PollRequestModel poll;
 
-    private ManagePollRequest(String user_id, String action, PollRequestObject poll) {
+    private ManagePollRequest(String user_id, String action, PollRequestModel poll) {
         this.user_id = user_id;
         this.action = action;
         this.poll = poll;
@@ -20,7 +20,7 @@ public class ManagePollRequest {
 
         private String user_id;
         private String action;
-        private PollRequestObject poll;
+        private PollRequestModel poll;
 
         public Builder withUserId(String user_id) {
             this.user_id = user_id;
@@ -32,7 +32,7 @@ public class ManagePollRequest {
             return this;
         }
 
-        public Builder withPoll(PollRequestObject poll) {
+        public Builder withPoll(PollRequestModel poll) {
             this.poll = poll;
             return this;
         }

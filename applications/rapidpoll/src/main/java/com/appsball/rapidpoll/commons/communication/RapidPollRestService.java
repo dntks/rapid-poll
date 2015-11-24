@@ -1,11 +1,19 @@
 package com.appsball.rapidpoll.commons.communication;
 
+import com.appsball.rapidpoll.commons.communication.request.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
+import com.appsball.rapidpoll.commons.communication.response.PollDetailsResponseModel;
+import com.appsball.rapidpoll.commons.communication.response.PollResponseModel;
+import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
+import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.http.Body;
 import com.orhanobut.wasp.http.GET;
 import com.orhanobut.wasp.http.Mock;
 import com.orhanobut.wasp.http.POST;
 import com.orhanobut.wasp.http.Path;
+
+import java.util.List;
 
 public interface RapidPollRestService {
 
@@ -24,6 +32,12 @@ public interface RapidPollRestService {
                   @Path("ordertype") String ordertype,
                   @Path("pagesize") String pagesize,
                   @Path("page") String page,
-                  Callback<ResponseContainer<RegisterResponse>> callback);
+                  Callback<ResponseContainer<List<PollResponseModel>>> callback);
+
+    @Mock
+    @GET("/polldetails/{userid}/{pollid}")
+    void pollDetails(@Path("userid") String userid,
+                     @Path("pollid") String orderkey,
+                     Callback<ResponseContainer<PollDetailsResponseModel>> callback);
 
 }
