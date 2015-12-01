@@ -2,7 +2,7 @@ package com.appsball.rapidpoll;
 
 import android.test.InstrumentationTestCase;
 
-import com.appsball.rapidpoll.commons.communication.request.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

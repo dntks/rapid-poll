@@ -1,4 +1,5 @@
 {
+  "user_id": "11E592F746A409999E7502000029BDFD",
   "action": "CREATE",
   "poll": {
     "allow_comment": "1",
@@ -41,6 +42,5 @@
         "name": "How much do you usually spend at West End?"
       }
     ]
-  },
-  "user_id": "11E58A684CDE15E49E7502000029BDFD"
+  }
 }

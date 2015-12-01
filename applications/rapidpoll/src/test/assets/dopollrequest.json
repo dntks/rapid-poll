@@ -1,0 +1,39 @@
+{
+  "user_id": "11E58407B7A5FDDC9D0B8675BA421DCB",
+  "poll_id": "1",
+  "questions": [
+    {
+      "question_id": "1",
+      "answers": [
+        {
+          "alternative_id": "1"
+        }
+      ]
+    },
+    {
+      "question_id": "2",
+      "answers": [
+        {
+          "alternative_id": "3"
+        }
+      ]
+    },
+    {
+      "question_id": "3",
+      "answers": [
+        {
+          "alternative_id": "7"
+        }
+      ]
+    },
+    {
+      "question_id": "4",
+      "answers": [
+        {
+          "alternative_id": "12"
+        }
+      ]
+    }
+  ],
+  "comment": "Here is a comment."
+}

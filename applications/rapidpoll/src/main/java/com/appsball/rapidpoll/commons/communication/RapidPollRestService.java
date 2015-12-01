@@ -1,6 +1,6 @@
 package com.appsball.rapidpoll.commons.communication;
 
-import com.appsball.rapidpoll.commons.communication.request.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
 import com.appsball.rapidpoll.commons.communication.response.PollDetailsResponseModel;
 import com.appsball.rapidpoll.commons.communication.response.PollResponseModel;
