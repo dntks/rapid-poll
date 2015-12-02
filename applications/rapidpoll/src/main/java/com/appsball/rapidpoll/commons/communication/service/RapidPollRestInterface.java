@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.commons.communication;
+package com.appsball.rapidpoll.commons.communication.service;
 
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
 import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateRequest;

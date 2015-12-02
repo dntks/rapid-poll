@@ -40,4 +40,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.3.0'
     compile 'org.apache.commons:commons-lang3:3.0'
 
+    compile 'com.github.orhanobut:hawk:1.20'
+    compile 'com.orhanobut:dialogplus:1.10@aar'
+    compile 'com.github.orhanobut:logger:1.12'
 }

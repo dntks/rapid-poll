@@ -3,9 +3,11 @@ package com.appsball.rapidpoll;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.appsball.rapidpoll.commons.communication.RapidPollRestInterface;
+import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
+import com.appsball.rapidpoll.commons.communication.request.PollResultRequest;
 import com.appsball.rapidpoll.commons.communication.request.PollsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
+import com.appsball.rapidpoll.commons.communication.request.SearchPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateRequest;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
@@ -16,11 +18,11 @@ import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
+import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.orhanobut.logger.Logger;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.Wasp;
 import com.orhanobut.wasp.WaspError;
-import com.orhanobut.wasp.utils.LogLevel;
 
 import java.util.List;
 
@@ -30,83 +32,95 @@ import static com.appsball.rapidpoll.commons.communication.request.RegisterReque
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String SERVER_ADDRESS = "http://rapidpoll.appsball.com:3000";
-    private static final String TEST_POLL_ID ="2";
-
-    private static final String TEST_DEVICE_ID = "11E592F746A409999E7502000029BDFD";
-    private RapidPollRestInterface service;
+    private static final String TEST_POLL_ID = "2";
+    private static final String TEST_USER_ID = "11E592F746A409999E7502000029BDFD";
+    private RapidPollRestService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        service = new Wasp.Builder(this)
-                .setEndpoint(SERVER_ADDRESS)
-                        .setLogLevel(LogLevel.FULL)
-//                .setNetworkMode(NetworkMode.MOCK)
-                .build()
-
-                .create(RapidPollRestInterface.class);
-
-//        getPollDetails();
-//        getPollResult();
-//        searchPoll();
+        Logger.init();
+        service = RapidPollRestService.createRapidPollRestService(this);
+        getPolls(createPollsRequest());
+        getPollDetails(createPollDetailsRequest());
+        getPollResult(createPollResultRequest());
+        searchPoll(createSearchPollRequest());
 //        register();
 
 
 //        createPoll();
 //        getPolls(createPollsRequest());
 //        doPoll();
-        updatePollState();
+//        updatePollState();
+    }
+
+    private SearchPollRequest createSearchPollRequest() {
+        SearchPollRequest.Builder builder = SearchPollRequest.builder();
+        builder.withUserId(TEST_USER_ID);
+        builder.withListType(ListType.ALL);
+        builder.withSearchItem("west");
+        builder.withOrderKey(OrderKey.TITLE);
+        builder.withOrderType(OrderType.DESC);
+        builder.withPage("1");
+        builder.withPageSize("25");
+        return builder.build();
+    }
+
+    private PollResultRequest createPollResultRequest() {
+        return PollResultRequest.builder().withPollId(TEST_POLL_ID).withUserId(TEST_USER_ID).build();
+    }
+
+    private PollDetailsRequest createPollDetailsRequest() {
+        return PollDetailsRequest.builder().withPollId(TEST_POLL_ID).withUserId(TEST_USER_ID).build();
     }
 
     private void updatePollState() {
         service.updatePollState(createUpdatePollStateRequest(), new Callback<ResponseContainer<Object>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
-
+                Logger.i("updatepoll response", objectResponseContainer);
             }
 
             @Override
             public void onError(WaspError error) {
-
+                Logger.e("updatepoll response", error);
             }
         });
     }
 
     public UpdatePollStateRequest createUpdatePollStateRequest() {
         UpdatePollStateRequest.Builder builder = UpdatePollStateRequest.builder();
-        builder.withUserId(TEST_DEVICE_ID);
+        builder.withUserId(TEST_USER_ID);
         builder.withPollId(TEST_POLL_ID);
         builder.withPollState(PollState.PUBLISHED);
         return builder.build();
     }
-    private void searchPoll() {
-        service.searchPoll(TEST_DEVICE_ID, ListType.ALL.name(), "west", OrderKey.PUBLIC.name(),
-                OrderType.DESC.name(), "20", "1", new Callback<ResponseContainer<List<GetPollsResponse>>>() {
-                    @Override
-                    public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
 
-                    }
-
-                    @Override
-                    public void onError(WaspError error) {
-
-                    }
-                });
-    }
-
-    private void getPollResult() {
-        service.pollResult(TEST_DEVICE_ID, TEST_POLL_ID, new Callback<ResponseContainer<PollResultResponse>>() {
+    private void searchPoll(SearchPollRequest searchPollRequest) {
+        service.searchPoll(searchPollRequest, new Callback<ResponseContainer<List<GetPollsResponse>>>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<PollResultResponse> pollResultResponseResponseContainer) {
-
+            public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
+                Logger.wtf("wtf0");
             }
 
             @Override
             public void onError(WaspError error) {
+                Logger.e("searchPoll response", error);
+            }
+        });
+    }
 
+    private void getPollResult(PollResultRequest request) {
+        service.pollResult(request, new Callback<ResponseContainer<PollResultResponse>>() {
+            @Override
+            public void onSuccess(Response response, ResponseContainer<PollResultResponse> pollResultResponseResponseContainer) {
+                Logger.i("getPollResult response", pollResultResponseResponseContainer);
+            }
+
+            @Override
+            public void onError(WaspError error) {
+                Logger.e("getPollResult response", error);
             }
         });
     }
@@ -115,25 +129,27 @@ public class MainActivity extends AppCompatActivity {
         service.doPoll(createDoPollRequest(), new Callback<ResponseContainer<Object>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
-
+                Logger.i("doPoll response", objectResponseContainer);
             }
 
             @Override
             public void onError(WaspError error) {
+                Logger.e("doPoll response", error);
 
             }
         });
     }
 
-    private void getPollDetails() {
-        service.pollDetails(TEST_DEVICE_ID, TEST_POLL_ID, new Callback<ResponseContainer<PollDetailsResponse>>() {
+    private void getPollDetails(PollDetailsRequest request) {
+        service.pollDetails(request, new Callback<ResponseContainer<PollDetailsResponse>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<PollDetailsResponse> pollDetailsResponseModelResponseContainer) {
-
+                Logger.i("getPollDetails response", pollDetailsResponseModelResponseContainer);
             }
 
             @Override
             public void onError(WaspError error) {
+                Logger.e("getPollDetails response", error);
 
             }
         });
@@ -141,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PollsRequest createPollsRequest() {
         PollsRequest.Builder builder = PollsRequest.builder();
-        builder.withUserId(TEST_DEVICE_ID);
+        builder.withUserId(TEST_USER_ID);
         builder.withListType(ListType.ALL);
         builder.withOrderKey(OrderKey.TITLE);
         builder.withOrderType(OrderType.DESC);
@@ -154,11 +170,12 @@ public class MainActivity extends AppCompatActivity {
         service.managePoll(createManagePollRequest(), new Callback<ResponseContainer<Object>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
-
+                Logger.i("createPoll response", objectResponseContainer);
             }
 
             @Override
             public void onError(WaspError error) {
+                Logger.e("createPoll response", error);
 
             }
         });
@@ -169,33 +186,31 @@ public class MainActivity extends AppCompatActivity {
         service.registerUser(registerRequest, new Callback<ResponseContainer<RegisterResponse>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<RegisterResponse> registerResponseResponseContainer) {
-
+                Logger.i("register response", registerResponseResponseContainer);
             }
 
             @Override
             public void onError(WaspError error) {
+                Logger.e("register response", error);
 
             }
         });
     }
 
     private void getPolls(PollsRequest pollsRequest) {
-        service.getPolls(pollsRequest.userId,
-                pollsRequest.listType,
-                pollsRequest.orderKey,
-                pollsRequest.orderType,
-                pollsRequest.pageSize, pollsRequest.page,
-                new Callback<ResponseContainer<List<GetPollsResponse>>>() {
-                    @Override
-                    public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
+        service.getPolls(pollsRequest,
+                         new Callback<ResponseContainer<List<GetPollsResponse>>>() {
+                             @Override
+                             public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
+                                 Logger.i("getPolls response", listResponseContainer);
+                             }
 
-                    }
+                             @Override
+                             public void onError(WaspError error) {
+                                 Logger.e("getPolls response", error);
 
-                    @Override
-                    public void onError(WaspError error) {
-
-                    }
-                }
+                             }
+                         }
         );
     }
 }
