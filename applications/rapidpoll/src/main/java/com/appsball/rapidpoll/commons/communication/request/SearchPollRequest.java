@@ -6,26 +6,29 @@ import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class PollsRequest {
+public class SearchPollRequest {
     public final String userId;
     public final String listType;
+    public final String searchItem;
     public final String orderKey;
     public final String orderType;
     public final String pageSize;
     public final String page;
 
-    public PollsRequest(String userId,
-                        String listType,
-                        String orderKey,
-                        String orderType,
-                        String pageSize,
-                        String page) {
-        this.userId = notNull("userId must not be null", userId);
-        this.listType = notNull("listType must not be null", listType);
-        this.orderKey = notNull("orderKey must not be null", orderKey);
-        this.orderType = notNull("orderType must not be null", orderType);
-        this.pageSize = notNull("pageSize must not be null", pageSize);
-        this.page = notNull("page must not be null", page);
+    public SearchPollRequest(String userId, 
+                             String listType, 
+                             String searchItem, 
+                             String orderKey, 
+                             String orderType, 
+                             String pageSize, 
+                             String page) {
+        this.userId = notNull(userId, "userId must not be null");
+        this.listType = notNull(listType, "listType must not be null");
+        this.searchItem = notNull(searchItem, "searchItem must not be null");
+        this.orderKey = notNull(orderKey, "orderKey must not be null");
+        this.orderType = notNull(orderType, "orderType must not be null");
+        this.pageSize = notNull(pageSize, "pageSize must not be null");
+        this.page = notNull(page, "page must not be null");
     }
 
     public static Builder builder() {
@@ -33,8 +36,10 @@ public class PollsRequest {
     }
 
     public static class Builder {
+
         private String userId;
         private ListType listType;
+        private String searchItem;
         private OrderKey orderKey;
         private OrderType orderType;
         private String pageSize;
@@ -47,6 +52,11 @@ public class PollsRequest {
 
         public Builder withListType(ListType listType) {
             this.listType = listType;
+            return this;
+        }
+
+        public Builder withSearchItem(String searchItem) {
+            this.searchItem = searchItem;
             return this;
         }
 
@@ -70,9 +80,10 @@ public class PollsRequest {
             return this;
         }
 
-        public PollsRequest build() {
-            return new PollsRequest(userId,
+        public SearchPollRequest build() {
+            return new SearchPollRequest(userId,
                     listType.name(),
+                    searchItem,
                     orderKey.name(),
                     orderType.name(),
                     pageSize,

@@ -1,6 +1,11 @@
 package com.appsball.rapidpoll.commons.communication.response;
 
-import com.google.common.collect.Lists;
+import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsAlternative;
+import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsQuestion;
+import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
+import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultAlternative;
+import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultQuestion;
+import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
 
 import java.util.List;
 
@@ -10,124 +15,192 @@ public class DefaultResponseBuilders {
 
     private final static String SUCCESS = "SUCCESS";
 
-    public static ResponseContainer<List<PollResponseModel>> createPollsResponse() {
-        ResponseContainer<List<PollResponseModel>> responseContainer = new ResponseContainer<>();
+    public static ResponseContainer<List<GetPollsResponse>> createPollsResponse() {
+        ResponseContainer<List<GetPollsResponse>> responseContainer = new ResponseContainer<>();
         responseContainer.messages = newArrayList();
         responseContainer.status = SUCCESS;
         responseContainer.result = createDefaultPollResponseList();
         return responseContainer;
     }
 
-    private static List<PollResponseModel> createDefaultPollResponseList() {
+    private static List<GetPollsResponse> createDefaultPollResponseList() {
 
-        PollResponseModel pollResponseModel1 = new PollResponseModel();
-        pollResponseModel1.id = 12;
-        pollResponseModel1.name = "West End Christmas";
-        pollResponseModel1.isPublic = 1;
-        pollResponseModel1.anonymous = 0;
-        pollResponseModel1.allow_comment = 1;
-        pollResponseModel1.expiration_date = "2015-11-27 00:00:00";
-        pollResponseModel1.owner_id = "11E58A684CDE15E49E7502000029BDFD";
-        pollResponseModel1.state = "DRAFT";
-        pollResponseModel1.publication_date = null;
-        pollResponseModel1.number_of_questions = 2;
-        pollResponseModel1.number_of_answered_questions_by_the_user = 0;
-        pollResponseModel1.number_of_votes = 0;
+        GetPollsResponse getPollsResponse1 = new GetPollsResponse();
+        getPollsResponse1.id = 12;
+        getPollsResponse1.name = "West End Christmas";
+        getPollsResponse1.isPublic = 1;
+        getPollsResponse1.anonymous = 0;
+        getPollsResponse1.allow_comment = 1;
+        getPollsResponse1.expiration_date = "2015-11-27 00:00:00";
+        getPollsResponse1.owner_id = "11E58A684CDE15E49E7502000029BDFD";
+        getPollsResponse1.state = "DRAFT";
+        getPollsResponse1.publication_date = null;
+        getPollsResponse1.number_of_questions = 2;
+        getPollsResponse1.number_of_answered_questions_by_the_user = 0;
+        getPollsResponse1.number_of_votes = 0;
 
-        PollResponseModel pollResponseModel2 = new PollResponseModel();
-        pollResponseModel2.id = 2;
-        pollResponseModel2.name = "MOM 2015";
-        pollResponseModel2.isPublic = 1;
-        pollResponseModel2.anonymous = 1;
-        pollResponseModel2.allow_comment = 1;
-        pollResponseModel2.expiration_date = "2015-11-20 00:00:00";
-        pollResponseModel2.owner_id = "31000000000000000000000000000000";
-        pollResponseModel2.state = "PUBLISHED";
-        pollResponseModel2.publication_date = "2015-11-06 13:27:00";
-        pollResponseModel2.number_of_questions = 3;
-        pollResponseModel2.number_of_answered_questions_by_the_user = 3;
-        pollResponseModel2.number_of_votes = 5;
+        GetPollsResponse getPollsResponse2 = new GetPollsResponse();
+        getPollsResponse2.id = 2;
+        getPollsResponse2.name = "MOM 2015";
+        getPollsResponse2.isPublic = 1;
+        getPollsResponse2.anonymous = 1;
+        getPollsResponse2.allow_comment = 1;
+        getPollsResponse2.expiration_date = "2015-11-20 00:00:00";
+        getPollsResponse2.owner_id = "31000000000000000000000000000000";
+        getPollsResponse2.state = "PUBLISHED";
+        getPollsResponse2.publication_date = "2015-11-06 13:27:00";
+        getPollsResponse2.number_of_questions = 3;
+        getPollsResponse2.number_of_answered_questions_by_the_user = 3;
+        getPollsResponse2.number_of_votes = 5;
 
-        PollResponseModel pollResponseModel3 = new PollResponseModel();
-        pollResponseModel3.id = 1;
-        pollResponseModel3.name = "Avon 2015";
-        pollResponseModel3.isPublic = 1;
-        pollResponseModel3.anonymous = 1;
-        pollResponseModel3.allow_comment = 1;
-        pollResponseModel3.expiration_date = "2015-11-20 00:00:00";
-        pollResponseModel3.owner_id = "31000000000000000000000000000000";
-        pollResponseModel3.state = "DRAFT";
-        pollResponseModel3.publication_date = null;
-        pollResponseModel3.number_of_questions = 4;
-        pollResponseModel3.number_of_answered_questions_by_the_user = 4;
-        pollResponseModel3.number_of_votes = 3;
+        GetPollsResponse getPollsResponse3 = new GetPollsResponse();
+        getPollsResponse3.id = 1;
+        getPollsResponse3.name = "Avon 2015";
+        getPollsResponse3.isPublic = 1;
+        getPollsResponse3.anonymous = 1;
+        getPollsResponse3.allow_comment = 1;
+        getPollsResponse3.expiration_date = "2015-11-20 00:00:00";
+        getPollsResponse3.owner_id = "31000000000000000000000000000000";
+        getPollsResponse3.state = "DRAFT";
+        getPollsResponse3.publication_date = null;
+        getPollsResponse3.number_of_questions = 4;
+        getPollsResponse3.number_of_answered_questions_by_the_user = 4;
+        getPollsResponse3.number_of_votes = 3;
 
-        return newArrayList(pollResponseModel1, pollResponseModel2, pollResponseModel3);
+        return newArrayList(getPollsResponse1, getPollsResponse2, getPollsResponse3);
     }
 
 
-    public static ResponseContainer<PollDetailsResponseModel> createPollDetailsResponse() {
-        ResponseContainer<PollDetailsResponseModel> responseContainer = new ResponseContainer<>();
+    public static ResponseContainer<PollDetailsResponse> createPollDetailsResponse() {
+        ResponseContainer<PollDetailsResponse> responseContainer = new ResponseContainer<>();
         responseContainer.messages = newArrayList();
         responseContainer.status = SUCCESS;
         responseContainer.result = createDefaultPollDetailsResponse();
         return responseContainer;
     }
 
-    private static PollDetailsResponseModel createDefaultPollDetailsResponse() {
-        PollDetailsResponseModel pollDetailsResponseModel = new PollDetailsResponseModel();
-        pollDetailsResponseModel.id = 2;
-        pollDetailsResponseModel.name = "MOM 2015";
-        pollDetailsResponseModel.isPublic = 1;
-        pollDetailsResponseModel.anonymous = 1;
-        pollDetailsResponseModel.allow_comment = 1;
-        pollDetailsResponseModel.expiration_date = "2015-11-20 00:00:00";
-        pollDetailsResponseModel.owner_id = "31000000000000000000000000000000";
-        pollDetailsResponseModel.state = "PUBLISHED";
-        pollDetailsResponseModel.publication_time = "2015-11-06 13:27:00";
-        pollDetailsResponseModel.questions = createQuestions();
-        return pollDetailsResponseModel;
+    private static PollDetailsResponse createDefaultPollDetailsResponse() {
+        PollDetailsResponse pollDetailsResponse = new PollDetailsResponse();
+        pollDetailsResponse.id = 2;
+        pollDetailsResponse.name = "MOM 2015";
+        pollDetailsResponse.isPublic = 1;
+        pollDetailsResponse.anonymous = 1;
+        pollDetailsResponse.allow_comment = 1;
+        pollDetailsResponse.expiration_date = "2015-11-20 00:00:00";
+        pollDetailsResponse.owner_id = "31000000000000000000000000000000";
+        pollDetailsResponse.state = "PUBLISHED";
+        pollDetailsResponse.publication_time = "2015-11-06 13:27:00";
+        pollDetailsResponse.questions = createPollDetailsQuestions();
+        return pollDetailsResponse;
     }
 
-    private static List<QuestionResponseModel> createQuestions() {
-        QuestionResponseModel questionResponseModel1 = new QuestionResponseModel();
-        questionResponseModel1.question_id = 5;
-        questionResponseModel1.multichoice = 0;
-        questionResponseModel1.question = "Rate our mall?";
-        questionResponseModel1.alternatives =
+    private static List<PollDetailsQuestion> createPollDetailsQuestions() {
+        PollDetailsQuestion pollDetailsQuestion1 = new PollDetailsQuestion();
+        pollDetailsQuestion1.question_id = 5;
+        pollDetailsQuestion1.multichoice = 0;
+        pollDetailsQuestion1.question = "Rate our mall?";
+        pollDetailsQuestion1.alternatives =
                 newArrayList(createAlternative(17, "Excellent"),
                         createAlternative(18, "Good"),
                         createAlternative(19, "Neutral"),
                         createAlternative(20, "Bad")
                 );
-        QuestionResponseModel questionResponseModel2 = new QuestionResponseModel();
+        PollDetailsQuestion pollDetailsQuestion2 = new PollDetailsQuestion();
 
-        questionResponseModel2.question_id = 6;
-        questionResponseModel2.multichoice = 0;
-        questionResponseModel2.question = "Which the best shop in the 1st floor?";
-        questionResponseModel2.alternatives =
+        pollDetailsQuestion2.question_id = 6;
+        pollDetailsQuestion2.multichoice = 0;
+        pollDetailsQuestion2.question = "Which the best shop in the 1st floor?";
+        pollDetailsQuestion2.alternatives =
                 newArrayList(createAlternative(21, "Drogerie Markt"),
                         createAlternative(22, "Tesco"),
                         createAlternative(23, "Armani Factory Store"),
                         createAlternative(24, "Media Markt")
                 );
-        QuestionResponseModel questionResponseModel3 = new QuestionResponseModel();
-        questionResponseModel3.question_id = 7;
-        questionResponseModel3.multichoice = 1;
-        questionResponseModel3.question = "Vote for our next new brand!";
-        questionResponseModel3.alternatives =
+        PollDetailsQuestion pollDetailsQuestion3 = new PollDetailsQuestion();
+        pollDetailsQuestion3.question_id = 7;
+        pollDetailsQuestion3.multichoice = 1;
+        pollDetailsQuestion3.question = "Vote for our next new brand!";
+        pollDetailsQuestion3.alternatives =
                 newArrayList(createAlternative(25, "Hugo Boss"),
                         createAlternative(26, "Zara"),
                         createAlternative(27, "Polo Sport"),
                         createAlternative(28, "Calvin Klein")
                 );
-        return newArrayList(questionResponseModel1, questionResponseModel2, questionResponseModel3);
+        return newArrayList(pollDetailsQuestion1, pollDetailsQuestion2, pollDetailsQuestion3);
     }
 
-    private static AlternativeResponseModel createAlternative(int id, String name) {
-        AlternativeResponseModel alternativeResponseModel = new AlternativeResponseModel();
-        alternativeResponseModel.alternative_id = id;
-        alternativeResponseModel.alternative_name = name;
-        return alternativeResponseModel;
+    private static PollDetailsAlternative createAlternative(int id, String name) {
+        PollDetailsAlternative pollDetailsAlternative = new PollDetailsAlternative();
+        pollDetailsAlternative.alternative_id = id;
+        pollDetailsAlternative.alternative_name = name;
+        return pollDetailsAlternative;
+    }
+
+
+    public static ResponseContainer<PollResultResponse> createPollResultResponse() {
+        ResponseContainer<PollResultResponse> responseContainer = new ResponseContainer<>();
+        responseContainer.messages = newArrayList();
+        responseContainer.status = SUCCESS;
+        responseContainer.result = createDefaultPollResultResponse();
+        return responseContainer;
+    }
+    private static PollResultResponse createDefaultPollResultResponse() {
+        PollResultResponse pollResultResponse = new PollResultResponse();
+        pollResultResponse.id = "2";
+        pollResultResponse.questions = createPollResultResponseQuestions();
+        return pollResultResponse;
+    }
+
+    private static List<PollResultQuestion> createPollResultResponseQuestions() {
+        PollResultQuestion question1 =
+                createPollResultQuestion(5, "Rate our mall?", createPollResultAlternatives1());
+        PollResultQuestion question2 =
+                createPollResultQuestion(6, "Which the best shop in the 1st floor?", createPollResultAlternatives2());
+        PollResultQuestion question3 =
+                createPollResultQuestion(7, "Vote for our next new brand!", createPollResultAlternatives3());
+        return newArrayList(question1, question2, question3);
+    }
+
+    private static PollResultQuestion createPollResultQuestion(long id,
+                                                               String name,
+                                                               List<PollResultAlternative> alternatives) {
+        PollResultQuestion pollResultQuestion = new PollResultQuestion();
+        pollResultQuestion.question_id = id;
+        pollResultQuestion.question_name = name;
+        pollResultQuestion.alternatives = alternatives;
+        return pollResultQuestion;
+    }
+
+    private static List<PollResultAlternative> createPollResultAlternatives1() {
+        PollResultAlternative pollResultAlternative1 = createPollResultAlternative(17, "Excellent", 4);
+        PollResultAlternative pollResultAlternative2 = createPollResultAlternative(18, "Good", 5);
+        PollResultAlternative pollResultAlternative3 = createPollResultAlternative(19, "Neutral", 3);
+        PollResultAlternative pollResultAlternative4 = createPollResultAlternative(20, "Bad", 2);
+        return newArrayList(pollResultAlternative1, pollResultAlternative2, pollResultAlternative3, pollResultAlternative4);
+    }
+
+    private static PollResultAlternative createPollResultAlternative(long id, String name, long count) {
+        PollResultAlternative pollResultAlternative = new PollResultAlternative();
+        pollResultAlternative.alternative_id = id;
+        pollResultAlternative.alternative_name = name;
+        pollResultAlternative.count = count;
+        return pollResultAlternative;
+    }
+
+    private static List<PollResultAlternative> createPollResultAlternatives3() {
+        PollResultAlternative pollResultAlternative1 = createPollResultAlternative(25, "Hugo Boss", 8);
+        PollResultAlternative pollResultAlternative2 = createPollResultAlternative(26, "Zara", 9);
+        PollResultAlternative pollResultAlternative3 = createPollResultAlternative(27, "Polo Sport", 7);
+        PollResultAlternative pollResultAlternative4 = createPollResultAlternative(28, "Calvin Klein", 6);
+        return newArrayList(pollResultAlternative1, pollResultAlternative2, pollResultAlternative3, pollResultAlternative4);
+    }
+
+    private static List<PollResultAlternative> createPollResultAlternatives2() {
+        PollResultAlternative pollResultAlternative1 = createPollResultAlternative(21, "Drogerie Markt", 2);
+        PollResultAlternative pollResultAlternative2 = createPollResultAlternative(22, "Tesco", 6);
+        PollResultAlternative pollResultAlternative3 = createPollResultAlternative(23, "Armani Factory Store", 5);
+        PollResultAlternative pollResultAlternative4 = createPollResultAlternative(24, "Media Markt", 1);
+        return newArrayList(pollResultAlternative1, pollResultAlternative2, pollResultAlternative3, pollResultAlternative4);
+
     }
 }

@@ -1,11 +1,14 @@
 package com.appsball.rapidpoll.commons.communication;
 
-import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
-import com.appsball.rapidpoll.commons.communication.response.PollDetailsResponseModel;
-import com.appsball.rapidpoll.commons.communication.response.PollResponseModel;
+import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateRequest;
+import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
+import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.response.GetPollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
+import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
+import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.http.Body;
 import com.orhanobut.wasp.http.GET;
@@ -26,18 +29,44 @@ public interface RapidPollRestService {
     void managePoll(@Body ManagePollRequest request, Callback<ResponseContainer<Object>> callback);
 
     @Mock
-    @GET("/polls/{userid}/{orderkey}/{ordertype}/{pagesize}/{page}")
+    @GET("/polls/{userid}/{listtype}/{orderkey}/{ordertype}/{pagesize}/{page}")
     void getPolls(@Path("userid") String userid,
+                  @Path("listtype") String listtype,
                   @Path("orderkey") String orderkey,
                   @Path("ordertype") String ordertype,
                   @Path("pagesize") String pagesize,
                   @Path("page") String page,
-                  Callback<ResponseContainer<List<PollResponseModel>>> callback);
+                  Callback<ResponseContainer<List<GetPollsResponse>>> callback);
 
     @Mock
     @GET("/polldetails/{userid}/{pollid}")
     void pollDetails(@Path("userid") String userid,
-                     @Path("pollid") String orderkey,
-                     Callback<ResponseContainer<PollDetailsResponseModel>> callback);
+                     @Path("pollid") String pollId,
+                     Callback<ResponseContainer<PollDetailsResponse>> callback);
+
+    @Mock
+    @POST("/dopoll")
+    void managePoll(@Body DoPollRequest request, Callback<ResponseContainer<Object>> callback);
+
+    @Mock
+    @GET("/pollresult/{userid}/{pollid}")
+    void pollResult(@Path("userid") String userid,
+                    @Path("pollid") String pollId,
+                    Callback<ResponseContainer<PollResultResponse>> callback);
+
+    @Mock
+    @GET("/search/{userid}/{listtype}/{searchitem}/{orderkey}/{ordertype}/{pagesize}/{page}")
+    void searchPoll(@Path("userid") String userid,
+                    @Path("listtype") String listtype,
+                    @Path("searchitem") String searchitem,
+                    @Path("orderkey") String orderkey,
+                    @Path("ordertype") String ordertype,
+                    @Path("pagesize") String pagesize,
+                    @Path("page") String page,
+                    Callback<ResponseContainer<List<GetPollsResponse>>> callback);
+
+    @Mock
+    @POST("/updatepollstate")
+    void updatePollState(@Body UpdatePollStateRequest request, Callback<ResponseContainer<Object>> callback);
 
 }

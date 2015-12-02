@@ -2,17 +2,18 @@ package com.appsball.rapidpoll.commons.communication.request.dopoll;
 
 import java.util.List;
 
-//{"question_id":"1","answers":[{"alternative_id":"1"}]},
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class DoPollQuestion {
     public final String question_id;
     public final List<DoPollAnswer> answers;
 
-    private DoPollQuestion(String question_id, List<DoPollAnswer> answers) {
-        this.question_id = question_id;
-        this.answers = answers;
+    private DoPollQuestion(String questionId, List<DoPollAnswer> answers) {
+        this.question_id = notNull(questionId, "questionId must not be null");
+        this.answers = notNull(answers, "answers must not be null");
     }
 
-    public static DoPollQuestion doPollQuestion(String question_id, List<DoPollAnswer> answers) {
-        return new DoPollQuestion(question_id, answers);
+    public static DoPollQuestion doPollQuestion(String questionId, List<DoPollAnswer> answers) {
+        return new DoPollQuestion(questionId, answers);
     }
 }

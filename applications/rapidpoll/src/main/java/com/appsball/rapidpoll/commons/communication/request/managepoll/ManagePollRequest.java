@@ -1,5 +1,7 @@
 package com.appsball.rapidpoll.commons.communication.request.managepoll;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class ManagePollRequest {
 
     public final String user_id;
@@ -7,9 +9,9 @@ public class ManagePollRequest {
     public final ManagePoll poll;
 
     private ManagePollRequest(String user_id, String action, ManagePoll poll) {
-        this.user_id = user_id;
-        this.action = action;
-        this.poll = poll;
+        this.user_id = notNull(user_id, "user_id must not be null");
+        this.action = notNull(action, "action must not be null");
+        this.poll = notNull(poll, "poll must not be null");
     }
 
     public static Builder builder(){

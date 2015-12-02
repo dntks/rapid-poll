@@ -2,9 +2,9 @@ package com.appsball.rapidpoll.commons.communication.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PollResponseModel extends ResponseBase{
+public class GetPollsResponse extends ResponseBase{
 
-    public int id;
+    public long id;
     public String name;
     @SerializedName("public")
     public int isPublic;

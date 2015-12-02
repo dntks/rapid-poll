@@ -1,15 +1,18 @@
 package com.appsball.rapidpoll;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.appsball.rapidpoll.commons.communication.RapidPollRestService;
 import com.appsball.rapidpoll.commons.communication.request.PollsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
-import com.appsball.rapidpoll.commons.communication.response.PollDetailsResponseModel;
-import com.appsball.rapidpoll.commons.communication.response.PollResponseModel;
+import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
+import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
+import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
+import com.appsball.rapidpoll.commons.communication.response.GetPollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
+import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Response;
 import com.orhanobut.wasp.Wasp;
@@ -46,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPollDetails() {
-        service.pollDetails(TEST_DEVICE_ID, TEST_POLL_ID, new Callback<ResponseContainer<PollDetailsResponseModel>>() {
+        service.pollDetails(TEST_DEVICE_ID, TEST_POLL_ID, new Callback<ResponseContainer<PollDetailsResponse>>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<PollDetailsResponseModel> pollDetailsResponseModelResponseContainer) {
+            public void onSuccess(Response response, ResponseContainer<PollDetailsResponse> pollDetailsResponseModelResponseContainer) {
 
             }
 
@@ -62,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
     private PollsRequest createPollsRequest() {
         PollsRequest.Builder builder = PollsRequest.builder();
         builder.withUserId(TEST_DEVICE_ID);
-        builder.withOrderKey("TITLE");
-        builder.withOrderType("DESC");
+        builder.withListType(ListType.ALL);
+        builder.withOrderKey(OrderKey.TITLE);
+        builder.withOrderType(OrderType.DESC);
         builder.withPage("1");
         builder.withPageSize("25");
         return builder.build();
@@ -100,12 +104,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void getPolls(PollsRequest pollsRequest) {
         service.getPolls(pollsRequest.userId,
+                pollsRequest.listType,
                 pollsRequest.orderKey,
                 pollsRequest.orderType,
                 pollsRequest.pageSize, pollsRequest.page,
-                new Callback<ResponseContainer<List<PollResponseModel>>>() {
+                new Callback<ResponseContainer<List<GetPollsResponse>>>() {
                     @Override
-                    public void onSuccess(Response response, ResponseContainer<List<PollResponseModel>> listResponseContainer) {
+                    public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
 
                     }
 

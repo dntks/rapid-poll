@@ -2,6 +2,8 @@ package com.appsball.rapidpoll.commons.communication.request.managepoll;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class ManagePollQuestion {
 
     public final String name;
@@ -9,9 +11,9 @@ public class ManagePollQuestion {
     public final List<ManagePollQuestionAlternative> alternatives;
 
     public ManagePollQuestion(String name, String multichoice, List<ManagePollQuestionAlternative> alternatives) {
-        this.name = name;
-        this.multichoice = multichoice;
-        this.alternatives = alternatives;
+        this.name = notNull(name, "name must not be null");
+        this.multichoice = notNull(multichoice, "multichoice must not be null");
+        this.alternatives = notNull(alternatives, "alternatives must not be null");
     }
 
     public static Builder builder() {

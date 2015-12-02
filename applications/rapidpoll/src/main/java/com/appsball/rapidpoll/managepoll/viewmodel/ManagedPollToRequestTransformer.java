@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll.managepoll.viewmodel;
 
-import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
+import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 
 public class ManagedPollToRequestTransformer {
 
@@ -19,8 +19,8 @@ public class ManagedPollToRequestTransformer {
         builder.withName("");
         builder.withIsPublic("");
         builder.withAnonymous("");
-        builder.withAllow_comment("");
-        builder.withAllow_uncomplete_result("");
+        builder.withAllowComment("");
+        builder.withAllowUncompleteResult("");
         return builder.build();
     }
 }

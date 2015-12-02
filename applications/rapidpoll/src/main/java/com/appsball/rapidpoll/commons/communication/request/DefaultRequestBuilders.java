@@ -2,6 +2,7 @@ package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
+import com.appsball.rapidpoll.commons.communication.request.enums.PollState;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative;
@@ -27,12 +28,12 @@ public class DefaultRequestBuilders {
 
     private static ManagePoll createPollRequestObject() {
         ManagePoll.Builder managePollBuilder = ManagePoll.builder();
-        managePollBuilder.withAllow_uncomplete_result("1");
+        managePollBuilder.withAllowUncompleteResult("1");
         managePollBuilder.withAnonymous("0");
         managePollBuilder.withIsPublic("1");
         managePollBuilder.withName("WestEndChristmas");
         managePollBuilder.withQuestions(createManagePollQuestions());
-        managePollBuilder.withAllow_comment("1");
+        managePollBuilder.withAllowComment("1");
         return managePollBuilder.build();
     }
 
@@ -63,20 +64,28 @@ public class DefaultRequestBuilders {
         return newArrayList(alternative1, alternative2, alternative3, alternative4);
     }
 
-    public static DoPollRequest createDoPollRequest(){
+    public static DoPollRequest createDoPollRequest() {
         DoPollRequest.Builder builder = DoPollRequest.builder();
-        builder.withUser_id("11E58407B7A5FDDC9D0B8675BA421DCB");
+        builder.withUserId("11E58407B7A5FDDC9D0B8675BA421DCB");
         builder.withComment(Optional.of("Here is a comment."));
-        builder.withPoll_id("1");
+        builder.withPollId("1");
         builder.withQuestions(createDoPollQuestions());
         return builder.build();
     }
 
     private static List<DoPollQuestion> createDoPollQuestions() {
-        DoPollQuestion question1= doPollQuestion("1", newArrayList(doPollAnswer("1")));
-        DoPollQuestion question2= doPollQuestion("2", newArrayList(doPollAnswer("3")));
-        DoPollQuestion question3= doPollQuestion("3", newArrayList(doPollAnswer("7")));
-        DoPollQuestion question4= doPollQuestion("4", newArrayList(doPollAnswer("12")));
+        DoPollQuestion question1 = doPollQuestion("1", newArrayList(doPollAnswer("1")));
+        DoPollQuestion question2 = doPollQuestion("2", newArrayList(doPollAnswer("3")));
+        DoPollQuestion question3 = doPollQuestion("3", newArrayList(doPollAnswer("7")));
+        DoPollQuestion question4 = doPollQuestion("4", newArrayList(doPollAnswer("12")));
         return newArrayList(question1, question2, question3, question4);
+    }
+
+    public static UpdatePollStateRequest createUpdatePollStateRequest() {
+        UpdatePollStateRequest.Builder builder = UpdatePollStateRequest.builder();
+        builder.withUserId("11E58407B7A5FDDC9D0B8675BA421DCB");
+        builder.withPollId("1");
+        builder.withPollState(PollState.PUBLISHED);
+        return builder.build();
     }
 }

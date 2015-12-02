@@ -1,10 +1,11 @@
-package com.appsball.rapidpoll.commons.communication.response;
+package com.appsball.rapidpoll.commons.communication.response.polldetails;
 
+import com.appsball.rapidpoll.commons.communication.response.ResponseBase;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PollDetailsResponseModel extends ResponseBase {
+public class PollDetailsResponse extends ResponseBase {
     public long id;
     public String name;
 
@@ -16,5 +17,5 @@ public class PollDetailsResponseModel extends ResponseBase {
     public String publication_time;
     public String expiration_date;
     public String owner_id;
-    public List<QuestionResponseModel> questions;
+    public List<PollDetailsQuestion> questions;
 }

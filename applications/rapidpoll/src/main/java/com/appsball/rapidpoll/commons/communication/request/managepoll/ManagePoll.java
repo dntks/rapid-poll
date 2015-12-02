@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class ManagePoll {
 
     public final String name;
@@ -15,12 +17,12 @@ public class ManagePoll {
     public final List<ManagePollQuestion> questions;
 
     private ManagePoll(String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_result, List<ManagePollQuestion> questions) {
-        this.name = name;
-        this.isPublic = isPublic;
-        this.anonymous = anonymous;
-        this.allow_comment = allow_comment;
-        this.allow_uncomplete_result = allow_uncomplete_result;
-        this.questions = questions;
+        this.name = notNull(name, "name must not be null");
+        this.isPublic = notNull(isPublic, "isPublic must not be null");
+        this.anonymous = notNull(anonymous, "anonymous must not be null");
+        this.allow_comment = notNull(allow_comment, "allow_comment must not be null");
+        this.allow_uncomplete_result = notNull(allow_uncomplete_result, "allow_uncomplete_result must not be null");
+        this.questions = notNull(questions, "questions must not be null");
     }
 
 
@@ -52,13 +54,13 @@ public class ManagePoll {
             return this;
         }
 
-        public Builder withAllow_comment(String allow_comment) {
-            this.allow_comment = allow_comment;
+        public Builder withAllowComment(String allowComment) {
+            this.allow_comment = allowComment;
             return this;
         }
 
-        public Builder withAllow_uncomplete_result(String allow_uncomplete_result) {
-            this.allow_uncomplete_result = allow_uncomplete_result;
+        public Builder withAllowUncompleteResult(String allowUncompleteResult) {
+            this.allow_uncomplete_result = allowUncompleteResult;
             return this;
         }
 
