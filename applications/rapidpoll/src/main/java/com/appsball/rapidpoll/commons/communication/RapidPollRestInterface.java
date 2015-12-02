@@ -18,7 +18,7 @@ import com.orhanobut.wasp.http.Path;
 
 import java.util.List;
 
-public interface RapidPollRestService {
+public interface RapidPollRestInterface {
 
     @Mock
     @POST("/register")
@@ -46,7 +46,7 @@ public interface RapidPollRestService {
 
     @Mock
     @POST("/dopoll")
-    void managePoll(@Body DoPollRequest request, Callback<ResponseContainer<Object>> callback);
+    void doPoll(@Body DoPollRequest request, Callback<ResponseContainer<Object>> callback);
 
     @Mock
     @GET("/pollresult/{userid}/{pollid}")
