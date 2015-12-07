@@ -15,6 +15,7 @@ import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
+import com.google.gson.Gson;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Wasp;
 import com.orhanobut.wasp.utils.LogLevel;
@@ -48,7 +49,7 @@ public class RapidPollRestService {
     }
 
     private static Wasp.Builder createRapidPollInterfaceBuilder(Context context) {
-        return new Wasp.Builder(context).setEndpoint(SERVER_ADDRESS);
+        return new Wasp.Builder(context).setEndpoint(SERVER_ADDRESS).setLogLevel(LogLevel.FULL);
     }
 
     public void registerUser(RegisterRequest request, Callback<ResponseContainer<RegisterResponse>> callback) {
@@ -93,7 +94,8 @@ public class RapidPollRestService {
     }
 
     public void updatePollState(UpdatePollStateRequest request, Callback<ResponseContainer<Object>> callback){
-        rapidPollRestInterface.updatePollState(request, callback);
+        String request1 = new Gson().toJson(request);
+        rapidPollRestInterface.updatePollState(request1, callback);
     }
 
 }

@@ -1,10 +1,11 @@
 package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.commons.communication.request.enums.PollState;
+import com.appsball.rapidpoll.commons.communication.response.ResponseBase;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class UpdatePollStateRequest {
+public class UpdatePollStateRequest extends ResponseBase {
     public final String user_id;
     public final String poll_id;
     public final String newstate;

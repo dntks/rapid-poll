@@ -49,10 +49,9 @@ public class MainActivity extends AppCompatActivity {
 //        register();
 
 
-//        createPoll();
-//        getPolls(createPollsRequest());
+        createPoll();
 //        doPoll();
-//        updatePollState();
+        updatePollState();
     }
 
     private SearchPollRequest createSearchPollRequest() {

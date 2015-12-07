@@ -20,12 +20,12 @@ public class PollsRequest {
                         String orderType,
                         String pageSize,
                         String page) {
-        this.userId = notNull("userId must not be null", userId);
-        this.listType = notNull("listType must not be null", listType);
-        this.orderKey = notNull("orderKey must not be null", orderKey);
-        this.orderType = notNull("orderType must not be null", orderType);
-        this.pageSize = notNull("pageSize must not be null", pageSize);
-        this.page = notNull("page must not be null", page);
+        this.userId = notNull(userId, "userId must not be null" );
+        this.listType = notNull(listType, "listType must not be null");
+        this.orderKey = notNull(orderKey, "orderKey must not be null");
+        this.orderType = notNull(orderType, "orderType must not be null");
+        this.pageSize = notNull(pageSize, "pageSize must not be null");
+        this.page = notNull(page, "page must not be null");
     }
 
     public static Builder builder() {
