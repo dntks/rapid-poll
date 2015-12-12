@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/listitem_purple"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/item_right_mage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/jobbranyil"
+        />
+
+    <TextView
+        android:id="@+id/pollitem_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:text="name"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/started_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:text="started 2 days ago"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/votes_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:layout_toLeftOf="@id/item_right_mage"
+        android:text="55 votes"
+        android:textColor="@android:color/white"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_margin="20dp"
+        android:layout_toLeftOf="@id/item_right_mage"
+        android:layout_toRightOf="@id/pollitem_text"
+        android:background="@drawable/actionbar_gradient"
+        />
+</RelativeLayout>

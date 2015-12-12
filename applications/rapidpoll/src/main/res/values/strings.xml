@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Rapid poll</string>
+    <string name="polls">Polls</string>
+    <string name="results">Results</string>
+    <string name="my_polls">My Polls</string>
+    <string name="device_settings">Device settings</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

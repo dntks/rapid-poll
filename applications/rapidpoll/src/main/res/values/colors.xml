@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#ffffff</color>
+    <color name="light_purple_button">#7758B3</color>
+    <color name="dark_purple_button">#3F4084</color>
+    <color name="listitem_purple">#35366E</color>
+    <color name="statusbar_top_purple">#9E64D1</color>
+    <color name="actionbar_top_purple">#955CC8</color>
+    <color name="actionbar_bottom_purple">#8047B3</color>
+    <color name="button_text_color">#FFFFFF</color>
+    <color name="background_dark_purple">#111432</color>
+
 </resources>

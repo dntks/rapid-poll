@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll.commons.communication.service;
 
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
-import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
+import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequestContainer;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.response.GetPollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
@@ -46,7 +46,7 @@ public interface RapidPollRestInterface {
 
     @Mock
     @POST("/dopoll")
-    void doPoll(@Body DoPollRequest request, Callback<ResponseContainer<Object>> callback);
+    void doPoll(@Body DoPollRequestContainer inputjson, Callback<String> callback);
 
     @Mock
     @GET("/pollresult/{userid}/{pollid}")

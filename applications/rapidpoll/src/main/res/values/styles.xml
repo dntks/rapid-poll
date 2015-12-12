@@ -3,9 +3,27 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+        <item name="colorPrimary">@color/actionbar_top_purple</item>
+        <item name="colorPrimaryDark">@color/actionbar_top_purple</item>
+        <item name="colorAccent">@color/actionbar_top_purple</item>
 
+        <item name="android:actionBarStyle">@style/RapidPollActionBar</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/RapidPollActionBar</item>
+    </style>
+    <style name="RapidPollActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/actionbar_gradient</item>
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/actionbar_gradient</item>
+    </style>
+    <style name="BottomBarButton" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/button_text_color</item>
+        <item name="android:background">@drawable/bottombar_button</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 </resources>

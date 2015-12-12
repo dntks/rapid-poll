@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll.commons.communication.request;
 
-import com.appsball.rapidpoll.commons.communication.request.enums.PollState;
 import com.appsball.rapidpoll.commons.communication.response.ResponseBase;
+import com.appsball.rapidpoll.commons.model.PollState;
 
 import static org.apache.commons.lang3.Validate.notNull;
 

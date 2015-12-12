@@ -2,11 +2,11 @@ package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
-import com.appsball.rapidpoll.commons.communication.request.enums.PollState;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.model.PollState;
 import com.google.common.base.Optional;
 
 import java.util.List;
