@@ -11,7 +11,7 @@ import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateReque
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
-import com.appsball.rapidpoll.commons.communication.response.GetPollsResponse;
+import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
@@ -83,9 +83,9 @@ public class RestCaller {
     }
 
     private void searchPoll(SearchPollRequest searchPollRequest) {
-        service.searchPoll(searchPollRequest, new Callback<ResponseContainer<List<GetPollsResponse>>>() {
+        service.searchPoll(searchPollRequest, new Callback<ResponseContainer<List<PollsResponse>>>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
+            public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
                 Logger.wtf("wtf0");
             }
 
@@ -182,9 +182,9 @@ public class RestCaller {
 
     private void getPolls(PollsRequest pollsRequest) {
         service.getPolls(pollsRequest,
-                         new Callback<ResponseContainer<List<GetPollsResponse>>>() {
+                         new Callback<ResponseContainer<List<PollsResponse>>>() {
                              @Override
-                             public void onSuccess(Response response, ResponseContainer<List<GetPollsResponse>> listResponseContainer) {
+                             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
                                  Logger.i("getPolls response", listResponseContainer);
                              }
 

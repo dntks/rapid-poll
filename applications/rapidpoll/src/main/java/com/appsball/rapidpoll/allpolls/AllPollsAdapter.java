@@ -18,7 +18,11 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
     public void onBindViewHolder(final AllPollsItemViewHolder holder, int position) {
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
 
-            holder.nameView.setText(items.get(customHeaderView != null ? position - 1 : position).name);
+            int location = customHeaderView != null ? position - 1 : position;
+            holder.nameTextView.setText(items.get(location).name);
+            holder.startedTextView.setText(items.get(location).publicatedDaysAgoText);
+            holder.votesTextView.setText(items.get(location).votesText);
+            holder.answeredQuestionsBar.setProgress(items.get(location).answeredQuestionsRatioFor100);
 
         }
     }

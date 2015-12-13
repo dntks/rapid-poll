@@ -102,7 +102,7 @@ public abstract class SimpleAdapter<T, IH extends UltimateRecyclerviewViewHolder
             super(itemView);
             if (isItem) {
                 textViewSample = (TextView) itemView.findViewById(
-                        R.id.pollitem_text);
+                        R.id.pollitem_name);
             }
 
         }

@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.appsball.rapidpoll.commons.communication.response.DefaultResponseBuilders.createPollsResponse;
 
-public class GetPollsResponseParseTest {
+public class PollsResponseParseTest {
     @Test
     public void testPollResponseToJsonParse() throws IOException {
 
@@ -30,9 +30,9 @@ public class GetPollsResponseParseTest {
 
         String fileAsString = ParseUtil.getFileContentAsString(this, "getpollsresponse.json");
         Gson gson = new GsonBuilder().serializeNulls().create();
-        Type typeOfT = new TypeToken<ResponseContainer<List<GetPollsResponse>>>(){}.getType();
-        ResponseContainer<List<GetPollsResponse>>  actualParsedPollsResponse= gson.fromJson(fileAsString, typeOfT);
-        ResponseContainer<List<GetPollsResponse>> expectedPollsResponse = createPollsResponse();
+        Type typeOfT = new TypeToken<ResponseContainer<List<PollsResponse>>>(){}.getType();
+        ResponseContainer<List<PollsResponse>>  actualParsedPollsResponse= gson.fromJson(fileAsString, typeOfT);
+        ResponseContainer<List<PollsResponse>> expectedPollsResponse = createPollsResponse();
         Assert.assertEquals(expectedPollsResponse, actualParsedPollsResponse);
     }
 

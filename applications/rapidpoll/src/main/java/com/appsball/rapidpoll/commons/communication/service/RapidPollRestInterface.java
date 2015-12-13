@@ -3,7 +3,7 @@ package com.appsball.rapidpoll.commons.communication.service;
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequestContainer;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
-import com.appsball.rapidpoll.commons.communication.response.GetPollsResponse;
+import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
@@ -36,7 +36,7 @@ public interface RapidPollRestInterface {
                   @Path("ordertype") String ordertype,
                   @Path("pagesize") String pagesize,
                   @Path("page") String page,
-                  Callback<ResponseContainer<List<GetPollsResponse>>> callback);
+                  Callback<ResponseContainer<List<PollsResponse>>> callback);
 
     @Mock
     @GET("/polldetails/{userid}/{pollid}")
@@ -63,7 +63,7 @@ public interface RapidPollRestInterface {
                     @Path("ordertype") String ordertype,
                     @Path("pagesize") String pagesize,
                     @Path("page") String page,
-                    Callback<ResponseContainer<List<GetPollsResponse>>> callback);
+                    Callback<ResponseContainer<List<PollsResponse>>> callback);
 
     @Mock
     @POST("/updatepollstate")

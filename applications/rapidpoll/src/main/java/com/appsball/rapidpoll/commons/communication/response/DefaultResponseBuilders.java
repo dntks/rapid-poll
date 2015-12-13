@@ -15,59 +15,59 @@ public class DefaultResponseBuilders {
 
     private final static String SUCCESS = "SUCCESS";
 
-    public static ResponseContainer<List<GetPollsResponse>> createPollsResponse() {
-        ResponseContainer<List<GetPollsResponse>> responseContainer = new ResponseContainer<>();
+    public static ResponseContainer<List<PollsResponse>> createPollsResponse() {
+        ResponseContainer<List<PollsResponse>> responseContainer = new ResponseContainer<>();
         responseContainer.messages = newArrayList();
         responseContainer.status = SUCCESS;
         responseContainer.result = createDefaultPollResponseList();
         return responseContainer;
     }
 
-    private static List<GetPollsResponse> createDefaultPollResponseList() {
+    private static List<PollsResponse> createDefaultPollResponseList() {
 
-        GetPollsResponse getPollsResponse1 = new GetPollsResponse();
-        getPollsResponse1.id = 12;
-        getPollsResponse1.name = "West End Christmas";
-        getPollsResponse1.isPublic = 1;
-        getPollsResponse1.anonymous = 0;
-        getPollsResponse1.allow_comment = 1;
-        getPollsResponse1.expiration_date = "2015-11-27 00:00:00";
-        getPollsResponse1.owner_id = "11E58A684CDE15E49E7502000029BDFD";
-        getPollsResponse1.state = "DRAFT";
-        getPollsResponse1.publication_date = null;
-        getPollsResponse1.number_of_questions = 2;
-        getPollsResponse1.number_of_answered_questions_by_the_user = 0;
-        getPollsResponse1.number_of_votes = 0;
+        PollsResponse pollsResponse1 = new PollsResponse();
+        pollsResponse1.id = 12;
+        pollsResponse1.name = "West End Christmas";
+        pollsResponse1.isPublic = 1;
+        pollsResponse1.anonymous = 0;
+        pollsResponse1.allow_comment = 1;
+        pollsResponse1.expiration_date = "2015-11-27 00:00:00";
+        pollsResponse1.owner_id = "11E58A684CDE15E49E7502000029BDFD";
+        pollsResponse1.state = "DRAFT";
+        pollsResponse1.publication_date = null;
+        pollsResponse1.number_of_questions = 2;
+        pollsResponse1.number_of_answered_questions_by_the_user = 0;
+        pollsResponse1.number_of_votes = 0;
 
-        GetPollsResponse getPollsResponse2 = new GetPollsResponse();
-        getPollsResponse2.id = 2;
-        getPollsResponse2.name = "MOM 2015";
-        getPollsResponse2.isPublic = 1;
-        getPollsResponse2.anonymous = 1;
-        getPollsResponse2.allow_comment = 1;
-        getPollsResponse2.expiration_date = "2015-11-20 00:00:00";
-        getPollsResponse2.owner_id = "31000000000000000000000000000000";
-        getPollsResponse2.state = "PUBLISHED";
-        getPollsResponse2.publication_date = "2015-11-06 13:27:00";
-        getPollsResponse2.number_of_questions = 3;
-        getPollsResponse2.number_of_answered_questions_by_the_user = 3;
-        getPollsResponse2.number_of_votes = 5;
+        PollsResponse pollsResponse2 = new PollsResponse();
+        pollsResponse2.id = 2;
+        pollsResponse2.name = "MOM 2015";
+        pollsResponse2.isPublic = 1;
+        pollsResponse2.anonymous = 1;
+        pollsResponse2.allow_comment = 1;
+        pollsResponse2.expiration_date = "2015-11-20 00:00:00";
+        pollsResponse2.owner_id = "31000000000000000000000000000000";
+        pollsResponse2.state = "PUBLISHED";
+        pollsResponse2.publication_date = "2015-11-06 13:27:00";
+        pollsResponse2.number_of_questions = 3;
+        pollsResponse2.number_of_answered_questions_by_the_user = 3;
+        pollsResponse2.number_of_votes = 5;
 
-        GetPollsResponse getPollsResponse3 = new GetPollsResponse();
-        getPollsResponse3.id = 1;
-        getPollsResponse3.name = "Avon 2015";
-        getPollsResponse3.isPublic = 1;
-        getPollsResponse3.anonymous = 1;
-        getPollsResponse3.allow_comment = 1;
-        getPollsResponse3.expiration_date = "2015-11-20 00:00:00";
-        getPollsResponse3.owner_id = "31000000000000000000000000000000";
-        getPollsResponse3.state = "DRAFT";
-        getPollsResponse3.publication_date = null;
-        getPollsResponse3.number_of_questions = 4;
-        getPollsResponse3.number_of_answered_questions_by_the_user = 4;
-        getPollsResponse3.number_of_votes = 3;
+        PollsResponse pollsResponse3 = new PollsResponse();
+        pollsResponse3.id = 1;
+        pollsResponse3.name = "Avon 2015";
+        pollsResponse3.isPublic = 1;
+        pollsResponse3.anonymous = 1;
+        pollsResponse3.allow_comment = 1;
+        pollsResponse3.expiration_date = "2015-11-20 00:00:00";
+        pollsResponse3.owner_id = "31000000000000000000000000000000";
+        pollsResponse3.state = "DRAFT";
+        pollsResponse3.publication_date = null;
+        pollsResponse3.number_of_questions = 4;
+        pollsResponse3.number_of_answered_questions_by_the_user = 4;
+        pollsResponse3.number_of_votes = 3;
 
-        return newArrayList(getPollsResponse1, getPollsResponse2, getPollsResponse3);
+        return newArrayList(pollsResponse1, pollsResponse2, pollsResponse3);
     }
 
 

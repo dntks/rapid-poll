@@ -2,6 +2,9 @@ package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
+import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
+import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
+import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative;
@@ -18,10 +21,12 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestBuilders {
 
+    private final static String USER_ID = "11E584B41C1E65089E7502000029BDFD";
+
     public static ManagePollRequest createManagePollRequest() {
         ManagePollRequest.Builder managePollRequestBuilder = ManagePollRequest.builder();
         managePollRequestBuilder.withAction("CREATE");
-        managePollRequestBuilder.withUserId("11E592F746A409999E7502000029BDFD");
+        managePollRequestBuilder.withUserId(USER_ID);
         managePollRequestBuilder.withPoll(createPollRequestObject());
         return managePollRequestBuilder.build();
     }
@@ -66,7 +71,7 @@ public class DefaultRequestBuilders {
 
     public static DoPollRequest createDoPollRequest() {
         DoPollRequest.Builder builder = DoPollRequest.builder();
-        builder.withUserId("11E58407B7A5FDDC9D0B8675BA421DCB");
+        builder.withUserId(USER_ID);
         builder.withComment(Optional.of("Here is a comment."));
         builder.withPollId("1");
         builder.withQuestions(createDoPollQuestions());
@@ -83,9 +88,20 @@ public class DefaultRequestBuilders {
 
     public static UpdatePollStateRequest createUpdatePollStateRequest() {
         UpdatePollStateRequest.Builder builder = UpdatePollStateRequest.builder();
-        builder.withUserId("11E58407B7A5FDDC9D0B8675BA421DCB");
+        builder.withUserId(USER_ID);
         builder.withPollId("1");
         builder.withPollState(PollState.PUBLISHED);
         return builder.build();
+    }
+
+    public static PollsRequest createAllPollsRequest() {
+        PollsRequest.Builder pollsRequestBuilder = new PollsRequest.Builder();
+        pollsRequestBuilder.withPageSize("25");
+        pollsRequestBuilder.withPage("1");
+        pollsRequestBuilder.withUserId(USER_ID);
+        pollsRequestBuilder.withOrderKey(OrderKey.DATE);
+        pollsRequestBuilder.withOrderType(OrderType.DESC);
+        pollsRequestBuilder.withListType(ListType.ALL);
+        return pollsRequestBuilder.build();
     }
 }

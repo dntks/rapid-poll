@@ -6,4 +6,6 @@
     <string name="device_settings">Device settings</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="started_x_days_ago">started %1$d days ago</string>
+    <string name="x_votes">%1$d votes</string>
 </resources>

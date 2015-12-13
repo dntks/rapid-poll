@@ -12,7 +12,7 @@ import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateReque
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequestContainer;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
-import com.appsball.rapidpoll.commons.communication.response.GetPollsResponse;
+import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
@@ -68,7 +68,7 @@ public class RapidPollRestService {
         rapidPollRestInterface.managePoll(request, callback);
     }
 
-    public void getPolls(PollsRequest pollsRequest, Callback<ResponseContainer<List<GetPollsResponse>>> callback) {
+    public void getPolls(PollsRequest pollsRequest, Callback<ResponseContainer<List<PollsResponse>>> callback) {
         rapidPollRestInterface.getPolls(pollsRequest.userId,
                                         pollsRequest.listType,
                                         pollsRequest.orderKey,
@@ -124,7 +124,7 @@ public class RapidPollRestService {
         rapidPollRestInterface.pollResult(pollResultRequest.userId, pollResultRequest.pollId, callback);
     }
 
-    public void searchPoll(SearchPollRequest searchPollRequest, Callback<ResponseContainer<List<GetPollsResponse>>> callback) {
+    public void searchPoll(SearchPollRequest searchPollRequest, Callback<ResponseContainer<List<PollsResponse>>> callback) {
         rapidPollRestInterface.searchPoll(searchPollRequest.userId,
                                           searchPollRequest.listType,
                                           searchPollRequest.searchItem,

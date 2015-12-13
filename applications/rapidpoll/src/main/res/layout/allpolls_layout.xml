@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:background="@color/background_dark_purple"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/background_dark_purple">
+
     <LinearLayout
         android:id="@+id/navButtonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:paddingTop="10dp">
+        android:paddingTop="1dp">
 
         <Button
             android:id="@+id/polls_button"
@@ -33,10 +34,9 @@
         android:id="@+id/paging_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_dark_purple"
         android:layout_above="@id/navButtonsLayout"
-        android:listDivider="@drawable/actionbar_gradient"
+        android:background="@color/background_dark_purple"
         android:divider="@android:color/black"
-        android:dividerHeight="10dp"
-        android:scrollbars="none" />
+        android:listDivider="@drawable/actionbar_gradient"
+        android:scrollbars="none"/>
 </RelativeLayout>

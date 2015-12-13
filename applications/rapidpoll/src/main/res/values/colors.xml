@@ -11,5 +11,7 @@
     <color name="actionbar_bottom_purple">#8047B3</color>
     <color name="button_text_color">#FFFFFF</color>
     <color name="background_dark_purple">#111432</color>
+    <color name="progress_green">#00B37E</color>
+    <color name="progress_purple">#945BC7</color>
 
 </resources>
