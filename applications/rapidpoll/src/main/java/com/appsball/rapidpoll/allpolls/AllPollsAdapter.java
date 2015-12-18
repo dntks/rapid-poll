@@ -5,10 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
 public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsItemViewHolder> {
+
+    public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
+    public static final int CLOSED_LOCKET = R.drawable.lakat;
+    public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
     public AllPollsAdapter(List<AllPollsItemData> items) {
         super(items);
@@ -19,11 +24,17 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
 
             int location = customHeaderView != null ? position - 1 : position;
-            holder.nameTextView.setText(items.get(location).name);
-            holder.startedTextView.setText(items.get(location).publicatedDaysAgoText);
-            holder.votesTextView.setText(items.get(location).votesText);
-            holder.answeredQuestionsBar.setProgress(items.get(location).answeredQuestionsRatioFor100);
-
+            AllPollsItemData allPollsItemData = items.get(location);
+            holder.nameTextView.setText(allPollsItemData.name);
+            holder.startedTextView.setText(allPollsItemData.publicatedDaysAgoText);
+            holder.votesTextView.setText(allPollsItemData.votesText);
+            holder.answeredQuestionsBar.setProgress(allPollsItemData.answeredQuestionsRatioFor100);
+            if (!allPollsItemData.isPublic) {
+                int locketImageId = Hawk.contains(allPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
+                holder.itemRightImage.setImageResource(locketImageId);
+            } else {
+                holder.itemRightImage.setImageResource(RIGHT_ARROW);
+            }
         }
     }
 

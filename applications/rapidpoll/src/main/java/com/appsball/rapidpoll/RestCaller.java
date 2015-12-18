@@ -30,10 +30,10 @@ import static com.appsball.rapidpoll.commons.communication.request.DefaultReques
 import static com.appsball.rapidpoll.commons.communication.request.RegisterRequest.registerRequest;
 
 public class RestCaller {
-    private static final String TEST_POLL_ID = "2";
-    private static final String TEST_USER_ID = "11E592F746A409999E7502000029BDFD";
+    public static final String TEST_POLL_ID = "2";
+    public static final String TEST_USER_ID = "11E584B41C1E65089E7502000029BDFD";
 
-    private RapidPollRestService service;
+    public RapidPollRestService service;
 
     public RestCaller(Context context) {
 
@@ -60,7 +60,7 @@ public class RestCaller {
         return PollDetailsRequest.builder().withPollId(TEST_POLL_ID).withUserId(TEST_USER_ID).build();
     }
 
-    private void updatePollState() {
+    public void updatePollState() {
         service.updatePollState(createUpdatePollStateRequest(), new Callback<ResponseContainer<Object>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
@@ -74,7 +74,7 @@ public class RestCaller {
         });
     }
 
-    public UpdatePollStateRequest createUpdatePollStateRequest() {
+    private UpdatePollStateRequest createUpdatePollStateRequest() {
         UpdatePollStateRequest.Builder builder = UpdatePollStateRequest.builder();
         builder.withUserId(TEST_USER_ID);
         builder.withPollId(TEST_POLL_ID);
@@ -82,8 +82,8 @@ public class RestCaller {
         return builder.build();
     }
 
-    private void searchPoll(SearchPollRequest searchPollRequest) {
-        service.searchPoll(searchPollRequest, new Callback<ResponseContainer<List<PollsResponse>>>() {
+    public void searchPoll() {
+        service.searchPoll(createSearchPollRequest(), new Callback<ResponseContainer<List<PollsResponse>>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
                 Logger.wtf("wtf0");
@@ -96,8 +96,8 @@ public class RestCaller {
         });
     }
 
-    private void getPollResult(PollResultRequest request) {
-        service.pollResult(request, new Callback<ResponseContainer<PollResultResponse>>() {
+    public void getPollResult() {
+        service.pollResult(createPollResultRequest(), new Callback<ResponseContainer<PollResultResponse>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<PollResultResponse> pollResultResponseResponseContainer) {
                 Logger.i("getPollResult response", pollResultResponseResponseContainer);
@@ -110,7 +110,7 @@ public class RestCaller {
         });
     }
 
-    private void doPoll() {
+    public void doPoll() {
         service.doPoll(createDoPollRequest(), new Callback<String>() {
             @Override
             public void onSuccess(Response response, String objectResponseContainer) {
@@ -124,8 +124,8 @@ public class RestCaller {
         });
     }
 
-    private void getPollDetails(PollDetailsRequest request) {
-        service.pollDetails(request, new Callback<ResponseContainer<PollDetailsResponse>>() {
+    public void getPollDetails() {
+        service.pollDetails(createPollDetailsRequest(), new Callback<ResponseContainer<PollDetailsResponse>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<PollDetailsResponse> pollDetailsResponseModelResponseContainer) {
                 Logger.i("getPollDetails response", pollDetailsResponseModelResponseContainer);
@@ -150,7 +150,7 @@ public class RestCaller {
         return builder.build();
     }
 
-    private void createPoll() {
+    public void createPoll() {
         service.managePoll(createManagePollRequest(), new Callback<ResponseContainer<Object>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
@@ -165,7 +165,7 @@ public class RestCaller {
         });
     }
 
-    private void register() {
+    public void register() {
         RegisterRequest registerRequest = registerRequest("sdef_626");
         service.registerUser(registerRequest, new Callback<ResponseContainer<RegisterResponse>>() {
             @Override
@@ -180,8 +180,8 @@ public class RestCaller {
         });
     }
 
-    private void getPolls(PollsRequest pollsRequest) {
-        service.getPolls(pollsRequest,
+    public void getPolls() {
+        service.getPolls(createPollsRequest(),
                          new Callback<ResponseContainer<List<PollsResponse>>>() {
                              @Override
                              public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {

@@ -36,7 +36,7 @@ public class AllPollsItemDataTransformer {
         builder.withAnonymous(input.anonymous == 1);
         builder.withAnsweredQuestionsByUser(input.number_of_answered_questions_by_the_user);
         builder.withExpirationDate(input.expiration_date);
-        builder.withId(input.id);
+        builder.withId(String.valueOf(input.id));
         builder.withIsPublic(input.isPublic == 1);
         builder.withName(input.name);
         builder.withNumberOfQuestions(input.number_of_questions);

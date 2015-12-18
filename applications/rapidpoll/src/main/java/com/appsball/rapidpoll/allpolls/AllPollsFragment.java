@@ -24,6 +24,7 @@ import java.util.List;
 public class AllPollsFragment extends BottomBarNavigationFragment {
 
     public static final int ALLPOLLS_LAYOUT = R.layout.allpolls_layout;
+    public static final int NUMBER_OF_POLLS_REQUESTED = 25;
 
     private View rootView;
 
@@ -36,7 +37,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
-        service = RapidPollRestService.createRapidPollRestService(getContext());
+        service = getRapidPollActivity().getRestService();
         DateStringFormatter dateStringFormatter = new DateStringFormatter(getResources());
         allPollsItemDataTransformer = new AllPollsItemDataTransformer(dateStringFormatter, getResources());
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -74,21 +75,30 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
 
     private void callGetPolls(final boolean isInitializing) {
         service.getPolls(DefaultRequestBuilders.createAllPollsRequest(),
-                         new Callback<ResponseContainer<List<PollsResponse>>>() {
-                             @Override
-                             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
-                                 List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
-                                 allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
-                                 if (isInitializing) {
-                                     ultimateRecyclerView.setAdapter(allPollsAdapter);
-                                 }
-                             }
+                         createGetPollsCallback(isInitializing));
+    }
 
-                             @Override
-                             public void onError(WaspError error) {
+    private Callback<ResponseContainer<List<PollsResponse>>> createGetPollsCallback(final boolean isInitializing) {
+        return new Callback<ResponseContainer<List<PollsResponse>>>() {
+            @Override
+            public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
+                if (isInitializing) {
+                    rootView.findViewById(R.id.centered_loading_view).setVisibility(View.GONE);
+                    ultimateRecyclerView.setAdapter(allPollsAdapter);
+                }
+                List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
+                allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
+                if(items.size()< NUMBER_OF_POLLS_REQUESTED){
+                    ultimateRecyclerView.disableLoadmore();
+                    allPollsAdapter.getCustomLoadMoreView().setVisibility(View.GONE);
+                }
+            }
 
-                             }
-                         });
+            @Override
+            public void onError(WaspError error) {
+
+            }
+        };
     }
 
 

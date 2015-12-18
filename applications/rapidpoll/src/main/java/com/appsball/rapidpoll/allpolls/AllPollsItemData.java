@@ -4,7 +4,7 @@ import com.appsball.rapidpoll.commons.model.PollState;
 
 public class AllPollsItemData {
 
-    public final long id;
+    public final String id;
     public final String name;
     public final boolean isPublic;
     public final boolean anonymous;
@@ -21,7 +21,7 @@ public class AllPollsItemData {
     public final String votesText;
 
 
-    public AllPollsItemData(long id,
+    public AllPollsItemData(String id,
                             String name,
                             boolean isPublic,
                             boolean anonymous,
@@ -60,7 +60,7 @@ public class AllPollsItemData {
 
     public static class Builder {
 
-        private long id;
+        private String id;
         private String name;
         private boolean isPublic;
         private boolean anonymous;
@@ -76,7 +76,7 @@ public class AllPollsItemData {
         private String publicatedDaysAgoText;
         private String votesText;
 
-        public Builder withId(long id) {
+        public Builder withId(String id) {
             this.id = id;
             return this;
         }
