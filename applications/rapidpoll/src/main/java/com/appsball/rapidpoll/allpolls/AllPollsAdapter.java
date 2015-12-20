@@ -63,4 +63,9 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
             return getItem(position).name.charAt(0);
         } else return -1;
     }
+
+   public void removeAllItems(){
+       items.clear();
+       notifyDataSetChanged();
+   }
 }

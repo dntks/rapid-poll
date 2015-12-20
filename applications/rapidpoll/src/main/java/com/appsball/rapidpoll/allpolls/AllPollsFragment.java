@@ -48,17 +48,23 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
 
     private boolean isNetDialogShownForGetPolls = false;
     private int actualPage = 1;
+    private View centeredLoadingView;
+    private View moreLoadView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
+        moreLoadView = inflater.inflate(R.layout.loadingview, null);
         service = getRapidPollActivity().getRestService();
         DateStringFormatter dateStringFormatter = new DateStringFormatter(getResources());
         allPollsItemDataTransformer = new AllPollsItemDataTransformer(dateStringFormatter, getResources());
         linearLayoutManager = new LinearLayoutManager(getContext());
+        centeredLoadingView = rootView.findViewById(R.id.centered_loading_view);
         createButtonListeners(rootView);
         initializeListView(savedInstanceState);
+        initializeAllPollsAdapter();
+        callGetPolls();
         return rootView;
     }
 
@@ -75,10 +81,11 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
             }
         });
 
-        callGetPolls();
+    }
+
+    private void initializeAllPollsAdapter() {
         allPollsAdapter = new AllPollsAdapter(Lists.<AllPollsItemData>newArrayList());
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        allPollsAdapter.setCustomLoadMoreView(layoutInflater.inflate(R.layout.loadingview, null));
+        allPollsAdapter.setCustomLoadMoreView(moreLoadView);
     }
 
     private void callGetPolls() {
@@ -141,15 +148,14 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
     private void disableLoadMoreIfNoMoreItems(List<AllPollsItemData> items) {
         if (items.size() < NUMBER_OF_REQUESTED_POLLS) {
             ultimateRecyclerView.disableLoadmore();
-            allPollsAdapter.getCustomLoadMoreView().setVisibility(View.GONE);
         }
     }
 
     private void setupAdapterIfFirstCallIsBeingDone() {
-        View centeredLoadingView = rootView.findViewById(R.id.centered_loading_view);
         if (centeredLoadingView.getVisibility() == View.VISIBLE) {
             centeredLoadingView.setVisibility(View.GONE);
             ultimateRecyclerView.setAdapter(allPollsAdapter);
+            ultimateRecyclerView.reenableLoadmore(moreLoadView);
         }
     }
 
@@ -162,6 +168,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                resetPollsPagerAdapter();
                 return searchForEnteredText(query);
             }
 
@@ -170,15 +177,50 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
                 return false;
             }
         });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                resetPollsPagerAdapter();
+                callGetPolls();
+                return false;
+            }
+        });
+    }
+
+    private void resetPollsPagerAdapter() {
+        actualPage = 1;
+        allPollsAdapter.removeAllItems();
+        ultimateRecyclerView.setAdapter(null);
+
+//        allPollsAdapter.getCustomLoadMoreView().setVisibility(View.VISIBLE);
+        centeredLoadingView.setVisibility(View.VISIBLE);
     }
 
     private boolean searchForEnteredText(String searchPhrase) {
         if (checkIsOnlineAndShowSimpleDialog()) {
             service.searchPoll(createSearchPollRequest(searchPhrase),
-                               createGetPollsCallback());
+                               createSearchPollsCallback());
             return true;
         }
         return false;
+    }
+
+    private Callback<ResponseContainer<List<PollsResponse>>> createSearchPollsCallback() {
+        return new Callback<ResponseContainer<List<PollsResponse>>>() {
+            @Override
+            public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
+                actualPage++;
+                setupAdapterIfFirstCallIsBeingDone();
+                List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
+                allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
+                disableLoadMoreIfNoMoreItems(items);
+            }
+
+            @Override
+            public void onError(WaspError error) {
+
+            }
+        };
     }
 
     private SearchPollRequest createSearchPollRequest(String searchPhrase) {
@@ -192,6 +234,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
         builder.withSearchItem(searchPhrase);
         return builder.build();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
