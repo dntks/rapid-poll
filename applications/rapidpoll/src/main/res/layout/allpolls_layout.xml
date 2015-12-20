@@ -4,37 +4,79 @@
                 android:layout_height="match_parent"
                 android:background="@color/background_dark_purple">
 
-    <LinearLayout
+    <include
         android:id="@+id/navButtonsLayout"
+        layout="@layout/navbuttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:paddingTop="1dp">
+        android:layout_alignParentBottom="true"/>
 
-        <Button
-            android:id="@+id/polls_button"
-            style="@style/BottomBarButton"
-            android:background="@color/light_purple_button"
-            android:text="@string/polls"/>
+    <HorizontalScrollView
+        android:id="@+id/sort_horizontal_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:scrollbars="none"
+        android:layout_alignParentTop="true"
+        android:background="@color/sortby_background_purple">
 
-        <Button
-            android:id="@+id/results_button"
-            style="@style/BottomBarButton"
-            android:text="@string/results"
-            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/my_polls_button"
-            style="@style/BottomBarButton"
-            android:text="@string/my_polls"/>
-    </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="10dp"
+                android:textSize="18sp"
+                android:text="@string/sort_by"/>
+
+            <Button
+                android:id="@+id/sort_by_date_button"
+                style="@style/SortByTextButton"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                />
+
+            <Button
+                android:id="@+id/sort_by_title_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title"/>
+            <Button
+                android:id="@+id/sort_by_vote_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vote"/>
+
+            <Button
+                android:id="@+id/sort_by_status_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status"/>
+
+            <Button
+                android:id="@+id/sort_by_publicity_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publicity"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/paging_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/navButtonsLayout"
+        android:layout_below="@id/sort_horizontal_scrollview"
         android:background="@color/background_dark_purple"
         android:divider="@android:color/black"
         android:listDivider="@drawable/actionbar_gradient"
@@ -43,6 +85,7 @@
     <include
         android:id="@+id/centered_loading_view"
         android:layout_marginTop="60dp"
+        android:layout_below="@id/sort_horizontal_scrollview"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

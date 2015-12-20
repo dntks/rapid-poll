@@ -8,4 +8,10 @@
     <string name="cancel">Cancel</string>
     <string name="started_x_days_ago">started %1$d days ago</string>
     <string name="x_votes">%1$d votes</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="vote">Vote</string>
+    <string name="status">Status</string>
+    <string name="publicity">Public</string>
 </resources>

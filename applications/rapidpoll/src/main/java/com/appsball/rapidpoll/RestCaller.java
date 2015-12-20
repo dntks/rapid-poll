@@ -111,9 +111,9 @@ public class RestCaller {
     }
 
     public void doPoll() {
-        service.doPoll(createDoPollRequest(), new Callback<String>() {
+        service.doPoll(createDoPollRequest(), new Callback<ResponseContainer<Object>>() {
             @Override
-            public void onSuccess(Response response, String objectResponseContainer) {
+            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
                 Logger.i("doPoll response", objectResponseContainer);
             }
 

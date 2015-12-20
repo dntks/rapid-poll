@@ -3,6 +3,7 @@
 
     <item android:drawable="@color/light_purple_button" android:state_selected="true"></item>
     <item android:drawable="@color/light_purple_button" android:state_pressed="true"></item>
+    <item android:drawable="@color/light_purple_button" android:state_enabled="false"></item>
     <item android:drawable="@color/dark_purple_button"></item>
 
 </selector>

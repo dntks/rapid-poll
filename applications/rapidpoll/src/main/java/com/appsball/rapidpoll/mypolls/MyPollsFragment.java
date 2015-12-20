@@ -14,6 +14,7 @@ import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -31,7 +32,7 @@ public class MyPollsFragment extends BottomBarNavigationFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
-        createButtonListeners(rootView);
+        createNavigationButtonListeners(rootView, NavigationButton.POLLS_BUTTON);
         initializeListView(savedInstanceState);
         service = RapidPollRestService.createRapidPollRestService(getContext());
         return rootView;

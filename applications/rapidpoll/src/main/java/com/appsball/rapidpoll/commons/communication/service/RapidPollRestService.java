@@ -82,10 +82,10 @@ public class RapidPollRestService {
         rapidPollRestInterface.pollDetails(request.userId, request.pollId, callback);
     }
 
-    public void doPoll(DoPollRequest request, Callback<String> callback) {
+    public void doPoll(DoPollRequest request, Callback<ResponseContainer<Object>> callback) {
         DoPollRequestContainer container = new DoPollRequestContainer();
         container.inputjson = request;//"{\"user_id\":\"11E58407B7A5FDDC9D0B8675BA421DCB\"}";//new Gson().toJson(request);
-        rapidPollRestInterface.doPoll(container, callback);
+        rapidPollRestInterface.doPoll(request, callback);
         PostRequestTask postRequestTask = new PostRequestTask();
 //        postRequestTask.execute();
     }
@@ -137,7 +137,7 @@ public class RapidPollRestService {
 
     public void updatePollState(UpdatePollStateRequest request, Callback<ResponseContainer<Object>> callback) {
         String request1 = new Gson().toJson(request);
-        rapidPollRestInterface.updatePollState(request1, callback);
+        rapidPollRestInterface.updatePollState(request, callback);
     }
 
 }

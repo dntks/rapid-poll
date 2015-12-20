@@ -19,6 +19,7 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 
 public class RapidPollActivity extends AppCompatActivity {
 
+    public static final String userid = "11E5A76DC503770C9E7502000029BDFD";
     private RapidPollRestService rapidPollRestService;
 
     @Override
@@ -31,7 +32,7 @@ public class RapidPollActivity extends AppCompatActivity {
         Logger.init();
         rapidPollRestService = createRapidPollRestService(this);
         initHawk();
-        Hawk.put("userId", "11E584B41C1E65089E7502000029BDFD");
+        Hawk.put("userId", userid);
         final View container = findViewById(R.id.container);
         toAllPolls();
 //        RestCaller restCaller  =  new RestCaller(this);

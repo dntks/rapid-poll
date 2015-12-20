@@ -1,7 +1,8 @@
 package com.appsball.rapidpoll.commons.communication.service;
 
 import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
-import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequestContainer;
+import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateRequest;
+import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
@@ -10,7 +11,6 @@ import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDet
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.http.Body;
-import com.orhanobut.wasp.http.Field;
 import com.orhanobut.wasp.http.GET;
 import com.orhanobut.wasp.http.Mock;
 import com.orhanobut.wasp.http.POST;
@@ -46,7 +46,7 @@ public interface RapidPollRestInterface {
 
     @Mock
     @POST("/dopoll")
-    void doPoll(@Body DoPollRequestContainer inputjson, Callback<String> callback);
+    void doPoll(@Body DoPollRequest request, Callback<ResponseContainer<Object>> callback);
 
     @Mock
     @GET("/pollresult/{userid}/{pollid}")
@@ -67,6 +67,6 @@ public interface RapidPollRestInterface {
 
     @Mock
     @POST("/updatepollstate")
-    void updatePollState(@Field("inputjson")  String request, Callback<ResponseContainer<Object>> callback);
+    void updatePollState(@Body UpdatePollStateRequest request, Callback<ResponseContainer<Object>> callback);
 
 }

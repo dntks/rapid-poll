@@ -14,4 +14,9 @@
     <color name="progress_green">#00B37E</color>
     <color name="progress_purple">#945BC7</color>
 
+    <color name="sortby_text_greypurple">#8E8EBB</color>
+    <color name="sortby_background_purple">#360C5B</color>
+    <color name="sortby_text_bubble_toppurple">#693695</color>
+    <color name="sortby_text_bubble_bottompurple">#592983</color>
+
 </resources>

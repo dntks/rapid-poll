@@ -21,75 +21,130 @@ import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
 import com.google.common.collect.Lists;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Response;
 import com.orhanobut.wasp.WaspError;
 
 import java.util.List;
 
-public class AllPollsFragment extends BottomBarNavigationFragment {
+public class AllPollsFragment extends BottomBarNavigationFragment implements GetPollsCaller, SearchPollsCaller {
 
     public static final int ALLPOLLS_LAYOUT = R.layout.allpolls_layout;
     public static final int NUMBER_OF_REQUESTED_POLLS = 10;
-    public static final OrderType CHOSEN_ORDER_TYPE = OrderType.DESC;
-    public static final OrderKey CHOSEN_ORDER_KEY = OrderKey.DATE;
+
+    public OrderType chosenOrderType = OrderType.DESC;
+    public OrderKey chosenOrderKey = OrderKey.DATE;
 
     private View rootView;
 
     private RapidPollRestService service;
-    private UltimateRecyclerView ultimateRecyclerView;
-    private AllPollsAdapter allPollsAdapter = null;
+    private AllPollsAdapter allPollsAdapter;
     private LinearLayoutManager linearLayoutManager;
     private AllPollsItemDataTransformer allPollsItemDataTransformer;
 
     private boolean isNetDialogShownForGetPolls = false;
     private int actualPage = 1;
-    private View centeredLoadingView;
+    private PollsListWrapper pollsListWrapper;
     private View moreLoadView;
+    private View dateSortButton;
+    private View titleSortButton;
+    private View voteSortButton;
+    private View publicitySortButton;
+    private View statusSortButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
-        moreLoadView = inflater.inflate(R.layout.loadingview, null);
         service = getRapidPollActivity().getRestService();
+        rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
         DateStringFormatter dateStringFormatter = new DateStringFormatter(getResources());
         allPollsItemDataTransformer = new AllPollsItemDataTransformer(dateStringFormatter, getResources());
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        centeredLoadingView = rootView.findViewById(R.id.centered_loading_view);
-        createButtonListeners(rootView);
-        initializeListView(savedInstanceState);
+        moreLoadView = inflater.inflate(R.layout.loadingview, null);
         initializeAllPollsAdapter();
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        pollsListWrapper = new PollsListWrapper(linearLayoutManager, rootView, moreLoadView, this, this);
+        pollsListWrapper.initializeView(savedInstanceState, inflater);
+        createNavigationButtonListeners(rootView, NavigationButton.POLLS_BUTTON);
+        createSortButtonListeners(rootView);
         callGetPolls();
         return rootView;
     }
 
-    protected void initializeListView(Bundle savedInstanceState) {
-        ultimateRecyclerView = (UltimateRecyclerView) rootView.findViewById(R.id.paging_list_view);
-        ultimateRecyclerView.setHasFixedSize(false);
-        ultimateRecyclerView.setLayoutManager(linearLayoutManager);
-        ultimateRecyclerView.enableLoadmore();
-        ultimateRecyclerView.addItemDividerDecoration(getContext());
-        ultimateRecyclerView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+    private void createSortButtonListeners(View rootView) {
+        dateSortButton = rootView.findViewById(R.id.sort_by_date_button);
+        titleSortButton = rootView.findViewById(R.id.sort_by_title_button);
+        voteSortButton = rootView.findViewById(R.id.sort_by_vote_button);
+        publicitySortButton = rootView.findViewById(R.id.sort_by_publicity_button);
+        statusSortButton = rootView.findViewById(R.id.sort_by_status_button);
+        dateSortButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void loadMore(int itemsCount, final int maxLastVisiblePosition) {
-                callGetPolls();
+            public void onClick(View v) {
+                chosenOrderKey = OrderKey.DATE;
+                enableOtherButtons(v);
+                resetAdapterAndCallPolls();
             }
         });
+        titleSortButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                chosenOrderKey = OrderKey.TITLE;
+                enableOtherButtons(v);
+                resetAdapterAndCallPolls();
+            }
+        });
+        voteSortButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                chosenOrderKey = OrderKey.VOTES;
+                enableOtherButtons(v);
+                resetAdapterAndCallPolls();
+            }
+        });
+        publicitySortButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                chosenOrderKey = OrderKey.PUBLIC;
+                enableOtherButtons(v);
+                resetAdapterAndCallPolls();
+            }
+        });
+        statusSortButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                chosenOrderKey = OrderKey.STATUS;
+                enableOtherButtons(v);
+                resetAdapterAndCallPolls();
+            }
+        });
     }
 
-    private void initializeAllPollsAdapter() {
+    private void enableOtherButtons(View v) {
+        dateSortButton.setEnabled(true);
+        titleSortButton.setEnabled(true);
+        voteSortButton.setEnabled(true);
+        publicitySortButton.setEnabled(true);
+        statusSortButton.setEnabled(true);
+        v.setEnabled(false);
+    }
+
+
+    public void initializeAllPollsAdapter() {
         allPollsAdapter = new AllPollsAdapter(Lists.<AllPollsItemData>newArrayList());
         allPollsAdapter.setCustomLoadMoreView(moreLoadView);
     }
 
-    private void callGetPolls() {
+    public void callGetPolls() {
         if (checkIsOnlineAndShowSimpleDialog(getGetPollsOnNetOkButtonListener())) {
+            isNetDialogShownForGetPolls = false;
             service.getPolls(createAllPollsRequest(),
                              createGetPollsCallback());
         } else {
@@ -108,8 +163,8 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
     private PollsRequest createAllPollsRequest() {
         PollsRequest.Builder builder = PollsRequest.builder();
         builder.withPage(String.valueOf(actualPage));
-        builder.withOrderType(CHOSEN_ORDER_TYPE);
-        builder.withOrderKey(CHOSEN_ORDER_KEY);
+        builder.withOrderType(chosenOrderType);
+        builder.withOrderKey(chosenOrderKey);
         builder.withListType(ListType.ALL);
         builder.withUserId(getUserId());
         builder.withPageSize(String.valueOf(NUMBER_OF_REQUESTED_POLLS));
@@ -132,10 +187,10 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
             @Override
             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
                 actualPage++;
-                setupAdapterIfFirstCallIsBeingDone();
+                pollsListWrapper.setupAdapterIfFirstCallIsBeingDone(allPollsAdapter);
                 List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
                 allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
-                disableLoadMoreIfNoMoreItems(items);
+                pollsListWrapper.disableLoadMoreIfNoMoreItems(items);
             }
 
             @Override
@@ -143,20 +198,6 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
 
             }
         };
-    }
-
-    private void disableLoadMoreIfNoMoreItems(List<AllPollsItemData> items) {
-        if (items.size() < NUMBER_OF_REQUESTED_POLLS) {
-            ultimateRecyclerView.disableLoadmore();
-        }
-    }
-
-    private void setupAdapterIfFirstCallIsBeingDone() {
-        if (centeredLoadingView.getVisibility() == View.VISIBLE) {
-            centeredLoadingView.setVisibility(View.GONE);
-            ultimateRecyclerView.setAdapter(allPollsAdapter);
-            ultimateRecyclerView.reenableLoadmore(moreLoadView);
-        }
     }
 
 
@@ -168,8 +209,11 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                resetPollsPagerAdapter();
-                return searchForEnteredText(query);
+                actualPage = 1;
+                allPollsAdapter.removeAllItems();
+                pollsListWrapper.resetPollsList();
+                pollsListWrapper.setSearchPollsMoreListener(query);
+                return searchForText(query);
             }
 
             @Override
@@ -180,23 +224,22 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                resetPollsPagerAdapter();
-                callGetPolls();
+                resetAdapterAndCallPolls();
                 return false;
             }
         });
     }
 
-    private void resetPollsPagerAdapter() {
+    private void resetAdapterAndCallPolls() {
         actualPage = 1;
         allPollsAdapter.removeAllItems();
-        ultimateRecyclerView.setAdapter(null);
-
-//        allPollsAdapter.getCustomLoadMoreView().setVisibility(View.VISIBLE);
-        centeredLoadingView.setVisibility(View.VISIBLE);
+        pollsListWrapper.setGetPollsMoreListener();
+        pollsListWrapper.resetPollsList();
+        callGetPolls();
     }
 
-    private boolean searchForEnteredText(String searchPhrase) {
+
+    public boolean searchForText(String searchPhrase) {
         if (checkIsOnlineAndShowSimpleDialog()) {
             service.searchPoll(createSearchPollRequest(searchPhrase),
                                createSearchPollsCallback());
@@ -210,10 +253,10 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
             @Override
             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
                 actualPage++;
-                setupAdapterIfFirstCallIsBeingDone();
+                pollsListWrapper.setupAdapterIfFirstCallIsBeingDone(allPollsAdapter);
                 List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
                 allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
-                disableLoadMoreIfNoMoreItems(items);
+                pollsListWrapper.disableLoadMoreIfNoMoreItems(items);
             }
 
             @Override
@@ -226,8 +269,8 @@ public class AllPollsFragment extends BottomBarNavigationFragment {
     private SearchPollRequest createSearchPollRequest(String searchPhrase) {
         SearchPollRequest.Builder builder = SearchPollRequest.builder();
         builder.withPage(String.valueOf(actualPage));
-        builder.withOrderType(CHOSEN_ORDER_TYPE);
-        builder.withOrderKey(CHOSEN_ORDER_KEY);
+        builder.withOrderType(chosenOrderType);
+        builder.withOrderKey(chosenOrderKey);
         builder.withListType(ListType.ALL);
         builder.withUserId(getUserId());
         builder.withPageSize(String.valueOf(NUMBER_OF_REQUESTED_POLLS));
