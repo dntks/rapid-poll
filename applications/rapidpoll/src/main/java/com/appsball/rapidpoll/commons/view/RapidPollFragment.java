@@ -6,16 +6,11 @@ import android.support.v4.app.Fragment;
 
 import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.utils.Utils;
-import com.orhanobut.hawk.Hawk;
 
 public class RapidPollFragment extends Fragment {
 
     public RapidPollActivity getRapidPollActivity() {
         return (RapidPollActivity) getActivity();
-    }
-
-    public String getUserId() {
-        return Hawk.get("userId");
     }
 
     public boolean checkIsOnlineAndShowSimpleDialog() {

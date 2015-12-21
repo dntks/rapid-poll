@@ -36,7 +36,7 @@ public class DefaultRequestBuilders {
         managePollBuilder.withAllowUncompleteResult("1");
         managePollBuilder.withAnonymous("0");
         managePollBuilder.withIsPublic("1");
-        managePollBuilder.withName("WestEndChristmas");
+        managePollBuilder.withName("kerdes");
         managePollBuilder.withQuestions(createManagePollQuestions());
         managePollBuilder.withAllowComment("1");
         return managePollBuilder.build();

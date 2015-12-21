@@ -2,7 +2,6 @@ package com.appsball.rapidpoll.allpolls;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.appsball.rapidpoll.R;
@@ -31,7 +30,7 @@ public class PollsListWrapper {
         this.moreLoadView = moreLoadView;
     }
 
-    public void initializeView(Bundle savedInstanceState, LayoutInflater inflater) {
+    public void initializeView(Bundle savedInstanceState) {
         centeredLoadingView = rootView.findViewById(R.id.centered_loading_view);
 
         ultimateRecyclerView = (UltimateRecyclerView) rootView.findViewById(R.id.paging_list_view);
@@ -61,7 +60,7 @@ public class PollsListWrapper {
     }
 
     public void disableLoadMoreIfNoMoreItems(List<AllPollsItemData> items) {
-        if (items.size() < AllPollsFragment.NUMBER_OF_REQUESTED_POLLS) {
+        if (items.size() < AllPollsDataState.NUMBER_OF_REQUESTED_POLLS) {
             ultimateRecyclerView.disableLoadmore();
         }
     }

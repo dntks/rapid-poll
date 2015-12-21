@@ -2,7 +2,6 @@ package com.appsball.rapidpoll;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,9 +34,9 @@ public class RapidPollActivity extends AppCompatActivity {
         Hawk.put("userId", userid);
         final View container = findViewById(R.id.container);
         toAllPolls();
-//        RestCaller restCaller  =  new RestCaller(this);
+        RestCaller restCaller  =  new RestCaller(this);
 //        restCaller.doPoll();
-//        restCaller.createPoll();
+        restCaller.createPoll();
 //        restCaller.getPollDetails();
 //        restCaller.getPollResult();
 //        restCaller.getPolls();
@@ -54,39 +53,6 @@ public class RapidPollActivity extends AppCompatActivity {
                 .build();
     }
 
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.all_polls_menu, menu);
-        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-        };
-        MenuItem actionMenuItem = menu.findItem(R.id.search);
-        MenuItemCompat.setOnActionExpandListener(actionMenuItem, expandListener);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        item.expandActionView();
-        switch (item.getItemId()) {
-            case R.id.search:
-                return true;
-            case R.id.add_poll:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
     public RapidPollRestService getRestService() {
         return rapidPollRestService;
     }
@@ -98,13 +64,12 @@ public class RapidPollActivity extends AppCompatActivity {
 
     private void changeToFragment(Fragment fragment, boolean addToBackStack) {
         final String backStateName = fragment.getClass().getName();
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.container, fragment, backStateName);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment, backStateName);
         if (addToBackStack) {
-            tx.addToBackStack(backStateName);
+            fragmentTransaction.addToBackStack(backStateName);
         }
-        tx.commit();
+        fragmentTransaction.commit();
     }
 
 }

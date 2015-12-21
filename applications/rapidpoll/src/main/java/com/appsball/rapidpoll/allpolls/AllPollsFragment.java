@@ -1,23 +1,23 @@
 package com.appsball.rapidpoll.allpolls;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.commons.communication.request.PollsRequest;
-import com.appsball.rapidpoll.commons.communication.request.SearchPollRequest;
-import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
@@ -25,6 +25,7 @@ import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
 import com.google.common.collect.Lists;
+import com.orhanobut.logger.Logger;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Response;
 import com.orhanobut.wasp.WaspError;
@@ -34,10 +35,8 @@ import java.util.List;
 public class AllPollsFragment extends BottomBarNavigationFragment implements GetPollsCaller, SearchPollsCaller {
 
     public static final int ALLPOLLS_LAYOUT = R.layout.allpolls_layout;
-    public static final int NUMBER_OF_REQUESTED_POLLS = 10;
 
-    public OrderType chosenOrderType = OrderType.DESC;
-    public OrderKey chosenOrderKey = OrderKey.DATE;
+    AllPollsDataState allPollsDataState;
 
     private View rootView;
 
@@ -47,7 +46,6 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
     private AllPollsItemDataTransformer allPollsItemDataTransformer;
 
     private boolean isNetDialogShownForGetPolls = false;
-    private int actualPage = 1;
     private PollsListWrapper pollsListWrapper;
     private View moreLoadView;
     private View dateSortButton;
@@ -61,17 +59,115 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
         setHasOptionsMenu(true);
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
+        allPollsDataState = new AllPollsDataState();
         DateStringFormatter dateStringFormatter = new DateStringFormatter(getResources());
         allPollsItemDataTransformer = new AllPollsItemDataTransformer(dateStringFormatter, getResources());
         moreLoadView = inflater.inflate(R.layout.loadingview, null);
         initializeAllPollsAdapter();
         linearLayoutManager = new LinearLayoutManager(getContext());
         pollsListWrapper = new PollsListWrapper(linearLayoutManager, rootView, moreLoadView, this, this);
-        pollsListWrapper.initializeView(savedInstanceState, inflater);
+        pollsListWrapper.initializeView(savedInstanceState);
         createNavigationButtonListeners(rootView, NavigationButton.POLLS_BUTTON);
         createSortButtonListeners(rootView);
+        setToolBarSwipeListener();
+        setSortByViewSwipeListener();
         callGetPolls();
         return rootView;
+    }
+
+    private void setSortByViewSwipeListener() {
+        View sortByLayout = rootView.findViewById(R.id.sort_horizontal_scrollview);
+        sortByLayout.setOnTouchListener(new View.OnTouchListener() {
+            boolean hasMovedOut = false;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = MotionEventCompat.getActionMasked(event);
+                switch (action) {
+                    case (MotionEvent.ACTION_MOVE):
+                        int topOfView = v.getTop();
+                        float eventY = event.getY();
+                        Logger.d("Action was MOVE at " + eventY + " top is:" + topOfView);
+                        hasMovedOut = eventY < topOfView;
+                        return false;
+                    case (MotionEvent.ACTION_UP):
+                        Logger.d("Action was UP");
+                        if (hasMovedOut) {
+                            hideSortByLayout();
+                        }
+                        return false;
+                    default:
+                        return false;
+                }
+
+            }
+        });
+    }
+
+    private void setToolBarSwipeListener() {
+        View toolbar = getActivity().findViewById(R.id.my_toolbar);
+        toolbar.setOnTouchListener(new View.OnTouchListener() {
+            boolean hasMovedOut = false;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = MotionEventCompat.getActionMasked(event);
+                switch (action) {
+                    case (MotionEvent.ACTION_MOVE):
+                        int bottomOfView = v.getBottom();
+                        float eventY = event.getY();
+                        Logger.d("Action was MOVE at " + eventY + " top is:" + bottomOfView);
+                        hasMovedOut = eventY > bottomOfView;
+                        return false;
+                    case (MotionEvent.ACTION_UP):
+                        Logger.d("Action was UP");
+                        if (hasMovedOut) {
+                            showSortByLayout();
+                        }
+                        return false;
+                    default:
+                        return false;
+                }
+
+            }
+        });
+    }
+
+    private void hideSortByLayout() {
+        final View sortByLayout = rootView.findViewById(R.id.sort_horizontal_scrollview);
+        if(sortByLayout.getVisibility() == View.GONE){
+            return;
+        }
+        final View pagingView = rootView.findViewById(R.id.paging_list_view);
+        pagingView.animate()
+                .translationY(sortByLayout.getHeight() * -1)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        sortByLayout.setVisibility(View.GONE);
+                        pagingView.setTranslationY(0);
+                    }
+                });
+    }
+
+    private void showSortByLayout() {
+        final View sortByLayout = rootView.findViewById(R.id.sort_horizontal_scrollview);
+        if(sortByLayout.getVisibility() == View.VISIBLE){
+            return;
+        }
+        final View pagingView = rootView.findViewById(R.id.paging_list_view);
+        sortByLayout.setVisibility(View.VISIBLE);
+        pagingView.setTranslationY(sortByLayout.getHeight() * -1);
+        pagingView.animate()
+                .translationY(0)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        pagingView.setTranslationY(0);
+                    }
+                });
     }
 
     private void createSortButtonListeners(View rootView) {
@@ -84,7 +180,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                chosenOrderKey = OrderKey.DATE;
+                allPollsDataState.chosenOrderKey = OrderKey.DATE;
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -93,7 +189,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                chosenOrderKey = OrderKey.TITLE;
+                allPollsDataState.chosenOrderKey = OrderKey.TITLE;
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -102,7 +198,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                chosenOrderKey = OrderKey.VOTES;
+                allPollsDataState.chosenOrderKey = OrderKey.VOTES;
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -111,7 +207,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                chosenOrderKey = OrderKey.PUBLIC;
+                allPollsDataState.chosenOrderKey = OrderKey.PUBLIC;
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -120,7 +216,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                chosenOrderKey = OrderKey.STATUS;
+                allPollsDataState.chosenOrderKey = OrderKey.STATUS;
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -136,7 +232,6 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
         v.setEnabled(false);
     }
 
-
     public void initializeAllPollsAdapter() {
         allPollsAdapter = new AllPollsAdapter(Lists.<AllPollsItemData>newArrayList());
         allPollsAdapter.setCustomLoadMoreView(moreLoadView);
@@ -145,7 +240,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
     public void callGetPolls() {
         if (checkIsOnlineAndShowSimpleDialog(getGetPollsOnNetOkButtonListener())) {
             isNetDialogShownForGetPolls = false;
-            service.getPolls(createAllPollsRequest(),
+            service.getPolls(allPollsDataState.createAllPollsRequest(),
                              createGetPollsCallback());
         } else {
             isNetDialogShownForGetPolls = true;
@@ -159,18 +254,6 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
             callGetPolls();
         }
     }
-
-    private PollsRequest createAllPollsRequest() {
-        PollsRequest.Builder builder = PollsRequest.builder();
-        builder.withPage(String.valueOf(actualPage));
-        builder.withOrderType(chosenOrderType);
-        builder.withOrderKey(chosenOrderKey);
-        builder.withListType(ListType.ALL);
-        builder.withUserId(getUserId());
-        builder.withPageSize(String.valueOf(NUMBER_OF_REQUESTED_POLLS));
-        return builder.build();
-    }
-
 
     private DialogInterface.OnClickListener getGetPollsOnNetOkButtonListener() {
         return new DialogInterface.OnClickListener() {
@@ -186,7 +269,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
         return new Callback<ResponseContainer<List<PollsResponse>>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
-                actualPage++;
+                allPollsDataState.actualPage++;
                 pollsListWrapper.setupAdapterIfFirstCallIsBeingDone(allPollsAdapter);
                 List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
                 allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
@@ -209,7 +292,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                actualPage = 1;
+                allPollsDataState.actualPage = 1;
                 allPollsAdapter.removeAllItems();
                 pollsListWrapper.resetPollsList();
                 pollsListWrapper.setSearchPollsMoreListener(query);
@@ -228,10 +311,16 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
                 return false;
             }
         });
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideSortByLayout();
+            }
+        });
     }
 
     private void resetAdapterAndCallPolls() {
-        actualPage = 1;
+        allPollsDataState.actualPage = 1;
         allPollsAdapter.removeAllItems();
         pollsListWrapper.setGetPollsMoreListener();
         pollsListWrapper.resetPollsList();
@@ -241,7 +330,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
     public boolean searchForText(String searchPhrase) {
         if (checkIsOnlineAndShowSimpleDialog()) {
-            service.searchPoll(createSearchPollRequest(searchPhrase),
+            service.searchPoll(allPollsDataState.createSearchPollRequest(searchPhrase),
                                createSearchPollsCallback());
             return true;
         }
@@ -252,7 +341,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
         return new Callback<ResponseContainer<List<PollsResponse>>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
-                actualPage++;
+                allPollsDataState.actualPage++;
                 pollsListWrapper.setupAdapterIfFirstCallIsBeingDone(allPollsAdapter);
                 List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(listResponseContainer.result);
                 allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
@@ -264,18 +353,6 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             }
         };
-    }
-
-    private SearchPollRequest createSearchPollRequest(String searchPhrase) {
-        SearchPollRequest.Builder builder = SearchPollRequest.builder();
-        builder.withPage(String.valueOf(actualPage));
-        builder.withOrderType(chosenOrderType);
-        builder.withOrderKey(chosenOrderKey);
-        builder.withListType(ListType.ALL);
-        builder.withUserId(getUserId());
-        builder.withPageSize(String.valueOf(NUMBER_OF_REQUESTED_POLLS));
-        builder.withSearchItem(searchPhrase);
-        return builder.build();
     }
 
     @Override
