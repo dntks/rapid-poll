@@ -14,10 +14,10 @@
     <HorizontalScrollView
         android:id="@+id/sort_horizontal_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:scrollbars="none"
+        android:layout_height="65dp"
         android:layout_alignParentTop="true"
-        android:background="@color/sortby_background_purple">
+        android:background="@color/sortby_background_purple"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/sortby_layout"
@@ -29,17 +29,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="10dp"
-                android:textSize="18sp"
-                android:text="@string/sort_by"/>
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="14dp"
+                android:paddingBottom="2dp"
+                android:text="@string/sort_by"
+                android:textSize="18sp"/>
 
             <Button
                 android:id="@+id/sort_by_date_button"
                 style="@style/SortByTextButton"
-                android:enabled="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:text="@string/date"
                 />
 
@@ -49,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title"/>
+
             <Button
                 android:id="@+id/sort_by_vote_button"
                 style="@style/SortByTextButton"
@@ -78,6 +80,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/navButtonsLayout"
         android:layout_below="@id/sort_horizontal_scrollview"
+        android:layout_marginTop="2dp"
         android:background="@color/background_dark_purple"
         android:divider="@android:color/black"
         android:listDivider="@drawable/actionbar_gradient"
@@ -85,10 +88,10 @@
 
     <include
         android:id="@+id/centered_loading_view"
-        android:layout_marginTop="60dp"
-        android:layout_below="@id/sort_horizontal_scrollview"
-        android:layout_centerHorizontal="true"
+        layout="@layout/loadingview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/loadingview"/>
+        android:layout_below="@id/sort_horizontal_scrollview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"/>
 </RelativeLayout>

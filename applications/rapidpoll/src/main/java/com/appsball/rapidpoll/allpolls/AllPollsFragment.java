@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
@@ -180,7 +179,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.chosenOrderKey = OrderKey.DATE;
+                allPollsDataState.setDateSort();
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -189,7 +188,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.chosenOrderKey = OrderKey.TITLE;
+                allPollsDataState.setTitleSort();
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -198,7 +197,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.chosenOrderKey = OrderKey.VOTES;
+                allPollsDataState.setVotesSort();
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -207,7 +206,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.chosenOrderKey = OrderKey.PUBLIC;
+                allPollsDataState.setPublicitySort();
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }
@@ -216,7 +215,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.chosenOrderKey = OrderKey.STATUS;
+                allPollsDataState.setStatusSort();
                 enableOtherButtons(v);
                 resetAdapterAndCallPolls();
             }

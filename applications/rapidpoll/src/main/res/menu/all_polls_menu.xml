@@ -15,10 +15,4 @@
         android:icon="@drawable/pluszjel"
         android:title="Add poll"
         tools:ignore="AppCompatResource"/>
-    <item
-        android:id="@+id/sort"
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Add poll"
-        tools:ignore="AppCompatResource"/>
 </menu>

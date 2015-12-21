@@ -11,7 +11,7 @@
     <string name="sort_by">Sort by:</string>
     <string name="date">Date</string>
     <string name="title">Title</string>
-    <string name="vote">Vote</string>
+    <string name="vote">Votes</string>
     <string name="status">Status</string>
     <string name="publicity">Public</string>
 </resources>

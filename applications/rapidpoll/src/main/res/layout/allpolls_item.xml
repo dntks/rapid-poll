@@ -1,71 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/listitem_purple"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="15dp"
-                android:paddingTop="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/item_right_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="25dp"
-        android:src="@drawable/jobbranyil"
-        />
-
-
-    <TextView
-        android:id="@+id/started_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="started 2 days ago"
-        android:textColor="@android:color/white"/>
-
-    <TextView
-        android:id="@+id/votes_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/item_right_image"
-        android:text="55 votes"
-        android:textColor="@android:color/white"/>
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_toLeftOf="@id/item_right_image"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="80dp"
+        android:background="@color/listitem_purple"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/item_right_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/jobbranyil"
+            />
 
 
         <TextView
-            android:id="@+id/pollitem_name"
+            android:id="@+id/started_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="Name"
-            android:maxWidth="230dp"
-            android:singleLine="true"
-            android:ellipsize="end"
+            android:layout_alignParentBottom="true"
+            android:text="started 2 days ago"
             android:textColor="@android:color/white"/>
 
-        <ProgressBar
-            android:id="@+id/answered_questions_bar"
-            style="?android:attr/progressBarStyleHorizontal"
+        <TextView
+            android:id="@+id/votes_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/item_right_image"
+            android:text="55 votes"
+            android:textColor="@android:color/white"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_marginLeft="15dp"
-            android:indeterminate="false"
-            android:max="99"
-            android:progress="50"
-            android:progressDrawable="@drawable/greenprogress"/>
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_height="25dp"
+            android:layout_toLeftOf="@id/item_right_image"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/pollitem_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:ellipsize="end"
+                android:maxWidth="230dp"
+                android:singleLine="true"
+                android:text="Name"
+                android:textColor="@android:color/white"/>
+
+            <ProgressBar
+                android:id="@+id/answered_questions_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginLeft="15dp"
+                android:indeterminate="false"
+                android:max="99"
+                android:progress="50"
+                android:progressDrawable="@drawable/greenprogress"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/transparent"
+        />
+</LinearLayout>

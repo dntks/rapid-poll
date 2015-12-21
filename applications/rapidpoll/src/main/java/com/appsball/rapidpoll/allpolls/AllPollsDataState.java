@@ -35,4 +35,29 @@ public class AllPollsDataState {
         builder.withSearchItem(searchPhrase);
         return builder.build();
     }
+
+    public void setDateSort(){
+        chosenOrderType = OrderType.DESC;
+        chosenOrderKey = OrderKey.DATE;
+    }
+
+    public void setTitleSort(){
+        chosenOrderType = OrderType.ASC;
+        chosenOrderKey = OrderKey.TITLE;
+    }
+
+    public void setStatusSort(){
+        chosenOrderType = OrderType.ASC;
+        chosenOrderKey = OrderKey.STATUS;
+    }
+
+    public void setVotesSort(){
+        chosenOrderType = OrderType.DESC;
+        chosenOrderKey = OrderKey.VOTES;
+    }
+
+    public void setPublicitySort(){
+        chosenOrderType = OrderType.DESC;
+        chosenOrderKey = OrderKey.PUBLIC;
+    }
 }
