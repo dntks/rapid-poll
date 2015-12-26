@@ -2,26 +2,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_dark_purple">
+    android:background="@color/background_dark_purple"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical">
+
         <TextView
-            android:layout_weight="1"
-            android:layout_marginLeft="25dp"
             android:layout_width="0dp"
-            android:textColor="@color/sortby_text_greypurple"
             android:layout_height="wrap_content"
-            android:text="@string/pollsettings"/>
+            android:layout_marginLeft="25dp"
+            android:layout_weight="1"
+            android:text="@string/pollsettings"
+            android:textColor="@color/sortby_text_greypurple" />
+
         <ImageView
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/lefele"/>
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/lefele" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="25dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sortby_text_greypurple" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/publicity"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sortby_text_greypurple" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/anonymous"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sortby_text_greypurple" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/allowtocomment"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

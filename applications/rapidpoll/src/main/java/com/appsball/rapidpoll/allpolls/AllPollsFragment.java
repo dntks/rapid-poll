@@ -361,6 +361,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
                 item.expandActionView();
                 return true;
             case R.id.add_poll:
+                getRapidPollActivity().toCreatePoll();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -15,4 +15,6 @@
     <string name="status">Status</string>
     <string name="publicity">Public</string>
     <string name="pollsettings">POLL SETTINGS</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="allowtocomment">Allow to comment</string>
 </resources>
