@@ -7,13 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-
-import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -66,9 +65,8 @@ public class NewPollFragment extends BottomBarNavigationFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         ultimateRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<NewPollListItem> questionAsItems = newQuestionCreator.createNewQuestionAsItems();
-        questionAsItems.add(new NewPollAddQuestion(""));
-        NewPollQuestionsAdapter newPollAdapter = new NewPollQuestionsAdapter(questionAsItems, newQuestionCreator);
+        NewPollQuestion question = newQuestionCreator.createNewQuestion(1);
+        NewPollQuestionsAdapter newPollAdapter = new NewPollQuestionsAdapter(newArrayList(question), newQuestionCreator);
         ultimateRecyclerView.setAdapter(newPollAdapter);
     }
 
@@ -89,6 +87,8 @@ public class NewPollFragment extends BottomBarNavigationFragment {
                         super.onAnimationEnd(animation);
                         settingsLayout.setVisibility(View.INVISIBLE);
                         isAnimating = false;
+                        ImageView settingsButton = (ImageView) rootView.findViewById(R.id.settings_button);
+                        settingsButton.setImageResource(R.drawable.lefele);
                     }
                 });
 
@@ -111,6 +111,8 @@ public class NewPollFragment extends BottomBarNavigationFragment {
                         listSizeHelper.setVisibility(View.VISIBLE);
                         pagingView.setTranslationY(0);
                         isAnimating = false;
+                        final ImageView settingsButton = (ImageView) rootView.findViewById(R.id.settings_button);
+                        settingsButton.setImageResource(R.drawable.felfele);
                     }
                 });
 

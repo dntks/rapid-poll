@@ -15,6 +15,7 @@
         <item name="actionBarStyle">@style/RapidPollActionBar</item>
         <item name="android:textViewStyle">@style/RapidPollTextView</item>
         <item name="android:editTextStyle">@style/RapidPollEditText</item>
+        <item name="android:alertDialogTheme">@style/RapidPollAlertDialogTheme</item>
     </style>
 
     <style name="RapidPollTextView" parent="android:Widget.TextView">
@@ -40,6 +41,14 @@
         <item name="android:background">@drawable/actionbar_gradient</item>
         <!-- Support library compatibility -->
         <item name="background">@drawable/actionbar_gradient</item>
+    </style>
+    <style name="RapidPollAlertDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
     </style>
 
     <style name="BottomBarButton" parent="Base.TextAppearance.AppCompat.Button">

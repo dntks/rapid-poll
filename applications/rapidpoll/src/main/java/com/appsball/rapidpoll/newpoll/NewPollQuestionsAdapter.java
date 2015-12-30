@@ -15,13 +15,13 @@ import static com.appsball.rapidpoll.newpoll.ViewType.fromValue;
 
 public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestionsAdapter.ViewHolderParent> {
 
-    private List<NewPollListItem> items;
+    private List<NewPollListItem> pollListItems;
     private List<NewPollQuestion> questions;
     private NewQuestionCreator newQuestionCreator;
 
     public NewPollQuestionsAdapter(List<NewPollQuestion> questions, NewQuestionCreator newQuestionCreator) {
         this.questions = questions;
-        this.items = newQuestionCreator.createItemsFromQuestions(questions);
+        this.pollListItems = newQuestionCreator.createItemsFromQuestions(questions);
         this.newQuestionCreator = newQuestionCreator;
     }
 
@@ -49,13 +49,6 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
 
     }
 
-    private void removeView(NewPollListItem newPollListItem, View v) {
-
-        int location = getLocation(newPollListItem);
-        items.remove(location);
-        this.notifyItemRemoved(location);
-    }
-
     class AddQuestionViewHolder extends ViewHolderParent {
 
         public AddQuestionViewHolder(View parent) {
@@ -67,18 +60,11 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewPollQuestion question = newQuestionCreator.createNewQuestion(questions.size()+1);
+                    NewPollQuestion question = newQuestionCreator.createNewQuestion(questions.size() + 1);
                     questions.add(question);
                     List<NewPollListItem> pollListItems = newQuestionCreator.createItemsFromQuestion(question);
-                    List<NewPollAnswer> answers = question.getAnswers();
-                    NewPollAnswer answer1 = new NewPollAnswer("", question);
-                    NewPollAnswer answer2 = new NewPollAnswer("", question);
-                    answers.add(answer1);
-                    answers.add(answer2);
-                    insertItem(question, items.size() - 1);
-                    insertItem(answer1, items.size() - 1);
-                    insertItem(answer2, items.size() - 1);
-                    insertItem(new NewPollAddAnswer("", question), items.size() - 1);
+                    int position = NewPollQuestionsAdapter.this.pollListItems.size() - 1;
+                    insertLastItems(pollListItems, position);
                 }
             });
         }
@@ -87,11 +73,13 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
     class AnswerViewHolder extends ViewHolderParent {
         EditText editText;
         ImageView deleteButton;
+        View listitemAnswerSeparator;
 
         public AnswerViewHolder(View parent) {
             super(parent);
             editText = (EditText) itemView.findViewById(R.id.answer_edit_text);
             deleteButton = (ImageView) parent.findViewById(R.id.delete_button);
+            listitemAnswerSeparator = parent.findViewById(R.id.listitem_answer_separator);
         }
 
         @Override
@@ -101,9 +89,38 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    newPollAnswer.question.removeAnswer(newPollAnswer);
                     removeView(newPollAnswer, v);
+                    checkForSiblingAnswerViews(newPollAnswer);
                 }
             });
+            setSeparatorVisibility(newPollAnswer);
+            setDeleteButtonVisibility(newPollAnswer);
+        }
+
+        private void checkForSiblingAnswerViews(NewPollAnswer newPollAnswer) {
+            if (!hasMoreThan2Items(newPollAnswer)) {
+                for (NewPollAnswer answer : newPollAnswer.question.getAnswers()) {
+                    int location = getLocation(answer);
+                    notifyItemChanged(location);
+                }
+            }
+        }
+
+        private void setDeleteButtonVisibility(NewPollAnswer newPollAnswer) {
+            deleteButton.setVisibility(hasMoreThan2Items(newPollAnswer) ? View.VISIBLE : View.INVISIBLE);
+        }
+
+        private void setSeparatorVisibility(NewPollAnswer newPollAnswer) {
+            listitemAnswerSeparator.setVisibility(isFirstAnswerView(newPollAnswer) ? View.GONE : View.VISIBLE);
+        }
+
+        private boolean isFirstAnswerView(NewPollAnswer newPollAnswer) {
+            return newPollAnswer.question.getAnswers().get(0).equals(newPollAnswer);
+        }
+
+        private boolean hasMoreThan2Items(NewPollAnswer newPollAnswer) {
+            return newPollAnswer.question.getAnswers().size() > 2;
         }
     }
 
@@ -114,21 +131,39 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
         }
 
         @Override
-        public void bindView(final NewPollListItem newPollListItem) {
+        public void bindView(NewPollListItem newPollListItem) {
             final NewPollAddAnswer newPollAddAnswer = (NewPollAddAnswer) newPollListItem;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int location = getLocation(newPollListItem);
-                    insertItem(new NewPollAnswer("", newPollAddAnswer.question), location);
+                    NewPollQuestion question = newPollAddAnswer.question;
+                    NewPollAnswer newAnswer = new NewPollAnswer("", question);
+                    question.getAnswers().add(newAnswer);
+                    int location = getLocation(newPollAddAnswer);
+                    insertItem(newAnswer, location);
+                    checkForSiblingAnswerViews(newPollAddAnswer);
                 }
             });
         }
+
+        private void checkForSiblingAnswerViews(NewPollAnswer newPollAnswer) {
+            if (has3Items(newPollAnswer)) {
+                for (NewPollAnswer answer : newPollAnswer.question.getAnswers()) {
+                    int location = getLocation(answer);
+                    notifyItemChanged(location);
+                }
+            }
+        }
+
+        private boolean has3Items(NewPollAnswer newPollAnswer) {
+            return newPollAnswer.question.getAnswers().size() == 3;
+        }
     }
 
+
     private int getLocation(NewPollListItem newPollListItem) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).equals(newPollListItem)) {
+        for (int i = 0; i < pollListItems.size(); i++) {
+            if (pollListItems.get(i).equals(newPollListItem)) {
                 return i;
             }
         }
@@ -137,12 +172,12 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
 
     @Override
     public int getItemViewType(int position) {
-        return items.get(position).getViewType().value;
+        return pollListItems.get(position).getViewType().value;
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return pollListItems.size();
     }
 
     @Override
@@ -168,16 +203,22 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestio
 
     @Override
     public void onBindViewHolder(ViewHolderParent holder, int position) {
-        holder.bindView(items.get(position));
+        holder.bindView(pollListItems.get(position));
     }
 
     public void insertItem(NewPollListItem item, int position) {
-        items.add(position, item);
+        pollListItems.add(position, item);
         this.notifyItemInserted(position);
     }
 
-    public void insertItems(List<NewPollListItem> items, int position) {
-        items.addAll(position, items);
+    public void insertLastItems(List<NewPollListItem> items, int position) {
+        pollListItems.addAll(position, items);
         this.notifyItemRangeInserted(position, items.size());
+    }
+
+    private void removeView(NewPollListItem newPollListItem, View v) {
+        int location = getLocation(newPollListItem);
+        pollListItems.remove(location);
+        this.notifyItemRemoved(location);
     }
 }

@@ -32,7 +32,7 @@ public class NewQuestionCreator {
             listItems.addAll(createItemsFromQuestion(question));
         }
         listItems.add(new NewPollAddQuestion(""));
-        return null;
+        return listItems;
     }
 
     public List<NewPollListItem> createItemsFromQuestion(NewPollQuestion question) {

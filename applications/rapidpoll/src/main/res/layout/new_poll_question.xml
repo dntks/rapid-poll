@@ -3,16 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/listitem_question_purple"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/general_left_padding"
-    android:paddingRight="@dimen/general_left_padding"
-    android:orientation="vertical">
+    android:paddingRight="@dimen/general_left_padding">
 
     <EditText
         android:id="@+id/question_edit_text"
+        style="@style/NewPollListQuestionEditText"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/newpoll_listitem_height"
-        android:hint="Question 1"
-        />
+        android:layout_height="@dimen/newpoll_listitem_height" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -22,10 +21,11 @@
 
         <TextView
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/multichoice"
             android:gravity="center_vertical"
-            android:layout_height="match_parent" />
+            android:text="@string/multichoice" />
+
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

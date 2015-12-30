@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/general_left_padding">
 
     <View
+        android:id="@+id/listitem_answer_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentTop="true"
@@ -24,9 +25,11 @@
     <EditText
         android:id="@+id/answer_edit_text"
         android:layout_width="0dp"
+        style="@style/NewPollListAnswerEditText"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:hint="Alternative"
         android:layout_toLeftOf="@id/delete_button"
         android:layout_weight="1"
         android:text="Alternative A" />
