@@ -18,4 +18,8 @@
     <color name="sortby_background_purple">#360C5B</color>
     <color name="sortby_text_bubble_toppurple">#693695</color>
     <color name="sortby_text_bubble_bottompurple">#592983</color>
+
+    <color name="listitem_question_purple">#474892</color>
+    <color name="listitem_answer_purple">#35366F</color>
+    <color name="listitem_answer_separator">#5D5EA4</color>
 </resources>

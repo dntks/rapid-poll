@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/newpoll_listitem_height"
     android:background="@color/listitem_answer_purple"
+    android:layout_marginBottom="5dp"
     android:paddingLeft="@dimen/general_left_padding">
 
     <View
@@ -12,23 +13,16 @@
         android:layout_alignParentTop="true"
         android:background="@color/listitem_answer_separator"></View>
 
-    <ImageView
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:paddingRight="@dimen/general_left_padding"
-        android:src="@drawable/torles" />
 
-    <EditText
+    <TextView
         android:id="@+id/answer_edit_text"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/delete_button"
         android:layout_weight="1"
-        android:text="Alternative A" />
+        android:background="@color/listitem_answer_purple"
+        android:text="@string/add_alternative"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>

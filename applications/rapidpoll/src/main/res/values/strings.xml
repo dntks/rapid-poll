@@ -17,4 +17,7 @@
     <string name="pollsettings">POLL SETTINGS</string>
     <string name="anonymous">Anonymous</string>
     <string name="allowtocomment">Allow to comment</string>
+    <string name="multichoice">Multichoice</string>
+    <string name="add_question">Add question</string>
+    <string name="add_alternative">Add alternative</string>
 </resources>

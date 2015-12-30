@@ -4,117 +4,180 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.appsball.rapidpoll.R;
-import com.marshalchen.ultimaterecyclerview.UltimateDifferentViewTypeAdapter;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class NewPollQuestionsAdapter extends UltimateDifferentViewTypeAdapter {
-    private List<String> mDataset;
+import static com.appsball.rapidpoll.newpoll.ViewType.fromValue;
 
-    private enum SwipedState {
-        SHOWING_PRIMARY_CONTENT,
-        SHOWING_SECONDARY_CONTENT
+public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollQuestionsAdapter.ViewHolderParent> {
+
+    private List<NewPollListItem> items;
+    private List<NewPollQuestion> questions;
+    private NewQuestionCreator newQuestionCreator;
+
+    public NewPollQuestionsAdapter(List<NewPollQuestion> questions, NewQuestionCreator newQuestionCreator) {
+        this.questions = questions;
+        this.items = newQuestionCreator.createItemsFromQuestions(questions);
+        this.newQuestionCreator = newQuestionCreator;
     }
 
-    private List<SwipedState> mItemSwipedStates;
+    abstract class ViewHolderParent extends RecyclerView.ViewHolder {
+        public ViewHolderParent(View parent) {
+            super(parent);
+        }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends UltimateRecyclerviewViewHolder {
-        // each data item is just a string in this case
-        public View mView;
+        public abstract void bindView(NewPollListItem newPollListItem);
+    }
 
-        public ViewHolder(View v) {
-            super(v);
-            mView = v;
+    class QuestionViewHolder extends ViewHolderParent {
+        EditText editText;
+
+        public QuestionViewHolder(View parent) {
+            super(parent);
+            editText = (EditText) parent.findViewById(R.id.question_edit_text);
+        }
+
+        @Override
+        public void bindView(final NewPollListItem newPollListItem) {
+            NewPollQuestion newPollQuestion = (NewPollQuestion) newPollListItem;
+            editText.setText(newPollQuestion.text);
+        }
+
+    }
+
+    private void removeView(NewPollListItem newPollListItem, View v) {
+
+        int location = getLocation(newPollListItem);
+        items.remove(location);
+        this.notifyItemRemoved(location);
+    }
+
+    class AddQuestionViewHolder extends ViewHolderParent {
+
+        public AddQuestionViewHolder(View parent) {
+            super(parent);
+        }
+
+        @Override
+        public void bindView(final NewPollListItem newPollListItem) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NewPollQuestion question = newQuestionCreator.createNewQuestion(questions.size()+1);
+                    questions.add(question);
+                    List<NewPollListItem> pollListItems = newQuestionCreator.createItemsFromQuestion(question);
+                    List<NewPollAnswer> answers = question.getAnswers();
+                    NewPollAnswer answer1 = new NewPollAnswer("", question);
+                    NewPollAnswer answer2 = new NewPollAnswer("", question);
+                    answers.add(answer1);
+                    answers.add(answer2);
+                    insertItem(question, items.size() - 1);
+                    insertItem(answer1, items.size() - 1);
+                    insertItem(answer2, items.size() - 1);
+                    insertItem(new NewPollAddAnswer("", question), items.size() - 1);
+                }
+            });
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public NewPollQuestionsAdapter(List<String> dataSet) {
-        mDataset = dataSet;
-        mItemSwipedStates = new ArrayList<>();
-        for (int i = 0; i < dataSet.size(); i++) {
-            mItemSwipedStates.add(i, SwipedState.SHOWING_PRIMARY_CONTENT);
+    class AnswerViewHolder extends ViewHolderParent {
+        EditText editText;
+        ImageView deleteButton;
+
+        public AnswerViewHolder(View parent) {
+            super(parent);
+            editText = (EditText) itemView.findViewById(R.id.answer_edit_text);
+            deleteButton = (ImageView) parent.findViewById(R.id.delete_button);
         }
 
-        putBinder(SampleViewType.SAMPLE1, new Sample1Binder(this,dataSet));
-        putBinder(SampleViewType.SAMPLE2, new Sample2Binder(this,dataSet));
-        putBinder(SampleViewType.SAMPLE3, new Sample1Binder(this,dataSet));
-        //  ((Sample2Binder) getDataBinder(SampleViewType.SAMPLE2)).addAll(dataSet);
+        @Override
+        public void bindView(NewPollListItem newPollListItem) {
+            final NewPollAnswer newPollAnswer = (NewPollAnswer) newPollListItem;
+            editText.setText(newPollListItem.text);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeView(newPollAnswer, v);
+                }
+            });
+        }
     }
 
-    public void insert(String string, int position) {
-        insert(mDataset, string, position);
+    class AddAnswerViewHolder extends ViewHolderParent {
+
+        public AddAnswerViewHolder(View parent) {
+            super(parent);
+        }
+
+        @Override
+        public void bindView(final NewPollListItem newPollListItem) {
+            final NewPollAddAnswer newPollAddAnswer = (NewPollAddAnswer) newPollListItem;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int location = getLocation(newPollListItem);
+                    insertItem(new NewPollAnswer("", newPollAddAnswer.question), location);
+                }
+            });
+        }
     }
 
-    public void remove(int position) {
-        remove(mDataset, position);
+    private int getLocation(NewPollListItem newPollListItem) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).equals(newPollListItem)) {
+                return i;
+            }
+        }
+        return 0;
     }
-
 
     @Override
-    public UltimateRecyclerviewViewHolder getViewHolder(View view) {
-        return new UltimateRecyclerviewViewHolder(view);
+    public int getItemViewType(int position) {
+        return items.get(position).getViewType().value;
     }
 
-    @Override
-    public UltimateRecyclerviewViewHolder onCreateViewHolder(ViewGroup parent) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.new_poll_adapter, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
-    }
-
-
-    @Override
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
-        return null;
-    }
-
-    @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return items.size();
     }
 
     @Override
-    public int getAdapterItemCount() {
-        return 0;
-    }
-
-    @Override
-    public long generateHeaderId(int position) {
-        return 0;
-    }
-
-    @Override
-    public Enum getEnumFromPosition(int position) {
-        if (position % 2 == 1) {
-            return SampleViewType.SAMPLE1;
-        } else {
-            return SampleViewType.SAMPLE2;
+    public ViewHolderParent onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        ViewType type = fromValue(viewType);
+        switch (type) {
+            case QUESTION:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_question, parent, false);
+                return new QuestionViewHolder(view);
+            case ANSWER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_answer, parent, false);
+                return new AnswerViewHolder(view);
+            case ADD_QUESTION:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_add_question, parent, false);
+                return new AddQuestionViewHolder(view);
+            case ADD_ANSWER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_add_answer, parent, false);
+                return new AddAnswerViewHolder(view);
         }
+        return new QuestionViewHolder(parent);
     }
 
     @Override
-    public Enum getEnumFromOrdinal(int ordinal) {
-        return SampleViewType.values()[ordinal];
+    public void onBindViewHolder(ViewHolderParent holder, int position) {
+        holder.bindView(items.get(position));
     }
 
-    enum SampleViewType {
-        SAMPLE1, SAMPLE2, SAMPLE3
+    public void insertItem(NewPollListItem item, int position) {
+        items.add(position, item);
+        this.notifyItemInserted(position);
     }
 
-
+    public void insertItems(List<NewPollListItem> items, int position) {
+        items.addAll(position, items);
+        this.notifyItemRangeInserted(position, items.size());
+    }
 }

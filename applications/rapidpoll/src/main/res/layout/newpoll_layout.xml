@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_dark_purple"
@@ -7,14 +7,15 @@
 
 
     <LinearLayout
+        android:id="@+id/poll_settings_button_row"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/newpoll_listitem_height"
+        android:paddingLeft="@dimen/general_left_padding"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
             android:layout_weight="1"
             android:text="@string/pollsettings"
             android:textColor="@color/sortby_text_greypurple" />
@@ -27,12 +28,23 @@
             android:src="@drawable/lefele" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/list_size_helper"
+        android:layout_width="match_parent"
+        android:layout_below="@id/poll_settings_button_row"
+        android:layout_height="153dp"
+        android:visibility="gone"
+        />
+
     <LinearLayout
+        android:id="@+id/new_poll_settings_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/poll_settings_button_row"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="25dp">
+        android:paddingLeft="25dp"
+        android:visibility="invisible">
 
         <View
             android:layout_width="match_parent"
@@ -41,7 +53,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/newpoll_listitem_height"
             android:gravity="center_vertical">
 
             <TextView
@@ -60,7 +72,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/newpoll_listitem_height"
             android:gravity="center_vertical">
 
             <TextView
@@ -79,7 +91,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/newpoll_listitem_height"
             android:gravity="center_vertical">
 
             <TextView
@@ -91,4 +103,13 @@
         </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/questions_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/list_size_helper"
+        android:layout_marginTop="2dp"
+        android:scrollbars="none" />
+</RelativeLayout>
