@@ -56,6 +56,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        getRapidPollActivity().setHomeButtonVisibility(false);
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
         allPollsDataState = new AllPollsDataState();

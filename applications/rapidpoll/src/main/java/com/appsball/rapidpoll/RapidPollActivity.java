@@ -3,6 +3,7 @@ package com.appsball.rapidpoll;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,7 +20,7 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 
 public class RapidPollActivity extends AppCompatActivity {
 
-    public static final String userid = "11E5A76DC503770C9E7502000029BDFD";
+    public static final String userid = "11E5AFDF2A6AA47F9E7502000029BDFD";
     private RapidPollRestService rapidPollRestService;
 
     @Override
@@ -28,6 +29,7 @@ public class RapidPollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        setHomeButtonVisibility(false);
 //        getSupportActionBar().setIcon(R.drawable.logo);
         Logger.init();
         rapidPollRestService = createRapidPollRestService(this);
@@ -37,12 +39,21 @@ public class RapidPollActivity extends AppCompatActivity {
         toAllPolls();
         RestCaller restCaller  =  new RestCaller(this);
 //        restCaller.doPoll();
-        restCaller.createPoll();
+//        restCaller.createPoll();
 //        restCaller.getPollDetails();
 //        restCaller.getPollResult();
 //        restCaller.getPolls();
 //        restCaller.searchPoll();
 //        restCaller.updatePollState();
+    }
+
+    public void setHomeButtonVisibility(boolean show) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(show);
+            actionBar.setDisplayHomeAsUpEnabled(show);
+            actionBar.setDisplayShowHomeEnabled(show);
+        }
     }
 
     private void initHawk() {
@@ -78,4 +89,9 @@ public class RapidPollActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        getSupportFragmentManager().popBackStack();
+        return true;
+    }
 }

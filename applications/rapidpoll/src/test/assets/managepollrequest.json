@@ -1,11 +1,12 @@
 {
-  "user_id": "11E592F746A409999E7502000029BDFD",
+  "user_id": "b",
   "action": "CREATE",
   "poll": {
     "allow_comment": "1",
     "allow_uncomplete_result": "1",
     "anonymous": "0",
     "public": "1",
+    "draft": "0",
     "name": "WestEndChristmas",
     "questions": [
       {

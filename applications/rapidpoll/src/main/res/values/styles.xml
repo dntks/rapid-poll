@@ -14,7 +14,7 @@
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/RapidPollActionBar</item>
         <item name="android:textViewStyle">@style/RapidPollTextView</item>
-        <item name="android:editTextStyle">@style/RapidPollEditText</item>
+        <item name="android:editTextStyle">@style/RapidPollNormalEditText</item>
         <item name="android:alertDialogTheme">@style/RapidPollAlertDialogTheme</item>
     </style>
 
@@ -22,6 +22,15 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="RapidPollNormalEditText" parent="android:Widget.EditText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+
     </style>
 
     <style name="RapidPollEditText" parent="android:Widget.EditText">
@@ -49,6 +58,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
         <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+
     </style>
 
     <style name="BottomBarButton" parent="Base.TextAppearance.AppCompat.Button">

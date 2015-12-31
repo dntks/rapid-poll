@@ -10,7 +10,7 @@ public class ManagePollQuestionAlternative {
         this.name = notNull(name, "name must not be null");
     }
 
-    public static ManagePollQuestionAlternative alternativeRequestObject(String name) {
+    public static ManagePollQuestionAlternative managePollQuestionAlternative(String name) {
         return new ManagePollQuestionAlternative(name);
     }
 }

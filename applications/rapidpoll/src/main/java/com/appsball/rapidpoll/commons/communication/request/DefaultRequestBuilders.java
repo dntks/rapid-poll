@@ -16,12 +16,12 @@ import java.util.List;
 
 import static com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollAnswer.doPollAnswer;
 import static com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollQuestion.doPollQuestion;
-import static com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative.alternativeRequestObject;
+import static com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative.managePollQuestionAlternative;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestBuilders {
 
-    private final static String USER_ID = "11E584B41C1E65089E7502000029BDFD";
+    private final static String USER_ID = "11E58407B7A5FDDC9D0B8675BA421DCB";
 
     public static ManagePollRequest createManagePollRequest() {
         ManagePollRequest.Builder managePollRequestBuilder = ManagePollRequest.builder();
@@ -39,6 +39,7 @@ public class DefaultRequestBuilders {
         managePollBuilder.withName("kerdes");
         managePollBuilder.withQuestions(createManagePollQuestions());
         managePollBuilder.withAllowComment("1");
+        managePollBuilder.withDraft("0");
         return managePollBuilder.build();
     }
 
@@ -55,17 +56,17 @@ public class DefaultRequestBuilders {
     }
 
     private static List<ManagePollQuestionAlternative> createManagePollQuestionAlternatives1() {
-        ManagePollQuestionAlternative alternative1 = alternativeRequestObject("Media Markt");
-        ManagePollQuestionAlternative alternative2 = alternativeRequestObject("Nike");
-        ManagePollQuestionAlternative alternative3 = alternativeRequestObject("Budmil");
+        ManagePollQuestionAlternative alternative1 = managePollQuestionAlternative("Media Markt");
+        ManagePollQuestionAlternative alternative2 = managePollQuestionAlternative("Nike");
+        ManagePollQuestionAlternative alternative3 = managePollQuestionAlternative("Budmil");
         return newArrayList(alternative1, alternative2, alternative3);
     }
 
     private static List<ManagePollQuestionAlternative> createManagePollQuestionAlternatives2() {
-        ManagePollQuestionAlternative alternative1 = alternativeRequestObject("1-1000 HUF");
-        ManagePollQuestionAlternative alternative2 = alternativeRequestObject("1000-5000 HUF");
-        ManagePollQuestionAlternative alternative3 = alternativeRequestObject("5000-10000");
-        ManagePollQuestionAlternative alternative4 = alternativeRequestObject("10000-");
+        ManagePollQuestionAlternative alternative1 = managePollQuestionAlternative("1-1000 HUF");
+        ManagePollQuestionAlternative alternative2 = managePollQuestionAlternative("1000-5000 HUF");
+        ManagePollQuestionAlternative alternative3 = managePollQuestionAlternative("5000-10000");
+        ManagePollQuestionAlternative alternative4 = managePollQuestionAlternative("10000-");
         return newArrayList(alternative1, alternative2, alternative3, alternative4);
     }
 

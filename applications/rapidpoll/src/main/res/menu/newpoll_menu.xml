@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/add_poll"
+        android:id="@+id/publish"
         app:showAsAction="always"
         android:title="Publish"
         tools:ignore="AppCompatResource"/>

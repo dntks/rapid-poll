@@ -10,10 +10,12 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
+        app:navigationIcon="?homeAsUpIndicator"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/actionbar_gradient"
         android:elevation="4dp"
+        android:logo="@drawable/logo_s"
         android:theme="@style/AppTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
