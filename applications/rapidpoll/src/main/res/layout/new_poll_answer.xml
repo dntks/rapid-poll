@@ -22,7 +22,7 @@
         android:paddingRight="@dimen/general_left_padding"
         android:src="@drawable/torles" />
 
-    <EditText
+    <com.appsball.rapidpoll.newpoll.listviewholder.TextChangeAwareEditText
         android:id="@+id/answer_edit_text"
         android:layout_width="0dp"
         style="@style/NewPollListAnswerEditText"

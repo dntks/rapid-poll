@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll;
+package com.appsball.rapidpoll.newpoll.model;
 
 public enum ViewType {
     QUESTION(0),
@@ -6,7 +6,7 @@ public enum ViewType {
     ADD_QUESTION(2),
     ADD_ANSWER(3);
 
-    int value;
+    public int value;
 
     ViewType(int value) {
         this.value = value;

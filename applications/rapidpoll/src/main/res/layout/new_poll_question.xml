@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/general_left_padding"
     android:paddingRight="@dimen/general_left_padding">
 
-    <EditText
+    <com.appsball.rapidpoll.newpoll.listviewholder.TextChangeAwareEditText
         android:id="@+id/question_edit_text"
         style="@style/NewPollListQuestionEditText"
         android:layout_width="match_parent"
@@ -27,6 +27,7 @@
             android:text="@string/multichoice" />
 
         <CheckBox
+            android:id="@+id/multichoice_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

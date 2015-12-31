@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll;
+package com.appsball.rapidpoll.newpoll.model;
 
 public class NewPollAddAnswer extends NewPollAnswer {
 

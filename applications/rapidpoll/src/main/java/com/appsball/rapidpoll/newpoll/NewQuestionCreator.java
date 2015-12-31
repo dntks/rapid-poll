@@ -1,11 +1,13 @@
 package com.appsball.rapidpoll.newpoll;
 
+import com.appsball.rapidpoll.newpoll.model.NewPollAddAnswer;
+import com.appsball.rapidpoll.newpoll.model.NewPollAddQuestion;
+import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
+import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
+import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 public class NewQuestionCreator {
 
@@ -15,15 +17,6 @@ public class NewQuestionCreator {
         answers.add(new NewPollAnswer("Alternative 1", question));
         answers.add(new NewPollAnswer("Alternative 2", question));
         return question;
-    }
-
-    public List<NewPollListItem> createNewQuestionAsItems(int questionNumber) {
-        ArrayList<NewPollListItem> newPollListItems = newArrayList();
-        NewPollQuestion question= createNewQuestion(questionNumber);
-        newPollListItems.add(question);
-        newPollListItems.addAll(question.getAnswers());
-        newPollListItems.add(new NewPollAddAnswer("", question));
-        return newPollListItems;
     }
 
     public List<NewPollListItem> createItemsFromQuestions(List<NewPollQuestion> questions) {

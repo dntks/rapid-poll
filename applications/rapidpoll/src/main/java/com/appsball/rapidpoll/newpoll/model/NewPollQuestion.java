@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll;
+package com.appsball.rapidpoll.newpoll.model;
 
 import java.util.ArrayList;
 import java.util.List;

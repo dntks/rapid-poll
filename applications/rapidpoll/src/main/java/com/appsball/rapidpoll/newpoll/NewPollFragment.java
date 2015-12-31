@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
+import com.appsball.rapidpoll.newpoll.listadapter.NewPollQuestionsAdapter;
+import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -44,19 +46,6 @@ public class NewPollFragment extends BottomBarNavigationFragment {
         return rootView;
     }
 
-    private void setSettingsButtonListener() {
-        rootView.findViewById(R.id.poll_settings_button_row).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isSettingsVisible()) {
-                    hideSettingsLayout();
-                } else {
-                    showSettingsLayout();
-                }
-            }
-        });
-    }
-
 
     public void initializeList(Bundle savedInstanceState) {
         ultimateRecyclerView = (UltimateRecyclerView) rootView.findViewById(R.id.questions_list_view);
@@ -68,6 +57,19 @@ public class NewPollFragment extends BottomBarNavigationFragment {
         NewPollQuestion question = newQuestionCreator.createNewQuestion(1);
         NewPollQuestionsAdapter newPollAdapter = new NewPollQuestionsAdapter(newArrayList(question), newQuestionCreator);
         ultimateRecyclerView.setAdapter(newPollAdapter);
+    }
+
+    private void setSettingsButtonListener() {
+        rootView.findViewById(R.id.poll_settings_button_row).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSettingsVisible()) {
+                    hideSettingsLayout();
+                } else {
+                    showSettingsLayout();
+                }
+            }
+        });
     }
 
     private void hideSettingsLayout() {
