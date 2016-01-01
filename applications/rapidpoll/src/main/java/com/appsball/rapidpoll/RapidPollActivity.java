@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.appsball.rapidpoll.allpolls.AllPollsFragment;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.fillpoll.FillPollFragment;
 import com.appsball.rapidpoll.newpoll.NewPollFragment;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
@@ -76,6 +77,11 @@ public class RapidPollActivity extends AppCompatActivity {
 
     public void toCreatePoll() {
         final Fragment fragment = new NewPollFragment();
+        changeToFragment(fragment, true);
+    }
+
+    public void toFillPoll() {
+        final Fragment fragment = new FillPollFragment();
         changeToFragment(fragment, true);
     }
 

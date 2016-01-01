@@ -17,8 +17,8 @@ import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePol
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
-import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
+import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.newpoll.listadapter.NewPollQuestionsAdapter;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.appsball.rapidpoll.newpoll.model.PollSettings;
@@ -34,7 +34,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class NewPollFragment extends BottomBarNavigationFragment {
+public class NewPollFragment extends RapidPollFragment {
 
     public static final int NEWPOLL_LAYOUT = R.layout.newpoll_layout;
 
