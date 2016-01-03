@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll.listadapter;
+package com.appsball.rapidpoll.newpoll;
 
 import com.appsball.rapidpoll.newpoll.model.NewPollAddAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;

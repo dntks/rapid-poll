@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll.listadapter;
+package com.appsball.rapidpoll.newpoll.listviewholder;
 
 import android.text.Editable;
 import android.text.TextWatcher;

@@ -5,7 +5,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.newpoll.listadapter.TextChangedListener;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 

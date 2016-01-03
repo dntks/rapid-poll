@@ -6,7 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.newpoll.AdapterAnswerViewsUpdater;
+import com.appsball.rapidpoll.newpoll.AdapterItemViewRemover;
 import com.appsball.rapidpoll.newpoll.NewQuestionCreator;
+import com.appsball.rapidpoll.newpoll.PollAnswerToAdapterAdder;
+import com.appsball.rapidpoll.newpoll.PollQuestionToAdapterAdder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AddAnswerNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AddQuestionNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AnswerNewPollViewHolder;

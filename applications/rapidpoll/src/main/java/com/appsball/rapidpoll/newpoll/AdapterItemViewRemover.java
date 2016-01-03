@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll.listadapter;
+package com.appsball.rapidpoll.newpoll;
 
 import android.view.View;
 

@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.newpoll.listadapter;
+package com.appsball.rapidpoll.newpoll;
 
 public interface PollQuestionToAdapterAdder {
     void addNewQuestion();
