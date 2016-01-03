@@ -22,4 +22,6 @@
     <color name="listitem_question_purple">#474892</color>
     <color name="listitem_answer_purple">#35366F</color>
     <color name="listitem_answer_separator">#5D5EA4</color>
+
+    <color name="multichoice_text_color">#8E8EBB</color>
 </resources>

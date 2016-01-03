@@ -44,6 +44,7 @@ public class PollSettingsView {
         CheckBox allowCommentCheckBox = (CheckBox) settingsLayout.findViewById(R.id.allowcomment_checkbox);
         CheckBox anonymousCheckBox = (CheckBox) settingsLayout.findViewById(R.id.anonymous_checkbox);
         CheckBox publicCheckBox = (CheckBox) settingsLayout.findViewById(R.id.public_checkbox);
+        CheckBox acceptCompleteOnlyCheckBox = (CheckBox) settingsLayout.findViewById(R.id.acceptcompleteonly_checkbox);
 
         allowCommentCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -61,6 +62,12 @@ public class PollSettingsView {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 pollSettings.setIsPublic(isChecked);
+            }
+        });
+        acceptCompleteOnlyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                pollSettings.setAcceptCompleteOnly(isChecked);
             }
         });
     }

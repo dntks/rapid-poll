@@ -60,7 +60,7 @@ public class FillPollQuestion extends FillPollListItem {
         }
 
 
-        public Builder withMultChoice(boolean isMultiChoice) {
+        public Builder withMultiChoice(boolean isMultiChoice) {
             this.isMultiChoice = isMultiChoice;
             return this;
         }

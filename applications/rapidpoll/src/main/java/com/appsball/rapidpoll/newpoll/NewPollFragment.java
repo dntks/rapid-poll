@@ -96,7 +96,7 @@ public class NewPollFragment extends RapidPollFragment {
 
 
     private void showNameDialog() {
-        showEditTextDialog(getActivity(), "Add poll title", "You must set Poll title!", "Poll title", new TextEnteredListener() {
+        showEditTextDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
             @Override
             public void textEntered(String text) {
                 publishPoll(text, false);
@@ -134,8 +134,8 @@ public class NewPollFragment extends RapidPollFragment {
         builder.withAllowComment(pollSettings.isAllowedToComment() ? "1" : "0");
         builder.withAnonymous(pollSettings.isAnonymous() ? "1" : "0");
         builder.withIsPublic(pollSettings.isPublic() ? "1" : "0");
+        builder.withAllowUncompleteResult(pollSettings.isAcceptCompleteOnly() ? "0" : "1");
         builder.withQuestions(managePollQuestionTransformer.transformPollQuestions(pollQuestions));
-        builder.withAllowUncompleteResult("1");
         builder.withName(name);
         builder.withDraft(draft ? "1" : "0");
         return builder.build();

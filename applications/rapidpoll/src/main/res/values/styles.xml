@@ -39,18 +39,26 @@
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
     <style name="NewPollListQuestionEditText" parent="RapidPollEditText">
         <item name="android:background">@color/listitem_question_purple</item>
     </style>
+
     <style name="NewPollListAnswerEditText" parent="RapidPollEditText">
         <item name="android:background">@color/listitem_answer_purple</item>
     </style>
-    <style name="RapidPollActionBar"
-           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+
+    <style name="CommentBox" parent="RapidPollEditText">
+        <item name="android:background">@drawable/comment_box</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="RapidPollActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/actionbar_gradient</item>
         <!-- Support library compatibility -->
         <item name="background">@drawable/actionbar_gradient</item>
     </style>
+
     <style name="RapidPollAlertDialogTheme" parent="@android:style/Theme.Holo.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -85,4 +93,5 @@
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
     </style>
+
 </resources>

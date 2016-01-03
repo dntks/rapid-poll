@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/newpoll_listitem_height"
     android:background="@color/listitem_answer_purple"
-    android:paddingLeft="@dimen/general_left_padding">
+    android:paddingLeft="@dimen/general_left_padding"
+    android:paddingRight="@dimen/general_right_padding">
 
     <View
         android:id="@+id/listitem_answer_separator"
@@ -19,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="@dimen/general_left_padding"
         android:src="@drawable/torles" />
 
     <com.appsball.rapidpoll.newpoll.listviewholder.TextChangeAwareEditText

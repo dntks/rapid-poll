@@ -10,5 +10,5 @@ public abstract class FillPollViewHolderParent extends RecyclerView.ViewHolder {
         super(parent);
     }
 
-    public abstract void bindView(FillPollListItem newPollListItem);
+    public abstract void bindView(FillPollListItem fillPollListItem);
 }

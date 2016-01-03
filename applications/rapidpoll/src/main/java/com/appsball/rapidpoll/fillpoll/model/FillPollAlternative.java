@@ -5,7 +5,7 @@ import com.appsball.rapidpoll.newpoll.model.ViewType;
 public class FillPollAlternative extends FillPollListItem {
     public final String id;
     public final String name;
-    public FillPollQuestion question;
+    private FillPollQuestion question;
 
     private FillPollAlternative(String id, String name) {
         this.id = id;

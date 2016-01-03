@@ -5,7 +5,9 @@
     android:layout_height="@dimen/newpoll_listitem_height"
     android:background="@color/listitem_answer_purple"
     android:layout_marginBottom="5dp"
-    android:paddingLeft="@dimen/general_left_padding">
+    android:paddingLeft="@dimen/general_left_padding"
+    android:paddingRight="@dimen/general_right_padding"
+    >
 
     <View
         android:layout_width="match_parent"

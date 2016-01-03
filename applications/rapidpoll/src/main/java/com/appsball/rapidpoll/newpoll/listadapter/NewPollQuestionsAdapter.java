@@ -21,6 +21,7 @@ import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.appsball.rapidpoll.newpoll.model.ViewType;
+import com.google.common.base.Optional;
 
 import java.util.List;
 
@@ -40,8 +41,10 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
 
     @Override
     public void addAnswerToAdapter(NewPollAnswer newAnswer, NewPollAddAnswer newPollAddAnswer) {
-        int location = getLocationOfItem(newPollAddAnswer);
-        insertItem(newAnswer, location);
+        Optional<Integer> location = getLocationOfItem(newPollAddAnswer);
+        if (location.isPresent()) {
+            insertItem(newAnswer, location.get());
+        }
     }
 
     @Override
@@ -56,26 +59,30 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
     @Override
     public void updateAnswerViews(List<NewPollAnswer> answers) {
         for (NewPollAnswer answer : answers) {
-            int location = getLocationOfItem(answer);
-            notifyItemChanged(location);
+            Optional<Integer> location = getLocationOfItem(answer);
+            if (location.isPresent()) {
+                notifyItemChanged(location.get());
+            }
         }
     }
 
     @Override
     public void removeView(NewPollListItem newPollListItem, View v) {
-        int location = getLocationOfItem(newPollListItem);
-        pollListItems.remove(location);
-        this.notifyItemRemoved(location);
+        Optional<Integer> location = getLocationOfItem(newPollListItem);
+        if (location.isPresent()) {
+            pollListItems.remove(location.get());
+            this.notifyItemRemoved(location.get());
+        }
     }
 
 
-    private int getLocationOfItem(NewPollListItem newPollListItem) {
+    private Optional<Integer> getLocationOfItem(NewPollListItem newPollListItem) {
         for (int i = 0; i < pollListItems.size(); i++) {
             if (pollListItems.get(i).equals(newPollListItem)) {
-                return i;
+                return Optional.of(i);
             }
         }
-        return 0;
+        return Optional.absent();
     }
 
     @Override

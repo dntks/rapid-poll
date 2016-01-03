@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/newpoll_listitem_height"
+    android:background="@color/listitem_answer_purple"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/general_left_padding"
+    android:paddingRight="@dimen/general_right_padding">
+
+
+    <TextView
+        android:id="@+id/answer_textview"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="answer"
+        />
+
+    <CheckBox
+        android:id="@+id/answer_checkbox"
+        android:button="@drawable/answer_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

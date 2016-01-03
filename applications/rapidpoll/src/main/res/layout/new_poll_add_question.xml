@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/listitem_question_purple"
     android:paddingLeft="@dimen/general_left_padding"
-    android:paddingRight="@dimen/general_left_padding"
+    android:paddingRight="@dimen/general_right_padding"
     android:orientation="vertical">
 
     <TextView
