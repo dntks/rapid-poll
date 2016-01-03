@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.allpolls.model;
 
 import com.appsball.rapidpoll.commons.model.PollState;
 

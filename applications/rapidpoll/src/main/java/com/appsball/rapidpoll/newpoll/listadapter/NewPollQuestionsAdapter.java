@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.newpoll.NewQuestionCreator;
-import com.appsball.rapidpoll.newpoll.listviewholder.AddAnswerViewHolder;
-import com.appsball.rapidpoll.newpoll.listviewholder.AddQuestionViewHolder;
-import com.appsball.rapidpoll.newpoll.listviewholder.AnswerViewHolder;
-import com.appsball.rapidpoll.newpoll.listviewholder.QuestionViewHolder;
-import com.appsball.rapidpoll.newpoll.listviewholder.ViewHolderParent;
+import com.appsball.rapidpoll.newpoll.listviewholder.AddAnswerNewPollViewHolder;
+import com.appsball.rapidpoll.newpoll.listviewholder.AddQuestionNewPollViewHolder;
+import com.appsball.rapidpoll.newpoll.listviewholder.AnswerNewPollViewHolder;
+import com.appsball.rapidpoll.newpoll.listviewholder.NewPollViewHolderParent;
+import com.appsball.rapidpoll.newpoll.listviewholder.QuestionNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.model.NewPollAddAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
@@ -22,7 +22,7 @@ import java.util.List;
 
 import static com.appsball.rapidpoll.newpoll.model.ViewType.fromValue;
 
-public class NewPollQuestionsAdapter extends RecyclerView.Adapter<ViewHolderParent> implements PollQuestionToAdapterAdder, AdapterAnswerViewsUpdater, AdapterItemViewRemover, PollAnswerToAdapterAdder {
+public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHolderParent> implements PollQuestionToAdapterAdder, AdapterAnswerViewsUpdater, AdapterItemViewRemover, PollAnswerToAdapterAdder {
 
     private List<NewPollListItem> pollListItems;
     private List<NewPollQuestion> questions;
@@ -85,28 +85,28 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<ViewHolderPare
     }
 
     @Override
-    public ViewHolderParent onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NewPollViewHolderParent onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         ViewType type = fromValue(viewType);
         switch (type) {
             case QUESTION:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_question, parent, false);
-                return new QuestionViewHolder(view);
+                return new QuestionNewPollViewHolder(view);
             case ANSWER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_answer, parent, false);
-                return new AnswerViewHolder(view, this, this);
+                return new AnswerNewPollViewHolder(view, this, this);
             case ADD_QUESTION:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_add_question, parent, false);
-                return new AddQuestionViewHolder(view, this);
+                return new AddQuestionNewPollViewHolder(view, this);
             case ADD_ANSWER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_add_answer, parent, false);
-                return new AddAnswerViewHolder(view, this, this);
+                return new AddAnswerNewPollViewHolder(view, this, this);
         }
-        return new QuestionViewHolder(parent);
+        return new QuestionNewPollViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderParent holder, int position) {
+    public void onBindViewHolder(NewPollViewHolderParent holder, int position) {
         holder.bindView(pollListItems.get(position));
     }
 

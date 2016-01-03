@@ -2,14 +2,14 @@ package com.appsball.rapidpoll.newpoll.listviewholder;
 
 import android.view.View;
 
-import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.listadapter.PollQuestionToAdapterAdder;
+import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 
-public class AddQuestionViewHolder extends ViewHolderParent {
+public class AddQuestionNewPollViewHolder extends NewPollViewHolderParent {
 
     private PollQuestionToAdapterAdder pollQuestionToAdapterAdder;
 
-    public AddQuestionViewHolder(View parent, PollQuestionToAdapterAdder pollQuestionToAdapterAdder) {
+    public AddQuestionNewPollViewHolder(View parent, PollQuestionToAdapterAdder pollQuestionToAdapterAdder) {
         super(parent);
         this.pollQuestionToAdapterAdder = pollQuestionToAdapterAdder;
     }

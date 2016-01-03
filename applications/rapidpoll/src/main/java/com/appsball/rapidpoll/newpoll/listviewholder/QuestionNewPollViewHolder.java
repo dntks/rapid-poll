@@ -9,11 +9,11 @@ import com.appsball.rapidpoll.newpoll.listadapter.TextChangedListener;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 
-public class QuestionViewHolder extends ViewHolderParent {
+public class QuestionNewPollViewHolder extends NewPollViewHolderParent {
     private TextChangeAwareEditText editText;
     private CheckBox checkBox;
 
-    public QuestionViewHolder(View parent) {
+    public QuestionNewPollViewHolder(View parent) {
         super(parent);
         editText = (TextChangeAwareEditText) parent.findViewById(R.id.question_edit_text);
         checkBox = (CheckBox) parent.findViewById(R.id.multichoice_checkbox);

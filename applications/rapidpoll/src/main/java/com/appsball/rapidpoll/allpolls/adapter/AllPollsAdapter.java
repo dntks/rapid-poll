@@ -1,22 +1,26 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.allpolls.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.allpolls.PollItemClickListener;
+import com.appsball.rapidpoll.allpolls.SimpleAdapter;
+import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
 public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsItemViewHolder> {
-
+    private final PollItemClickListener pollItemClickListener;
     public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
     public static final int CLOSED_LOCKET = R.drawable.lakat;
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
-    public AllPollsAdapter(List<AllPollsItemData> items) {
+    public AllPollsAdapter(List<AllPollsItemData> items, PollItemClickListener pollItemClickListener) {
         super(items);
+        this.pollItemClickListener = pollItemClickListener;
     }
 
     @Override
@@ -24,7 +28,7 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
 
             int location = customHeaderView != null ? position - 1 : position;
-            AllPollsItemData allPollsItemData = items.get(location);
+            final AllPollsItemData allPollsItemData = items.get(location);
             holder.nameTextView.setText(allPollsItemData.name);
             holder.startedTextView.setText(allPollsItemData.publicatedDaysAgoText);
             holder.votesTextView.setText(allPollsItemData.votesText);
@@ -35,6 +39,12 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
             } else {
                 holder.itemRightImage.setImageResource(RIGHT_ARROW);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pollItemClickListener.pollItemClicked(allPollsItemData);
+                }
+            });
         }
     }
 
@@ -64,8 +74,8 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
         } else return -1;
     }
 
-   public void removeAllItems(){
-       items.clear();
-       notifyDataSetChanged();
-   }
+    public void removeAllItems() {
+        items.clear();
+        notifyDataSetChanged();
+    }
 }

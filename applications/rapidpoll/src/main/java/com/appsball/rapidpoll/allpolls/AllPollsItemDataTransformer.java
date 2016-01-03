@@ -3,6 +3,7 @@ package com.appsball.rapidpoll.allpolls;
 import android.content.res.Resources;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
@@ -21,7 +22,7 @@ public class AllPollsItemDataTransformer {
         this.resources = resources;
     }
 
-    List<AllPollsItemData> transformAll(List<PollsResponse> pollsResponses) {
+    public List<AllPollsItemData> transformAll(List<PollsResponse> pollsResponses) {
         return Lists.transform(pollsResponses, new Function<PollsResponse, AllPollsItemData>() {
             @Override
             public AllPollsItemData apply(PollsResponse input) {

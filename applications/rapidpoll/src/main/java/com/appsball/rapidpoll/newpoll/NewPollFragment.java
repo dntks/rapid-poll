@@ -2,7 +2,6 @@ package com.appsball.rapidpoll.newpoll;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
@@ -19,6 +17,7 @@ import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
+import com.appsball.rapidpoll.commons.view.TextEnteredListener;
 import com.appsball.rapidpoll.newpoll.listadapter.NewPollQuestionsAdapter;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.appsball.rapidpoll.newpoll.model.PollSettings;
@@ -32,6 +31,7 @@ import com.orhanobut.wasp.WaspError;
 
 import java.util.List;
 
+import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class NewPollFragment extends RapidPollFragment {
@@ -77,7 +77,6 @@ public class NewPollFragment extends RapidPollFragment {
         ultimateRecyclerView.setAdapter(newPollAdapter);
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.newpoll_menu, menu);
@@ -97,28 +96,12 @@ public class NewPollFragment extends RapidPollFragment {
 
 
     private void showNameDialog() {
-        final EditText input_newname = new EditText(getActivity());
-        input_newname.setHint("Poll title");
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Add poll title")
-                .setMessage("You must set Poll title!")
-                .setView(input_newname)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String editTextContent = input_newname.getText().toString();
-                        if (!"".equals(editTextContent)) {
-                            publishPoll(editTextContent, false);
-                            dialog.dismiss();
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
-                                dialog.dismiss();
-                            }
-                        }).show();
+        showEditTextDialog(getActivity(), "Add poll title", "You must set Poll title!", "Poll title", new TextEnteredListener() {
+            @Override
+            public void textEntered(String text) {
+                publishPoll(text, false);
+            }
+        });
     }
 
     private void publishPoll(String name, boolean draft) {
@@ -154,7 +137,7 @@ public class NewPollFragment extends RapidPollFragment {
         builder.withQuestions(managePollQuestionTransformer.transformPollQuestions(pollQuestions));
         builder.withAllowUncompleteResult("1");
         builder.withName(name);
-        builder.withDraft(draft?"1":"0");
+        builder.withDraft(draft ? "1" : "0");
         return builder.build();
     }
 }

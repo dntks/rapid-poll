@@ -11,7 +11,7 @@ import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 
-public class AnswerViewHolder extends ViewHolderParent {
+public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
 
     private AdapterItemViewRemover adapterItemViewRemover;
     private AdapterAnswerViewsUpdater adapterAnswerViewsUpdater;
@@ -19,9 +19,9 @@ public class AnswerViewHolder extends ViewHolderParent {
     private ImageView deleteButton;
     private View listitemAnswerSeparator;
 
-    public AnswerViewHolder(View parent,
-                            AdapterItemViewRemover adapterItemViewRemover,
-                            AdapterAnswerViewsUpdater adapterAnswerViewsUpdater) {
+    public AnswerNewPollViewHolder(View parent,
+                                   AdapterItemViewRemover adapterItemViewRemover,
+                                   AdapterAnswerViewsUpdater adapterAnswerViewsUpdater) {
         super(parent);
         this.adapterItemViewRemover = adapterItemViewRemover;
         this.adapterAnswerViewsUpdater = adapterAnswerViewsUpdater;
@@ -35,7 +35,7 @@ public class AnswerViewHolder extends ViewHolderParent {
     public void bindView(NewPollListItem newPollListItem) {
         final NewPollAnswer newPollAnswer = (NewPollAnswer) newPollListItem;
         editText.setTextChangedListener(new TextChangedListener(newPollListItem));
-        editText.setText(newPollListItem.getText());
+        editText.setText(newPollAnswer.getText());
         final NewPollQuestion question = newPollAnswer.question;
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

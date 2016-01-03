@@ -9,6 +9,8 @@ import com.appsball.rapidpoll.commons.utils.Utils;
 
 public class RapidPollFragment extends Fragment {
 
+    protected boolean isNetDialogShownForGetPolls = false;
+
     public RapidPollActivity getRapidPollActivity() {
         return (RapidPollActivity) getActivity();
     }
@@ -25,11 +27,14 @@ public class RapidPollFragment extends Fragment {
         }
         return true;
     }
+
     public boolean checkIsOnlineAndShowSimpleDialog(OnClickListener onClickListener) {
         if (!Utils.isOnline(getContext())) {
             DialogsBuilder.showNoNetConnectionDialog(getActivity(), onClickListener);
+            isNetDialogShownForGetPolls = true;
             return false;
         }
+        isNetDialogShownForGetPolls = false;
         return true;
     }
 }

@@ -1,7 +1,6 @@
 package com.appsball.rapidpoll.commons.communication.service;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
 import com.appsball.rapidpoll.commons.communication.request.PollResultRequest;
@@ -17,23 +16,21 @@ import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
-import com.google.gson.Gson;
+import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Wasp;
+import com.orhanobut.wasp.WaspError;
 import com.orhanobut.wasp.utils.LogLevel;
 import com.orhanobut.wasp.utils.NetworkMode;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
-import java.io.IOException;
 import java.util.List;
 
 public class RapidPollRestService {
 
     public static final String SERVER_ADDRESS = "http://rapidpoll.appsball.com:3000";
+    public static final String SUCCESS_MESSAGE = "SUCCESS";
+    public static final String FAILURE_MESSAGE = "FAILURE";
+    public static final String GENERAL_ERROR_MESSAGE = "Unknown error occured while getting details.";
     RapidPollRestInterface rapidPollRestInterface;
 
     private RapidPollRestService(RapidPollRestInterface rapidPollRestInterface) {
@@ -70,55 +67,44 @@ public class RapidPollRestService {
 
     public void getPolls(PollsRequest pollsRequest, Callback<ResponseContainer<List<PollsResponse>>> callback) {
         rapidPollRestInterface.getPolls(pollsRequest.userId,
-                                        pollsRequest.listType,
-                                        pollsRequest.orderKey,
-                                        pollsRequest.orderType,
-                                        pollsRequest.pageSize,
-                                        pollsRequest.page,
-                                        callback);
+                pollsRequest.listType,
+                pollsRequest.orderKey,
+                pollsRequest.orderType,
+                pollsRequest.pageSize,
+                pollsRequest.page,
+                callback);
     }
 
-    public void pollDetails(PollDetailsRequest request, Callback<ResponseContainer<PollDetailsResponse>> callback) {
-        rapidPollRestInterface.pollDetails(request.userId, request.pollId, callback);
+    public void pollDetails(PollDetailsRequest request, final PollDetailsResponseCallback callback) {
+        rapidPollRestInterface.pollDetails(request.userId, request.pollId, request.code, new Callback<ResponseContainer<PollDetailsResponse>>() {
+            @Override
+            public void onSuccess(com.orhanobut.wasp.Response response, ResponseContainer<PollDetailsResponse> responseContainer) {
+                if(SUCCESS_MESSAGE.equals(responseContainer.status)){
+                    callback.onSuccess(responseContainer.result);
+                }
+                else if(FAILURE_MESSAGE.equals(responseContainer.status)){
+                    callback.onWrongCodeGiven();
+                }
+                else if(!responseContainer.messages.isEmpty()){
+                    callback.onError(responseContainer.messages.get(0));
+                }
+                else{
+                    callback.onError(GENERAL_ERROR_MESSAGE);
+                }
+            }
+
+            @Override
+            public void onError(WaspError error) {
+                callback.onError(error.getErrorMessage());
+            }
+        });
     }
 
     public void doPoll(DoPollRequest request, Callback<ResponseContainer<Object>> callback) {
         DoPollRequestContainer container = new DoPollRequestContainer();
-        container.inputjson = request;//"{\"user_id\":\"11E58407B7A5FDDC9D0B8675BA421DCB\"}";//new Gson().toJson(request);
+        container.inputjson = request;
         rapidPollRestInterface.doPoll(request, callback);
-        PostRequestTask postRequestTask = new PostRequestTask();
-//        postRequestTask.execute();
     }
-
-   public class PostRequestTask extends AsyncTask<Void,Void,Void>{
-
-       @Override
-       protected Void doInBackground(Void... params) {
-
-           String value = "{\"user_id\":\"11E58407B7A5FDDC9D0B8675BA421DCB\", \"poll_id\":\"1\", \"questions\":[ {\"question_id\":\"1\",\"answers\":[{\"alternative_id\":\"1\"}]}, {\"question_id\":\"2\",\"answers\":[{\"alternative_id\":\"3\"}]}, {\"question_id\":\"3\",\"answers\":[{\"alternative_id\":\"7\"}]}, {\"question_id\":\"4\",\"answers\":[{\"alternative_id\":\"12\"}]} ], \"comment\":\"Here is a comment.\" }";
-
-           OkHttpClient client = new OkHttpClient();
-           RequestBody formBody = new FormEncodingBuilder()
-                   .add("inputjson", value)
-                   .build();
-           Request request = new Request.Builder()
-                   .url(SERVER_ADDRESS+"/dopoll")
-                   .post(formBody)
-                   .build();
-
-           Response response = null;
-           try {
-               response = client.newCall(request).execute();
-
-               if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-               System.out.println(response.body().string());
-           } catch (IOException e) {
-               e.printStackTrace();
-           }
-           return null;
-       }
-   }
 
     public void pollResult(PollResultRequest pollResultRequest, Callback<ResponseContainer<PollResultResponse>> callback) {
         rapidPollRestInterface.pollResult(pollResultRequest.userId, pollResultRequest.pollId, callback);
@@ -136,7 +122,6 @@ public class RapidPollRestService {
     }
 
     public void updatePollState(UpdatePollStateRequest request, Callback<ResponseContainer<Object>> callback) {
-        String request1 = new Gson().toJson(request);
         rapidPollRestInterface.updatePollState(request, callback);
     }
 

@@ -1,11 +1,12 @@
 package com.appsball.rapidpoll.commons.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
+import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
 
@@ -108,4 +109,34 @@ public class DialogsBuilder {
             }
         });
     }
+
+    public static void showEditTextDialog(final Activity activity,
+                                          String errorTitle,
+                                          String errorMessage,
+                                          String editTextHint,
+                                          final TextEnteredListener textEnteredListener){
+        final EditText inputView = new EditText(activity);
+        inputView.setHint(editTextHint);
+        new android.support.v7.app.AlertDialog.Builder(activity)
+                .setTitle(errorTitle)
+                .setMessage(errorMessage)
+                .setView(inputView)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String editTextContent = inputView.getText().toString();
+                        if (!"".equals(editTextContent)) {
+                            textEnteredListener.textEntered(editTextContent);
+                            dialog.dismiss();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+    }
+
 }

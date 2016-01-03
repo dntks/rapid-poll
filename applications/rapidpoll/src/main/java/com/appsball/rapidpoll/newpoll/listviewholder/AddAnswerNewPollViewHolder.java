@@ -9,11 +9,11 @@ import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 
-public class AddAnswerViewHolder extends ViewHolderParent {
+public class AddAnswerNewPollViewHolder extends NewPollViewHolderParent {
     private PollAnswerToAdapterAdder pollAnswerToAdapterAdder;
     private AdapterAnswerViewsUpdater adapterAnswerViewsUpdater;
 
-    public AddAnswerViewHolder(View parent, PollAnswerToAdapterAdder pollAnswerToAdapterAdder, AdapterAnswerViewsUpdater adapterAnswerViewsUpdater) {
+    public AddAnswerNewPollViewHolder(View parent, PollAnswerToAdapterAdder pollAnswerToAdapterAdder, AdapterAnswerViewsUpdater adapterAnswerViewsUpdater) {
         super(parent);
         this.pollAnswerToAdapterAdder = pollAnswerToAdapterAdder;
         this.adapterAnswerViewsUpdater = adapterAnswerViewsUpdater;

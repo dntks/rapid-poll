@@ -18,6 +18,7 @@ import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDet
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.PollState;
+import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Response;
@@ -125,15 +126,21 @@ public class RestCaller {
     }
 
     public void getPollDetails() {
-        service.pollDetails(createPollDetailsRequest(), new Callback<ResponseContainer<PollDetailsResponse>>() {
+        service.pollDetails(createPollDetailsRequest(), new PollDetailsResponseCallback() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<PollDetailsResponse> pollDetailsResponseModelResponseContainer) {
-                Logger.i("getPollDetails response", pollDetailsResponseModelResponseContainer);
+            public void onWrongCodeGiven() {
+                Logger.i("getPollDetails response", "wrong code");
             }
 
             @Override
-            public void onError(WaspError error) {
-                Logger.e("getPollDetails response", error);
+            public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                Logger.e("getPollDetails response", pollDetailsResponse);
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("getPollDetails response", errorMessage);
 
             }
         });

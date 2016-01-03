@@ -21,7 +21,11 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 
 public class RapidPollActivity extends AppCompatActivity {
 
-    public static final String userid = "11E5AFDF2A6AA47F9E7502000029BDFD";
+    public static final String userid = "11E5B0E4CD5822E9886502000029BDFD";
+    public static final String POLL_CODE = "poll_code";
+    public static final String POLL_ID = "poll_id";
+    public static final String USER_ID_KEY = "userId";
+    public static final String POLL_IS_PUBLIC = "isPublic";
     private RapidPollRestService rapidPollRestService;
 
     @Override
@@ -80,8 +84,12 @@ public class RapidPollActivity extends AppCompatActivity {
         changeToFragment(fragment, true);
     }
 
-    public void toFillPoll() {
+    public void toFillPoll(String pollId, String pollCode) {
         final Fragment fragment = new FillPollFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(POLL_CODE, pollCode);
+        bundle.putString(POLL_ID, pollId);
+        fragment.setArguments(bundle);
         changeToFragment(fragment, true);
     }
 
