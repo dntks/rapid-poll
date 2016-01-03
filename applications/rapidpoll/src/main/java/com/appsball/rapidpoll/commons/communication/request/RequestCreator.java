@@ -1,9 +1,6 @@
-package com.appsball.rapidpoll.allpolls.service;
+package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.allpolls.model.AllPollsDataState;
-import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
-import com.appsball.rapidpoll.commons.communication.request.PollsRequest;
-import com.appsball.rapidpoll.commons.communication.request.SearchPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.orhanobut.hawk.Hawk;
 

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.allpolls.service.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
+import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
