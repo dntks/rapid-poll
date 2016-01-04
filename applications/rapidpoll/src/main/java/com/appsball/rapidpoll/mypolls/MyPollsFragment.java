@@ -1,119 +1,41 @@
 package com.appsball.rapidpoll.mypolls;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.commons.communication.request.PollsRequest;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
-import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
-import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
+import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
+import com.appsball.rapidpoll.results.ResultsAdapter;
+import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
+import com.appsball.rapidpoll.searchpolls.SearchPollsFragment;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-import com.marshalchen.ultimaterecyclerview.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
+import com.google.common.collect.Lists;
 
-public class MyPollsFragment extends BottomBarNavigationFragment {
+public class MyPollsFragment extends SearchPollsFragment {
 
-    public static final int ALLPOLLS_LAYOUT = R.layout.allpolls_layout;
-
-    private View rootView;
-
-    UltimateRecyclerView ultimateRecyclerView;
-    SimpleAdapter simpleRecyclerViewAdapter = null;
-    LinearLayoutManager linearLayoutManager;
+    private ResultsAdapter resultsAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(ALLPOLLS_LAYOUT, container, false);
-        createNavigationButtonListeners(rootView, NavigationButton.POLLS_BUTTON);
-        initializeListView(savedInstanceState);
-        service = RapidPollRestService.createRapidPollRestService(getContext());
-        return rootView;
+    protected NavigationButton getActiveButton() {
+        return NavigationButton.MYPOLLS_BUTTON;
     }
 
-    protected void initializeListView(Bundle savedInstanceState) {
-        ultimateRecyclerView = (UltimateRecyclerView) rootView.findViewById(R.id.paging_list_view);
-        ultimateRecyclerView.setHasFixedSize(false);
-
-
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        ultimateRecyclerView.setLayoutManager(linearLayoutManager);
-
-        StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(simpleRecyclerViewAdapter);
-        ultimateRecyclerView.addItemDecoration(headersDecor);
-        ultimateRecyclerView.enableLoadmore();
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        simpleRecyclerViewAdapter.setCustomLoadMoreView(layoutInflater.inflate(R.layout.loadingview, null));
-
-
-        ultimateRecyclerView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void loadMore(int itemsCount, final int maxLastVisiblePosition) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                        simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-//                            simpleRecyclerViewAdapter.getCustomLoadMoreView().setVisibility(View.GONE);
-                        ultimateRecyclerView.disableLoadmore();
-                    }
-                }, 1000);
-            }
-        });
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-//                simpleRecyclerViewAdapter = new SimpleAdapter(Lists.<String>newArrayList());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                simpleRecyclerViewAdapter.insert("uj", simpleRecyclerViewAdapter.getAdapterItemCount());
-                ultimateRecyclerView.setAdapter(simpleRecyclerViewAdapter);
-            }
-        }, 10000);
+    @Override
+    protected PollItemClickListener createPollItemClickListener() {
+        return new MyPollsItemClickListener(getRapidPollActivity(), requestCreator, service);
     }
 
-    private RapidPollRestService service;
-
-    private PollsRequest createPollsRequest() {
-        PollsRequest.Builder builder = PollsRequest.builder();
-        builder.withUserId("");
-        builder.withListType(ListType.ALL);
-        builder.withOrderKey(OrderKey.TITLE);
-        builder.withOrderType(OrderType.DESC);
-        builder.withPage("1");
-        builder.withPageSize("25");
-        return builder.build();
+    @Override
+    protected void createSearchPollsAdapter(PollItemClickListener pollItemClickListener) {
+        resultsAdapter = new ResultsAdapter(Lists.<SearchPollsItemData>newArrayList(), pollItemClickListener, new DateStringFormatter(getResources()));
     }
 
+    @Override
+    protected SimpleAdapter getSearchPollsAdapter() {
+        return resultsAdapter;
+    }
+
+    @Override
+    protected ListType getListType() {
+        return ListType.MYPOLL;
+    }
 }

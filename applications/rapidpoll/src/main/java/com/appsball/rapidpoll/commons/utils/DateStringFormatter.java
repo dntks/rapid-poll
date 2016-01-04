@@ -21,9 +21,14 @@ public class DateStringFormatter {
     public DateStringFormatter() {
     }
 
-    public String createDaysAgoFormatFromPublishDate(String publishDate){
+    public String createStartedDaysAgoFormatFromDate(String publishDate){
         int diffInDays = getDiffInDays(publishDate, DateTime.now());
         return resources.getString(R.string.started_x_days_ago, diffInDays);
+    }
+
+    public String createClosedDaysAgoFormatFromDate(String closeDate){
+        int diffInDays = getDiffInDays(closeDate, DateTime.now());
+        return resources.getString(R.string.closed_x_days_ago, diffInDays);
     }
 
     public int getDiffInDays(String publishDate, DateTime toCompare) {

@@ -2,6 +2,7 @@ package com.appsball.rapidpoll.results;
 
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
+import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SearchPollsFragment;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
@@ -24,7 +25,7 @@ public class ResultsFragment extends SearchPollsFragment {
 
     @Override
     protected void createSearchPollsAdapter(PollItemClickListener pollItemClickListener) {
-        resultsAdapter = new ResultsAdapter(Lists.<SearchPollsItemData>newArrayList(), pollItemClickListener);
+        resultsAdapter = new ResultsAdapter(Lists.<SearchPollsItemData>newArrayList(), pollItemClickListener, new DateStringFormatter(getResources()));
     }
 
     @Override

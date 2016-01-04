@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
@@ -15,23 +16,27 @@ import java.util.List;
 
 public class AllPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
     private final PollItemClickListener pollItemClickListener;
+    private final DateStringFormatter dateStringFormatter;
     public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
     public static final int CLOSED_LOCKET = R.drawable.lakat;
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
-    public AllPollsAdapter(List<SearchPollsItemData> items, PollItemClickListener pollItemClickListener) {
+    public AllPollsAdapter(List<SearchPollsItemData> items,
+                           PollItemClickListener pollItemClickListener,
+                           DateStringFormatter dateStringFormatter) {
         super(items);
         this.pollItemClickListener = pollItemClickListener;
+        this.dateStringFormatter = dateStringFormatter;
     }
 
     @Override
     public void onBindViewHolder(final SearchPollsItemViewHolder holder, int position) {
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
-
             int location = customHeaderView != null ? position - 1 : position;
             final SearchPollsItemData searchPollsItemData = items.get(location);
             holder.nameTextView.setText(searchPollsItemData.name);
-            holder.startedTextView.setText(searchPollsItemData.publicatedDaysAgoText);
+            String publicatedDaysAgoText = dateStringFormatter.createStartedDaysAgoFormatFromDate(searchPollsItemData.publicationDate);
+            holder.startedTextView.setText(publicatedDaysAgoText);
             holder.votesTextView.setText(searchPollsItemData.votesText);
             holder.answeredQuestionsBar.setProgress(searchPollsItemData.answeredQuestionsRatioFor100);
             if (!searchPollsItemData.isPublic) {

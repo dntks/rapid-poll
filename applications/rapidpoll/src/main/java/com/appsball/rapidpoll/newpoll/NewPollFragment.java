@@ -51,7 +51,7 @@ public class NewPollFragment extends RapidPollFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        getRapidPollActivity().setHomeButtonVisibility(true);
+        getRapidPollActivity().setHomeTitle("New Poll");
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(NEWPOLL_LAYOUT, container, false);
         newQuestionCreator = new NewQuestionCreator();

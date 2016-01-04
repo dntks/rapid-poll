@@ -37,6 +37,7 @@ import com.orhanobut.wasp.WaspError;
 
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
+import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showErrorDialog;
 
 public class FillPollFragment extends RapidPollFragment {
@@ -55,12 +56,13 @@ public class FillPollFragment extends RapidPollFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        getRapidPollActivity().setHomeButtonVisibility(true);
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(FILLPOLL_LAYOUT, container, false);
         initializeList(savedInstanceState);
         String pollCode = getArguments().getString(POLL_CODE);
         String pollId = getArguments().getString(POLL_ID);
+        String pollTitle = getArguments().getString(POLL_TITLE);
+        getRapidPollActivity().setHomeTitle(pollTitle);
         pollDetailsResponseTransformer = new PollDetailsResponseTransformer(new PollDetailsQuestionsTransformer(new PollDetailsAnswersTransformer()));
         requestCreator = new RequestCreator();
         requestTransformer = createDoPollRequestTransformer();

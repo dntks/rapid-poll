@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.model.PollState;
-import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -14,11 +13,9 @@ import java.util.List;
 
 public class SearchPollsItemDataTransformer {
 
-    private DateStringFormatter dateStringFormatter;
     private Resources resources;
 
-    public SearchPollsItemDataTransformer(DateStringFormatter dateStringFormatter, Resources resources) {
-        this.dateStringFormatter = dateStringFormatter;
+    public SearchPollsItemDataTransformer(Resources resources) {
         this.resources = resources;
     }
 
@@ -47,7 +44,6 @@ public class SearchPollsItemDataTransformer {
         builder.withState(PollState.valueOf(input.state));
         int answeredQuestionsRatioFor100 = calculateAnsweredQuestionRatioFor100(input.number_of_answered_questions_by_the_user, input.number_of_questions);
         builder.withAnsweredQuestionsRatioFor100(answeredQuestionsRatioFor100);
-        builder.withPublicatedDaysAgoText(dateStringFormatter.createDaysAgoFormatFromPublishDate(input.publication_date));
         builder.withVotesText(resources.getString(R.string.x_votes, input.number_of_votes));
         return builder.build();
     }

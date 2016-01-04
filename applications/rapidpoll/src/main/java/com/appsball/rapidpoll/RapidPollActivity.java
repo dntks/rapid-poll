@@ -11,6 +11,7 @@ import android.view.View;
 import com.appsball.rapidpoll.allpolls.AllPollsFragment;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.fillpoll.FillPollFragment;
+import com.appsball.rapidpoll.mypolls.MyPollsFragment;
 import com.appsball.rapidpoll.newpoll.NewPollFragment;
 import com.appsball.rapidpoll.results.ResultsFragment;
 import com.orhanobut.hawk.Hawk;
@@ -26,7 +27,7 @@ public class RapidPollActivity extends AppCompatActivity {
     public static final String POLL_CODE = "poll_code";
     public static final String POLL_ID = "poll_id";
     public static final String USER_ID_KEY = "userId";
-    public static final String POLL_IS_PUBLIC = "isPublic";
+    public static final String POLL_TITLE = "poll_title";
     private RapidPollRestService rapidPollRestService;
 
     @Override
@@ -35,8 +36,10 @@ public class RapidPollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        setHomeButtonVisibility(false);
-//        getSupportActionBar().setIcon(R.drawable.logo);
+        hideBackButton();
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.logo_s);
         Logger.init();
         rapidPollRestService = createRapidPollRestService(this);
         initHawk();
@@ -53,12 +56,20 @@ public class RapidPollActivity extends AppCompatActivity {
 //        restCaller.updatePollState();
     }
 
-    public void setHomeButtonVisibility(boolean show) {
+    public void setHomeTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(show);
-            actionBar.setDisplayHomeAsUpEnabled(show);
-            actionBar.setDisplayShowHomeEnabled(show);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setTitle(title);
+        }
+    }
+    public void hideBackButton() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle("");
         }
     }
 
@@ -85,16 +96,22 @@ public class RapidPollActivity extends AppCompatActivity {
         changeToFragment(fragment, false);
     }
 
+    public void toMyPolls() {
+        final Fragment fragment = new MyPollsFragment();
+        changeToFragment(fragment, false);
+    }
+
     public void toCreatePoll() {
         final Fragment fragment = new NewPollFragment();
         changeToFragment(fragment, true);
     }
 
-    public void toFillPoll(String pollId, String pollCode) {
+    public void toFillPoll(String pollId, String pollCode, String pollTitle) {
         final Fragment fragment = new FillPollFragment();
         Bundle bundle = new Bundle();
         bundle.putString(POLL_CODE, pollCode);
         bundle.putString(POLL_ID, pollId);
+        bundle.putString(POLL_TITLE, pollTitle);
         fragment.setArguments(bundle);
         changeToFragment(fragment, true);
     }

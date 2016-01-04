@@ -27,7 +27,7 @@ public class ResultsItemClickListener implements PollItemClickListener {
     @Override
     public void pollItemClicked(final SearchPollsItemData searchPollsItemData) {
         if (searchPollsItemData.isPublic) {
-            rapidPollActivity.toFillPoll(searchPollsItemData.id, PUBLIC_POLL_CODE);
+            rapidPollActivity.toFillPoll(searchPollsItemData.id, PUBLIC_POLL_CODE, searchPollsItemData.name);
         } else {
             showEnterPollCodeDialog(searchPollsItemData.id);
         }
@@ -51,7 +51,7 @@ public class ResultsItemClickListener implements PollItemClickListener {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
-                rapidPollActivity.toFillPoll(id, code);
+                rapidPollActivity.toFillPoll(id, code, pollDetailsResponse.name);
             }
 
             @Override

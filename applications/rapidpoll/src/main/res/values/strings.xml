@@ -29,4 +29,5 @@
     <string name="email_hint">Email address</string>
     <string name="submit_success">You have successfully submitted your vote</string>
     <string name="invite">Invite</string>
+    <string name="closed_x_days_ago">closed %1$d days ago</string>
 </resources>

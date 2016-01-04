@@ -18,7 +18,6 @@ import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
-import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
@@ -46,7 +45,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        getRapidPollActivity().setHomeButtonVisibility(false);
+        getRapidPollActivity().hideBackButton();
         service = getRapidPollActivity().getRestService();
         initializeComponents();
         View rootView = inflater.inflate(SEARCHPOLLS_LAYOUT, container, false);
@@ -64,7 +63,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     private void initializeComponents() {
         searchPollsDataState = new SearchPollsDataState();
         requestCreator = new RequestCreator();
-        searchPollsItemDataTransformer = new SearchPollsItemDataTransformer(new DateStringFormatter(getResources()), getResources());
+        searchPollsItemDataTransformer = new SearchPollsItemDataTransformer(getResources());
         searchPollsCallback = new SearchPollsCallback(Lists.<OnPollsReceivedListener>newArrayList(this));
         createSearchPollsAdapter(createPollItemClickListener());
     }

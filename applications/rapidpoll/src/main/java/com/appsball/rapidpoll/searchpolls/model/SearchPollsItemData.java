@@ -17,7 +17,6 @@ public class SearchPollsItemData {
     public final int answeredQuestionsByUser;
     public final int answeredQuestionsRatioFor100;
     public final int numberOfVotes;
-    public final String publicatedDaysAgoText;
     public final String votesText;
 
 
@@ -34,7 +33,6 @@ public class SearchPollsItemData {
                                int answeredQuestionsByUser,
                                int numberOfVotes,
                                int answeredQuestionsRatioFor100,
-                               String publicatedDaysAgoText,
                                String votesText) {
         this.id = id;
         this.name = name;
@@ -49,7 +47,6 @@ public class SearchPollsItemData {
         this.answeredQuestionsByUser = answeredQuestionsByUser;
         this.numberOfVotes = numberOfVotes;
         this.answeredQuestionsRatioFor100 = answeredQuestionsRatioFor100;
-        this.publicatedDaysAgoText = publicatedDaysAgoText;
         this.votesText = votesText;
     }
 
@@ -73,7 +70,6 @@ public class SearchPollsItemData {
         private int answeredQuestionsByUser;
         private int numberOfVotes;
         private int answeredQuestionsRatioFor100;
-        private String publicatedDaysAgoText;
         private String votesText;
 
         public Builder withId(String id) {
@@ -141,11 +137,6 @@ public class SearchPollsItemData {
             return this;
         }
 
-        public Builder withPublicatedDaysAgoText(String publicatedDaysAgoText) {
-            this.publicatedDaysAgoText = publicatedDaysAgoText;
-            return this;
-        }
-
         public Builder withVotesText(String votesText) {
             this.votesText = votesText;
             return this;
@@ -165,7 +156,6 @@ public class SearchPollsItemData {
                                         answeredQuestionsByUser,
                                         numberOfVotes,
                                         answeredQuestionsRatioFor100,
-                                        publicatedDaysAgoText,
                                         votesText);
         }
     }
