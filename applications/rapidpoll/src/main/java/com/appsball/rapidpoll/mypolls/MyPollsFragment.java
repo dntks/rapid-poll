@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.allpolls.SimpleAdapter;
 import com.appsball.rapidpoll.commons.communication.request.PollsRequest;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
@@ -16,6 +15,7 @@ import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
+import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 

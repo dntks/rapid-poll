@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.results;
 
 import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
@@ -12,13 +12,13 @@ import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
 
-public class AllPollsItemClickListener implements PollItemClickListener {
+public class ResultsItemClickListener implements PollItemClickListener {
     private final RapidPollActivity rapidPollActivity;
     private final RequestCreator requestCreator;
     private final RapidPollRestService service;
     public static final String PUBLIC_POLL_CODE = "NONE";
 
-    public AllPollsItemClickListener(RapidPollActivity rapidPollActivity, RequestCreator requestCreator, RapidPollRestService service) {
+    public ResultsItemClickListener(RapidPollActivity rapidPollActivity, RequestCreator requestCreator, RapidPollRestService service) {
         this.rapidPollActivity = rapidPollActivity;
         this.requestCreator = requestCreator;
         this.service = service;

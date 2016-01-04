@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.searchpolls;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -114,6 +114,11 @@ public abstract class SimpleAdapter<T, IH extends UltimateRecyclerviewViewHolder
         @Override
         public void onItemClear() {
         }
+    }
+
+    public void removeAllItems() {
+        items.clear();
+        notifyDataSetChanged();
     }
 
     public abstract T getItem(int position);

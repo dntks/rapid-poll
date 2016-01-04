@@ -1,11 +1,10 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.searchpolls;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.allpolls.adapter.AllPollsAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
@@ -68,7 +67,7 @@ public class PollsListWrapper {
         }
     }
 
-    public void setupAdapterIfFirstCallIsBeingDone(AllPollsAdapter allPollsAdapter) {
+    public void setupAdapterIfFirstCallIsBeingDone(SimpleAdapter allPollsAdapter) {
         if (centeredLoadingView.getVisibility() == View.VISIBLE) {
             centeredLoadingView.setVisibility(View.GONE);
             ultimateRecyclerView.setAdapter(allPollsAdapter);

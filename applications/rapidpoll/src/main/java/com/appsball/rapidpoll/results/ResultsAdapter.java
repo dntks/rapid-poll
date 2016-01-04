@@ -1,25 +1,22 @@
-package com.appsball.rapidpoll.allpolls.adapter;
+package com.appsball.rapidpoll.results;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.allpolls.PollItemClickListener;
-import com.appsball.rapidpoll.allpolls.SimpleAdapter;
+import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
+import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
-import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
-public class AllPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
+public class ResultsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
     private final PollItemClickListener pollItemClickListener;
-    public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
-    public static final int CLOSED_LOCKET = R.drawable.lakat;
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
-    public AllPollsAdapter(List<SearchPollsItemData> items, PollItemClickListener pollItemClickListener) {
+    public ResultsAdapter(List<SearchPollsItemData> items, PollItemClickListener pollItemClickListener) {
         super(items);
         this.pollItemClickListener = pollItemClickListener;
     }
@@ -34,12 +31,7 @@ public class AllPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPo
             holder.startedTextView.setText(searchPollsItemData.publicatedDaysAgoText);
             holder.votesTextView.setText(searchPollsItemData.votesText);
             holder.answeredQuestionsBar.setProgress(searchPollsItemData.answeredQuestionsRatioFor100);
-            if (!searchPollsItemData.isPublic) {
-                int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-                holder.itemRightImage.setImageResource(locketImageId);
-            } else {
                 holder.itemRightImage.setImageResource(RIGHT_ARROW);
-            }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,8 +67,4 @@ public class AllPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPo
         } else return -1;
     }
 
-    public void removeAllItems() {
-        items.clear();
-        notifyDataSetChanged();
-    }
 }

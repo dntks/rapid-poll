@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.searchpolls;
 
 import android.content.res.Resources;
 
@@ -12,12 +12,12 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public class AllPollsItemDataTransformer {
+public class SearchPollsItemDataTransformer {
 
     private DateStringFormatter dateStringFormatter;
     private Resources resources;
 
-    public AllPollsItemDataTransformer(DateStringFormatter dateStringFormatter, Resources resources) {
+    public SearchPollsItemDataTransformer(DateStringFormatter dateStringFormatter, Resources resources) {
         this.dateStringFormatter = dateStringFormatter;
         this.resources = resources;
     }

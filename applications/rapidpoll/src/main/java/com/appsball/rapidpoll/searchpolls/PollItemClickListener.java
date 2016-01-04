@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls;
+package com.appsball.rapidpoll.searchpolls;
 
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 

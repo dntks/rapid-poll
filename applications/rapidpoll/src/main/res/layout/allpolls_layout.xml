@@ -11,12 +11,68 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
-    <include
+    <HorizontalScrollView
         android:id="@+id/sort_horizontal_scrollview"
-        layout="@layout/sortyby_layout"
         android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_height="65dp"
-        android:layout_alignParentTop="true"/>
+        android:background="@color/sortby_background_purple"
+        android:visibility="gone"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/sortby_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="14dp"
+                android:paddingBottom="2dp"
+                android:text="@string/sort_by"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/sort_by_date_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/date" />
+
+            <Button
+                android:id="@+id/sort_by_title_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title" />
+
+            <Button
+                android:id="@+id/sort_by_vote_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vote" />
+
+            <Button
+                android:id="@+id/sort_by_status_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status" />
+
+            <Button
+                android:id="@+id/sort_by_publicity_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publicity" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/paging_list_view"

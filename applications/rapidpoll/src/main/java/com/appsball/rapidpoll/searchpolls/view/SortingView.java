@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.allpolls.PollsListInitializer;
+import com.appsball.rapidpoll.searchpolls.PollsListInitializer;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.orhanobut.logger.Logger;
 

@@ -8,23 +8,23 @@ import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
 
 public class RequestCreator {
 
-    public PollsRequest createAllPollsRequest(SearchPollsDataState searchPollsDataState) {
+    public PollsRequest createAllPollsRequest(SearchPollsDataState searchPollsDataState, ListType listType) {
         PollsRequest.Builder builder = PollsRequest.builder();
         builder.withPage(String.valueOf(searchPollsDataState.actualPage));
         builder.withOrderType(searchPollsDataState.chosenOrderType);
         builder.withOrderKey(searchPollsDataState.chosenOrderKey);
-        builder.withListType(ListType.ALL);
+        builder.withListType(listType);
         builder.withUserId(Hawk.<String>get(USER_ID_KEY));
         builder.withPageSize(String.valueOf(searchPollsDataState.numberOfRequestedPolls));
         return builder.build();
     }
 
-    public SearchPollRequest createSearchPollRequest(String searchPhrase, SearchPollsDataState searchPollsDataState) {
+    public SearchPollRequest createSearchPollRequest(String searchPhrase, SearchPollsDataState searchPollsDataState, ListType listType) {
         SearchPollRequest.Builder builder = SearchPollRequest.builder();
         builder.withPage(String.valueOf(searchPollsDataState.actualPage));
         builder.withOrderType(searchPollsDataState.chosenOrderType);
         builder.withOrderKey(searchPollsDataState.chosenOrderKey);
-        builder.withListType(ListType.ALL);
+        builder.withListType(listType);
         builder.withUserId(Hawk.<String>get(USER_ID_KEY));
         builder.withPageSize(String.valueOf(searchPollsDataState.numberOfRequestedPolls));
         builder.withSearchItem(searchPhrase);
