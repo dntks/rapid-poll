@@ -19,12 +19,14 @@ public class BottomBarNavigationFragment extends RapidPollFragment {
 
             @Override
             public void onClick(View v) {
+                getRapidPollActivity().toAllPolls();
             }
         });
         rootView.findViewById(R.id.results_button).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                getRapidPollActivity().toResults();
             }
         });
     }

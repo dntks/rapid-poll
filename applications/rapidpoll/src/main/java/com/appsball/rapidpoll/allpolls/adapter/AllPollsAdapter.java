@@ -7,34 +7,35 @@ import android.view.ViewGroup;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.allpolls.PollItemClickListener;
 import com.appsball.rapidpoll.allpolls.SimpleAdapter;
-import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
+import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
-public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsItemViewHolder> {
+public class AllPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
     private final PollItemClickListener pollItemClickListener;
     public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
     public static final int CLOSED_LOCKET = R.drawable.lakat;
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
-    public AllPollsAdapter(List<AllPollsItemData> items, PollItemClickListener pollItemClickListener) {
+    public AllPollsAdapter(List<SearchPollsItemData> items, PollItemClickListener pollItemClickListener) {
         super(items);
         this.pollItemClickListener = pollItemClickListener;
     }
 
     @Override
-    public void onBindViewHolder(final AllPollsItemViewHolder holder, int position) {
+    public void onBindViewHolder(final SearchPollsItemViewHolder holder, int position) {
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
 
             int location = customHeaderView != null ? position - 1 : position;
-            final AllPollsItemData allPollsItemData = items.get(location);
-            holder.nameTextView.setText(allPollsItemData.name);
-            holder.startedTextView.setText(allPollsItemData.publicatedDaysAgoText);
-            holder.votesTextView.setText(allPollsItemData.votesText);
-            holder.answeredQuestionsBar.setProgress(allPollsItemData.answeredQuestionsRatioFor100);
-            if (!allPollsItemData.isPublic) {
-                int locketImageId = Hawk.contains(allPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
+            final SearchPollsItemData searchPollsItemData = items.get(location);
+            holder.nameTextView.setText(searchPollsItemData.name);
+            holder.startedTextView.setText(searchPollsItemData.publicatedDaysAgoText);
+            holder.votesTextView.setText(searchPollsItemData.votesText);
+            holder.answeredQuestionsBar.setProgress(searchPollsItemData.answeredQuestionsRatioFor100);
+            if (!searchPollsItemData.isPublic) {
+                int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
                 holder.itemRightImage.setImageResource(locketImageId);
             } else {
                 holder.itemRightImage.setImageResource(RIGHT_ARROW);
@@ -42,28 +43,28 @@ public class AllPollsAdapter extends SimpleAdapter<AllPollsItemData, AllPollsIte
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pollItemClickListener.pollItemClicked(allPollsItemData);
+                    pollItemClickListener.pollItemClicked(searchPollsItemData);
                 }
             });
         }
     }
 
     @Override
-    public AllPollsItemData getItem(int position) {
+    public SearchPollsItemData getItem(int position) {
         return items.get(position);
     }
 
 
     @Override
-    public AllPollsItemViewHolder getViewHolder(View view) {
-        return new AllPollsItemViewHolder(view, false);
+    public SearchPollsItemViewHolder getViewHolder(View view) {
+        return new SearchPollsItemViewHolder(view, false);
     }
 
     @Override
-    public AllPollsItemViewHolder onCreateViewHolder(ViewGroup parent) {
+    public SearchPollsItemViewHolder onCreateViewHolder(ViewGroup parent) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.allpolls_item, parent, false);
-        AllPollsItemViewHolder vh = new AllPollsItemViewHolder(v, true);
+        SearchPollsItemViewHolder vh = new SearchPollsItemViewHolder(v, true);
         return vh;
     }
 

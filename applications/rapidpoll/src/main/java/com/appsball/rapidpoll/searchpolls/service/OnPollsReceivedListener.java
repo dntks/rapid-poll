@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls.service;
+package com.appsball.rapidpoll.searchpolls.service;
 
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 

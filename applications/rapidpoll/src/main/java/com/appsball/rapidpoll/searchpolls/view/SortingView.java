@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls.view;
+package com.appsball.rapidpoll.searchpolls.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,12 +8,12 @@ import android.view.View;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.allpolls.PollsListInitializer;
-import com.appsball.rapidpoll.allpolls.model.AllPollsDataState;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.orhanobut.logger.Logger;
 
 public class SortingView {
 
-    private AllPollsDataState allPollsDataState;
+    private SearchPollsDataState searchPollsDataState;
     private PollsListInitializer pollsListInitializer;
 
     private View dateSortButton;
@@ -24,8 +24,8 @@ public class SortingView {
     private View sortByLayout;
     private View pagingView;
 
-    public SortingView(View rootView, AllPollsDataState allPollsDataState, PollsListInitializer pollsListInitializer) {
-        this.allPollsDataState = allPollsDataState;
+    public SortingView(View rootView, SearchPollsDataState searchPollsDataState, PollsListInitializer pollsListInitializer) {
+        this.searchPollsDataState = searchPollsDataState;
         this.pollsListInitializer = pollsListInitializer;
         sortByLayout = rootView.findViewById(R.id.sort_horizontal_scrollview);
         pagingView = rootView.findViewById(R.id.paging_list_view);
@@ -107,7 +107,7 @@ public class SortingView {
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.setDateSort();
+                searchPollsDataState.setDateSort();
                 enableOtherButtons(v);
                 pollsListInitializer.resetAdapterAndGetPolls();
             }
@@ -116,7 +116,7 @@ public class SortingView {
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.setTitleSort();
+                searchPollsDataState.setTitleSort();
                 enableOtherButtons(v);
                 pollsListInitializer.resetAdapterAndGetPolls();
             }
@@ -125,7 +125,7 @@ public class SortingView {
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.setVotesSort();
+                searchPollsDataState.setVotesSort();
                 enableOtherButtons(v);
                 pollsListInitializer.resetAdapterAndGetPolls();
             }
@@ -134,7 +134,7 @@ public class SortingView {
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.setPublicitySort();
+                searchPollsDataState.setPublicitySort();
                 enableOtherButtons(v);
                 pollsListInitializer.resetAdapterAndGetPolls();
             }
@@ -143,7 +143,7 @@ public class SortingView {
 
             @Override
             public void onClick(View v) {
-                allPollsDataState.setStatusSort();
+                searchPollsDataState.setStatusSort();
                 enableOtherButtons(v);
                 pollsListInitializer.resetAdapterAndGetPolls();
             }

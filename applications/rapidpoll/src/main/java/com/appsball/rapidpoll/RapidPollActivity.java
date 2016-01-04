@@ -12,6 +12,7 @@ import com.appsball.rapidpoll.allpolls.AllPollsFragment;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.fillpoll.FillPollFragment;
 import com.appsball.rapidpoll.newpoll.NewPollFragment;
+import com.appsball.rapidpoll.results.ResultsFragment;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
@@ -76,6 +77,11 @@ public class RapidPollActivity extends AppCompatActivity {
 
     public void toAllPolls() {
         final Fragment fragment = new AllPollsFragment();
+        changeToFragment(fragment, false);
+    }
+
+    public void toResults() {
+        final Fragment fragment = new ResultsFragment();
         changeToFragment(fragment, false);
     }
 

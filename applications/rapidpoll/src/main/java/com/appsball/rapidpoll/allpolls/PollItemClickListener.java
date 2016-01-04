@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll.allpolls;
 
-import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 
 public interface PollItemClickListener {
-    void pollItemClicked(AllPollsItemData allPollsItemData);
+    void pollItemClicked(SearchPollsItemData searchPollsItemData);
 }

@@ -3,10 +3,10 @@ package com.appsball.rapidpoll.allpolls;
 import android.content.res.Resources;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
@@ -22,17 +22,17 @@ public class AllPollsItemDataTransformer {
         this.resources = resources;
     }
 
-    public List<AllPollsItemData> transformAll(List<PollsResponse> pollsResponses) {
-        return Lists.transform(pollsResponses, new Function<PollsResponse, AllPollsItemData>() {
+    public List<SearchPollsItemData> transformAll(List<PollsResponse> pollsResponses) {
+        return Lists.transform(pollsResponses, new Function<PollsResponse, SearchPollsItemData>() {
             @Override
-            public AllPollsItemData apply(PollsResponse input) {
+            public SearchPollsItemData apply(PollsResponse input) {
                 return transform(input);
             }
         });
     }
 
-    private AllPollsItemData transform(PollsResponse input) {
-        AllPollsItemData.Builder builder = AllPollsItemData.builder();
+    private SearchPollsItemData transform(PollsResponse input) {
+        SearchPollsItemData.Builder builder = SearchPollsItemData.builder();
         builder.withAllowComment(input.allow_comment == 1);
         builder.withAnonymous(input.anonymous == 1);
         builder.withAnsweredQuestionsByUser(input.number_of_answered_questions_by_the_user);

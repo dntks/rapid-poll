@@ -6,8 +6,8 @@ import android.view.View;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.allpolls.adapter.AllPollsAdapter;
-import com.appsball.rapidpoll.allpolls.model.AllPollsDataState;
-import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import java.util.List;
@@ -62,8 +62,8 @@ public class PollsListWrapper {
         });
     }
 
-    public void disableLoadMoreIfNoMoreItems(List<AllPollsItemData> items) {
-        if (items.size() < AllPollsDataState.numberOfRequestedPolls) {
+    public void disableLoadMoreIfNoMoreItems(List<SearchPollsItemData> items) {
+        if (items.size() < SearchPollsDataState.numberOfRequestedPolls) {
             ultimateRecyclerView.disableLoadmore();
         }
     }

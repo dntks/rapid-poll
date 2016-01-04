@@ -1,4 +1,4 @@
-package com.appsball.rapidpoll.allpolls.view;
+package com.appsball.rapidpoll.searchpolls.view;
 
 import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;

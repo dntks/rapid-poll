@@ -1,8 +1,8 @@
-package com.appsball.rapidpoll.allpolls.model;
+package com.appsball.rapidpoll.searchpolls.model;
 
 import com.appsball.rapidpoll.commons.model.PollState;
 
-public class AllPollsItemData {
+public class SearchPollsItemData {
 
     public final String id;
     public final String name;
@@ -21,21 +21,21 @@ public class AllPollsItemData {
     public final String votesText;
 
 
-    public AllPollsItemData(String id,
-                            String name,
-                            boolean isPublic,
-                            boolean anonymous,
-                            boolean allowComment,
-                            String expirationDate,
-                            String ownerId,
-                            PollState state,
-                            String publicationDate,
-                            int numberOfQuestions,
-                            int answeredQuestionsByUser,
-                            int numberOfVotes,
-                            int answeredQuestionsRatioFor100,
-                            String publicatedDaysAgoText,
-                            String votesText) {
+    public SearchPollsItemData(String id,
+                               String name,
+                               boolean isPublic,
+                               boolean anonymous,
+                               boolean allowComment,
+                               String expirationDate,
+                               String ownerId,
+                               PollState state,
+                               String publicationDate,
+                               int numberOfQuestions,
+                               int answeredQuestionsByUser,
+                               int numberOfVotes,
+                               int answeredQuestionsRatioFor100,
+                               String publicatedDaysAgoText,
+                               String votesText) {
         this.id = id;
         this.name = name;
         this.isPublic = isPublic;
@@ -151,8 +151,8 @@ public class AllPollsItemData {
             return this;
         }
 
-        public AllPollsItemData build() {
-            return new AllPollsItemData(id,
+        public SearchPollsItemData build() {
+            return new SearchPollsItemData(id,
                                         name,
                                         isPublic,
                                         anonymous,

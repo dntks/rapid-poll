@@ -14,18 +14,18 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.allpolls.adapter.AllPollsAdapter;
-import com.appsball.rapidpoll.allpolls.model.AllPollsDataState;
-import com.appsball.rapidpoll.allpolls.model.AllPollsItemData;
-import com.appsball.rapidpoll.allpolls.service.OnPollsReceivedListener;
-import com.appsball.rapidpoll.allpolls.service.SearchPollsCallback;
-import com.appsball.rapidpoll.allpolls.view.SortingView;
-import com.appsball.rapidpoll.allpolls.view.ToolbarTouchListener;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
+import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
+import com.appsball.rapidpoll.searchpolls.service.OnPollsReceivedListener;
+import com.appsball.rapidpoll.searchpolls.service.SearchPollsCallback;
+import com.appsball.rapidpoll.searchpolls.view.SortingView;
+import com.appsball.rapidpoll.searchpolls.view.ToolbarTouchListener;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
     private static final int ALLPOLLS_LAYOUT = R.layout.allpolls_layout;
 
-    private AllPollsDataState allPollsDataState;
+    private SearchPollsDataState searchPollsDataState;
 
     private RapidPollRestService service;
     private AllPollsAdapter allPollsAdapter;
@@ -64,7 +64,7 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
     }
 
     private void initializeComponents() {
-        allPollsDataState = new AllPollsDataState();
+        searchPollsDataState = new SearchPollsDataState();
         requestCreator = new RequestCreator();
         allPollsItemDataTransformer = new AllPollsItemDataTransformer(new DateStringFormatter(getResources()), getResources());
         searchPollsCallback = new SearchPollsCallback(Lists.<OnPollsReceivedListener>newArrayList(this));
@@ -74,18 +74,18 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
 
     private void initializeViews(LayoutInflater inflater, Bundle savedInstanceState, View rootView) {
         moreLoadView = inflater.inflate(R.layout.loadingview, null);
-        allPollsAdapter = new AllPollsAdapter(Lists.<AllPollsItemData>newArrayList(), pollItemClickListener);
+        allPollsAdapter = new AllPollsAdapter(Lists.<SearchPollsItemData>newArrayList(), pollItemClickListener);
         allPollsAdapter.setCustomLoadMoreView(moreLoadView);
         pollsListWrapper = new PollsListWrapper(new LinearLayoutManager(getContext()), rootView, moreLoadView, this, this);
         pollsListWrapper.initializeView(savedInstanceState);
-        sortingView = new SortingView(rootView, allPollsDataState, this);
+        sortingView = new SortingView(rootView, searchPollsDataState, this);
         sortingView.init();
     }
 
 
     public void callGetPolls() {
         if (checkIsOnlineAndShowSimpleDialog(createGetPollsOnNetOkButtonListener())) {
-            service.getPolls(requestCreator.createAllPollsRequest(allPollsDataState), searchPollsCallback);
+            service.getPolls(requestCreator.createAllPollsRequest(searchPollsDataState), searchPollsCallback);
         }
     }
 
@@ -108,9 +108,9 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
     }
 
     public void onPollsReceived(List<PollsResponse> pollsResponses) {
-        allPollsDataState.actualPage++;
+        searchPollsDataState.actualPage++;
         pollsListWrapper.setupAdapterIfFirstCallIsBeingDone(allPollsAdapter);
-        List<AllPollsItemData> items = allPollsItemDataTransformer.transformAll(pollsResponses);
+        List<SearchPollsItemData> items = allPollsItemDataTransformer.transformAll(pollsResponses);
         allPollsAdapter.insertAll(items, allPollsAdapter.getAdapterItemCount());
         pollsListWrapper.disableLoadMoreIfNoMoreItems(items);
     }
@@ -123,14 +123,14 @@ public class AllPollsFragment extends BottomBarNavigationFragment implements Get
     }
 
     private void resetAdapterAndList() {
-        allPollsDataState.actualPage = 1;
+        searchPollsDataState.actualPage = 1;
         allPollsAdapter.removeAllItems();
         pollsListWrapper.resetPollsList();
     }
 
     public boolean searchForText(String searchPhrase) {
         if (checkIsOnlineAndShowSimpleDialog()) {
-            service.searchPoll(requestCreator.createSearchPollRequest(searchPhrase, allPollsDataState),
+            service.searchPoll(requestCreator.createSearchPollRequest(searchPhrase, searchPollsDataState),
                     searchPollsCallback);
             return true;
         }

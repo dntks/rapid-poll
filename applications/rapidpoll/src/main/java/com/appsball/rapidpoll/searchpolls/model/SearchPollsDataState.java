@@ -1,9 +1,9 @@
-package com.appsball.rapidpoll.allpolls.model;
+package com.appsball.rapidpoll.searchpolls.model;
 
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 
-public class AllPollsDataState {
+public class SearchPollsDataState {
     public static int numberOfRequestedPolls = 10;
     public OrderType chosenOrderType = OrderType.DESC;
     public OrderKey chosenOrderKey = OrderKey.DATE;
