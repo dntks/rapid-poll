@@ -1,9 +1,13 @@
 package com.appsball.rapidpoll.mypolls;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
+import com.appsball.rapidpoll.searchpolls.PollsListWrapper;
 import com.appsball.rapidpoll.searchpolls.SearchPollsFragment;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
@@ -37,4 +41,10 @@ public class MyPollsFragment extends SearchPollsFragment {
     protected ListType getListType() {
         return ListType.MYPOLL;
     }
+
+    @Override
+    protected PollsListWrapper createPollsListWrapper(View rootView, View moreLoadView) {
+        return new MyPollsListWrapper(new LinearLayoutManager(getContext()), rootView, moreLoadView, this, this);
+    }
+
 }

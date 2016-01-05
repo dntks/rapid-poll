@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background_dark_purple"
     tools:context="com.appsball.selfiemeter.SelfieMeterMainActivity">
 
     <android.support.v7.widget.Toolbar

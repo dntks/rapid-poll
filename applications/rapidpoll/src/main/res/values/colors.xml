@@ -14,7 +14,7 @@
     <color name="progress_green">#00B37E</color>
     <color name="progress_purple">#945BC7</color>
 
-    <color name="sortby_text_greypurple">#8E8EBB</color>
+    <color name="text_greypurple">#8E8EBB</color>
     <color name="sortby_background_purple">#360C5B</color>
     <color name="sortby_text_bubble_toppurple">#693695</color>
     <color name="sortby_text_bubble_bottompurple">#592983</color>
@@ -23,5 +23,4 @@
     <color name="listitem_answer_purple">#35366F</color>
     <color name="listitem_answer_separator">#5D5EA4</color>
 
-    <color name="multichoice_text_color">#8E8EBB</color>
 </resources>

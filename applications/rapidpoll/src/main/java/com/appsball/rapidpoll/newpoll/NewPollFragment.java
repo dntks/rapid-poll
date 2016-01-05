@@ -34,6 +34,7 @@ import com.orhanobut.wasp.WaspError;
 
 import java.util.List;
 
+import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -144,7 +145,7 @@ public class NewPollFragment extends RapidPollFragment {
     }
 
     private ManagePollRequest createManagePollRequest(ManagePoll managePoll) {
-        return ManagePollRequest.builder().withPoll(managePoll).withAction("CREATE").withUserId(Hawk.<String>get("userId")).build();
+        return ManagePollRequest.builder().withPoll(managePoll).withAction("CREATE").withUserId(Hawk.<String>get(USER_ID_KEY)).build();
     }
 
     private ManagePoll buildPoll(String name, boolean draft) {

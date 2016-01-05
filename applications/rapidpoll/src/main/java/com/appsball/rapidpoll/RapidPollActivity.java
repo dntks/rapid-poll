@@ -1,12 +1,9 @@
 package com.appsball.rapidpoll;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -24,7 +21,9 @@ import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService
 import com.appsball.rapidpoll.fillpoll.FillPollFragment;
 import com.appsball.rapidpoll.mypolls.MyPollsFragment;
 import com.appsball.rapidpoll.newpoll.NewPollFragment;
+import com.appsball.rapidpoll.pushnotification.RegistrationAsyncTask;
 import com.appsball.rapidpoll.pushnotification.RegistrationIntentService;
+import com.appsball.rapidpoll.register.UserRegister;
 import com.appsball.rapidpoll.results.ResultsFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -38,13 +37,14 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 public class RapidPollActivity extends AppCompatActivity {
     public static final String ServerAPIKey = "AIzaSyAkliInYloQCi9nUVFZzL-N73dO32p-h9c";
     public static final String SenderID = "73756231339";
-    public static final String userid = "11E5B3A41655D669886502000029BDFD";
+    public static final String userid = "31000000000000000000000000000000";
     public static final String POLL_CODE = "poll_code";
     public static final String POLL_ID = "poll_id";
     public static final String USER_ID_KEY = "userId";
     public static final String POLL_TITLE = "poll_title";
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
+    public static final String NO_ID = "no id";
     private RapidPollRestService rapidPollRestService;
     private EditText editableTitle;
 
@@ -63,26 +63,24 @@ public class RapidPollActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
         editableTitle = (EditText) findViewById(R.id.titleEditText);
 
-
+        mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
+        mInformationTextView = (TextView) findViewById(R.id.informationTextView);
 
         Logger.init();
         initHawk();
 
-        initGCM();
-        if(!isRegistered()){
 
+        rapidPollRestService = createRapidPollRestService(this);
+        Hawk.put(USER_ID_KEY, userid);
+        if (!isRegistered()) {
+            registerGCM();
+        } else {
+            hideRegisterViews();
+            toAllPolls();
         }
 
 
-        Hawk.put("userId", userid);
 
-
-
-        rapidPollRestService = createRapidPollRestService(this);
-
-
-
-        toAllPolls();
 //        RestCaller restCaller  =  new RestCaller(this);
 //        restCaller.doPoll();
 //        restCaller.createPoll();
@@ -93,33 +91,39 @@ public class RapidPollActivity extends AppCompatActivity {
 //        restCaller.updatePollState();
     }
 
-    private boolean isRegistered() {
-
-        return false;
+    private void hideRegisterViews() {
+        mRegistrationProgressBar.setVisibility(View.GONE);
+        mInformationTextView.setVisibility(View.GONE);
     }
 
-    public void initGCM(){
-        mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    mInformationTextView.setText(getString(R.string.gcm_send_message));
-                } else {
-                    mInformationTextView.setText(getString(R.string.token_error_message));
-                }
-            }
-        };
-        mInformationTextView = (TextView) findViewById(R.id.informationTextView);
+    private boolean isRegistered() {
+
+        return !NO_ID.equals(Hawk.get(USER_ID_KEY, NO_ID));
+    }
+
+    public void registerGCM() {
 
         if (checkPlayServices()) {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
+            UserRegister.OnRegisterListener registerListener = new UserRegister.OnRegisterListener() {
+                @Override
+                public void succesfulRegister() {
+                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
+                    hideRegisterViews();
+                    toAllPolls();
+                }
+
+                @Override
+                public void failedRegister() {
+                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
+                    mInformationTextView.setText(getString(R.string.token_error_message));
+
+                }
+            };
+            UserRegister userRegister = new UserRegister(rapidPollRestService, registerListener);
+            RegistrationAsyncTask registrationAsyncTask = new RegistrationAsyncTask(userRegister, this);
+            registrationAsyncTask.execute();
         }
     }
 

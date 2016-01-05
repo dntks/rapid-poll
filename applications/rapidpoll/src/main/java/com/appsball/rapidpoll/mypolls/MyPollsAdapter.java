@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
@@ -11,6 +12,7 @@ import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
 
     @Override
     public void onBindViewHolder(final SearchPollsItemViewHolder holder, int position) {
-        if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
+        if (position < getItemCount() && (position < items.size())) {
             int location = customHeaderView != null ? position - 1 : position;
             final SearchPollsItemData searchPollsItemData = items.get(location);
             holder.nameTextView.setText(searchPollsItemData.name);
@@ -85,14 +87,23 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.mypolls_listheader, viewGroup, false);
-        return new RecyclerView.ViewHolder(new View(viewGroup.getContext())) {
-        };
+        return new HeaderViewHolder(view);
     }
 
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         SearchPollsItemData itemData = getItem(position);
+        HeaderViewHolder holder = (HeaderViewHolder)viewHolder;
+        holder.headerTextView.setText(itemData.state.toString());
 
+    }
+    class HeaderViewHolder extends UltimateRecyclerviewViewHolder {
 
+        public TextView headerTextView;
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+            headerTextView = (TextView) itemView.findViewById(R.id.header_text);
+        }
     }
 }

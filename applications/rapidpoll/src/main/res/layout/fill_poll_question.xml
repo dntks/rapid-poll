@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/multichoice_textview"
             android:text="@string/multi"
-            android:textColor="@color/multichoice_text_color"
+            android:textColor="@color/text_greypurple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -12,11 +12,11 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import java.util.List;
 
 public class PollsListWrapper {
-    private UltimateRecyclerView ultimateRecyclerView;
+    protected UltimateRecyclerView ultimateRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private View rootView;
-    private View centeredLoadingView;
-    private View moreLoadView;
+    protected View centeredLoadingView;
+    protected View moreLoadView;
     private GetPollsCaller getPollsCaller;
     private SearchPollsCaller searchPollsCaller;
 

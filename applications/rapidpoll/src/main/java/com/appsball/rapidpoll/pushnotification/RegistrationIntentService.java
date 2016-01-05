@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.RapidPollActivity;
+import com.appsball.rapidpoll.register.UserRegister;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -20,9 +21,11 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
+    private final UserRegister userRegister;
 
-    public RegistrationIntentService() {
+    public RegistrationIntentService(UserRegister userRegister) {
         super(TAG);
+        this.userRegister = userRegister;
     }
 
     @Override
@@ -73,7 +76,7 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+        userRegister.registerUser(token);
     }
 
     /**

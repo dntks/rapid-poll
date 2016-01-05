@@ -1,7 +1,5 @@
 package com.appsball.rapidpoll.commons.communication.response;
 
-import java.util.List;
-
 /**
  * { "result":
  *       {"user_id":"11E5898E579381089E7502000029BDFD"},
@@ -10,10 +8,5 @@ import java.util.List;
  *  }
  */
 public class RegisterResponse{
-
-    String user_id;
-
-    public String getUserId() {
-        return user_id;
-    }
+    public String user_id;
 }

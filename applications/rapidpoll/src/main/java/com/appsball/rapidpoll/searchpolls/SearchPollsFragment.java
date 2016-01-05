@@ -76,11 +76,15 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         View  moreLoadView = inflater.inflate(R.layout.loadingview, null);
 
         getSearchPollsAdapter().setCustomLoadMoreView(moreLoadView);
-        pollsListWrapper = new PollsListWrapper(new LinearLayoutManager(getContext()), rootView, moreLoadView, this, this);
+        pollsListWrapper = createPollsListWrapper(rootView, moreLoadView);
         pollsListWrapper.initializeView(savedInstanceState);
         sortingView = new SortingView(rootView, searchPollsDataState, this);
         sortingView.init();
         getRapidPollActivity().findViewById(R.id.my_toolbar).setOnTouchListener(new ToolbarTouchListener(sortingView));
+    }
+
+    protected PollsListWrapper createPollsListWrapper(View rootView, View moreLoadView) {
+        return new PollsListWrapper(new LinearLayoutManager(getContext()), rootView, moreLoadView, this, this);
     }
 
     protected abstract SimpleAdapter getSearchPollsAdapter();
