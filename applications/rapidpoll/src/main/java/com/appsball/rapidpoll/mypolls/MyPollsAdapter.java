@@ -1,5 +1,6 @@
 package com.appsball.rapidpoll.mypolls;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,8 +77,22 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
 
     @Override
     public long generateHeaderId(int position) {
-        if (getItem(position).name.length() > 0) {
-            return getItem(position).name.charAt(0);
-        } else return -1;
+        SearchPollsItemData itemData = getItem(position);
+        return itemData.state.value;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.mypolls_listheader, viewGroup, false);
+        return new RecyclerView.ViewHolder(new View(viewGroup.getContext())) {
+        };
+    }
+
+    @Override
+    public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        SearchPollsItemData itemData = getItem(position);
+
+
     }
 }
