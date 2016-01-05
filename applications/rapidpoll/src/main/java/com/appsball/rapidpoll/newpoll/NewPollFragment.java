@@ -1,5 +1,6 @@
 package com.appsball.rapidpoll.newpoll;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
@@ -69,6 +71,7 @@ public class NewPollFragment extends RapidPollFragment {
     private void setupHomeTitleEditable() {
         editableTitle = getRapidPollActivity().getEditableTitle();
         editableTitle.setHint("New Poll");
+        editableTitle.setText("");
         editableTitle.setVisibility(View.VISIBLE);
     }
 
@@ -98,9 +101,15 @@ public class NewPollFragment extends RapidPollFragment {
                 showNameDialog();
                 return true;
             default:
+                hideKeyboard();
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
 
 
