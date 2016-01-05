@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 
 import com.appsball.rapidpoll.allpolls.AllPollsFragment;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
@@ -23,30 +24,27 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 
 public class RapidPollActivity extends AppCompatActivity {
 
-    public static final String userid = "11E5B0E4CD5822E9886502000029BDFD";
+    public static final String userid = "11E5B3A41655D669886502000029BDFD";
     public static final String POLL_CODE = "poll_code";
     public static final String POLL_ID = "poll_id";
     public static final String USER_ID_KEY = "userId";
     public static final String POLL_TITLE = "poll_title";
     private RapidPollRestService rapidPollRestService;
+    private EditText editableTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        hideBackButton();
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.logo_s);
+        setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
+        editableTitle = (EditText) findViewById(R.id.titleEditText);
         Logger.init();
-        rapidPollRestService = createRapidPollRestService(this);
         initHawk();
         Hawk.put("userId", userid);
         final View container = findViewById(R.id.container);
+        rapidPollRestService = createRapidPollRestService(this);
         toAllPolls();
-        RestCaller restCaller  =  new RestCaller(this);
+//        RestCaller restCaller  =  new RestCaller(this);
 //        restCaller.doPoll();
 //        restCaller.createPoll();
 //        restCaller.getPollDetails();
@@ -62,14 +60,23 @@ public class RapidPollActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(false);
             actionBar.setTitle(title);
+            editableTitle.setVisibility(View.GONE);
         }
     }
+
+    public EditText getEditableTitle() {
+        return editableTitle;
+    }
+
     public void hideBackButton() {
         ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.logo_s);
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setTitle("");
+            editableTitle.setVisibility(View.GONE);
         }
     }
 

@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
@@ -46,12 +47,14 @@ public class NewPollFragment extends RapidPollFragment {
     private PollSettings pollSettings;
     private List<NewPollQuestion> pollQuestions;
     private ManagePollQuestionTransformer managePollQuestionTransformer;
+    private EditText editableTitle;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         getRapidPollActivity().setHomeTitle("New Poll");
+        setupHomeTitleEditable();
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(NEWPOLL_LAYOUT, container, false);
         newQuestionCreator = new NewQuestionCreator();
@@ -61,6 +64,12 @@ public class NewPollFragment extends RapidPollFragment {
         pollSettingsView.initSettingsButtonListeners();
         managePollQuestionTransformer = new ManagePollQuestionTransformer(new ManagePollQuestionAlternativeTransformer());
         return rootView;
+    }
+
+    private void setupHomeTitleEditable() {
+        editableTitle = getRapidPollActivity().getEditableTitle();
+        editableTitle.setHint("New Poll");
+        editableTitle.setVisibility(View.VISIBLE);
     }
 
 

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background_dark_purple">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark_purple">
 
     <include
         android:id="@+id/navButtonsLayout"
         layout="@layout/navbuttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
     <HorizontalScrollView
         android:id="@+id/sort_horizontal_scrollview"
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_height="65dp"
+        android:layout_alignParentTop="true"
         android:background="@color/sortby_background_purple"
-        android:visibility="gone"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/sortby_layout"
@@ -84,7 +84,7 @@
         android:background="@color/background_dark_purple"
         android:divider="@android:color/black"
         android:listDivider="@drawable/actionbar_gradient"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
 
     <include
         android:id="@+id/centered_loading_view"
@@ -93,5 +93,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sort_horizontal_scrollview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="60dp" />
 </RelativeLayout>

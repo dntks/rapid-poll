@@ -45,10 +45,10 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        View rootView = inflater.inflate(SEARCHPOLLS_LAYOUT, container, false);
         getRapidPollActivity().hideBackButton();
         service = getRapidPollActivity().getRestService();
         initializeComponents();
-        View rootView = inflater.inflate(SEARCHPOLLS_LAYOUT, container, false);
 
         initializeViews(inflater, savedInstanceState, rootView);
         createNavigationButtonListeners(rootView, getActiveButton());
@@ -80,7 +80,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         pollsListWrapper.initializeView(savedInstanceState);
         sortingView = new SortingView(rootView, searchPollsDataState, this);
         sortingView.init();
-        getActivity().findViewById(R.id.my_toolbar).setOnTouchListener(new ToolbarTouchListener(sortingView));
+        getRapidPollActivity().findViewById(R.id.my_toolbar).setOnTouchListener(new ToolbarTouchListener(sortingView));
     }
 
     protected abstract SimpleAdapter getSearchPollsAdapter();

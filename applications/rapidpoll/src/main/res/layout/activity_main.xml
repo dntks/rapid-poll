@@ -17,7 +17,16 @@
         android:elevation="4dp"
         android:logo="@drawable/logo_s"
         android:theme="@style/AppTheme"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textCursorDrawable="@null"
+            android:visibility="gone"
+            style="@style/RapidPollEditText"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/container"
