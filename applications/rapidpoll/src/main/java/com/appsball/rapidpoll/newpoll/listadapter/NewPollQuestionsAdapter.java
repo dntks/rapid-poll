@@ -41,10 +41,8 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
 
     @Override
     public void addAnswerToAdapter(NewPollAnswer newAnswer, NewPollAddAnswer newPollAddAnswer) {
-        Optional<Integer> location = getLocationOfItem(newPollAddAnswer);
-        if (location.isPresent()) {
-            insertItem(newAnswer, location.get());
-        }
+        int location = getLocationOfItem(newPollAddAnswer);
+        insertItem(newAnswer, location);
     }
 
     @Override
@@ -59,30 +57,35 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
     @Override
     public void updateAnswerViews(List<NewPollAnswer> answers) {
         for (NewPollAnswer answer : answers) {
-            Optional<Integer> location = getLocationOfItem(answer);
-            if (location.isPresent()) {
-                notifyItemChanged(location.get());
-            }
+            int location = getLocationOfItem(answer);
+            notifyItemChanged(location);
         }
     }
 
     @Override
     public void removeView(NewPollListItem newPollListItem, View v) {
-        Optional<Integer> location = getLocationOfItem(newPollListItem);
-        if (location.isPresent()) {
-            pollListItems.remove(location.get());
-            this.notifyItemRemoved(location.get());
-        }
+        int location = getLocationOfItem(newPollListItem);
+        pollListItems.remove(location);
+        this.notifyItemRemoved(location);
     }
 
 
-    private Optional<Integer> getLocationOfItem(NewPollListItem newPollListItem) {
+    private Optional<Integer> getOptionalLocationOfItem(NewPollListItem newPollListItem) {
         for (int i = 0; i < pollListItems.size(); i++) {
             if (pollListItems.get(i).equals(newPollListItem)) {
                 return Optional.of(i);
             }
         }
         return Optional.absent();
+    }
+
+    private int getLocationOfItem(NewPollListItem newPollListItem) {
+        for (int i = 0; i < pollListItems.size(); i++) {
+            if (pollListItems.get(i).equals(newPollListItem)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     @Override
