@@ -14,6 +14,7 @@ import com.google.common.base.Optional;
 
 import java.util.List;
 
+import static com.appsball.rapidpoll.RapidPollActivity.USER_ID;
 import static com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollAnswer.doPollAnswer;
 import static com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollQuestion.doPollQuestion;
 import static com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative.managePollQuestionAlternative;
@@ -21,7 +22,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestBuilders {
 
-    private final static String USER_ID = "11E58407B7A5FDDC9D0B8675BA421DCB";
 
     public static ManagePollRequest createManagePollRequest() {
         ManagePollRequest.Builder managePollRequestBuilder = ManagePollRequest.builder();
@@ -33,7 +33,7 @@ public class DefaultRequestBuilders {
 
     private static ManagePoll createPollRequestObject() {
         ManagePoll.Builder managePollBuilder = ManagePoll.builder();
-        managePollBuilder.withAllowUncompleteResult("1");
+        managePollBuilder.withAllowUncompleteAnswer("1");
         managePollBuilder.withAnonymous("0");
         managePollBuilder.withIsPublic("1");
         managePollBuilder.withName("kerdes");

@@ -1,14 +1,16 @@
 package com.appsball.rapidpoll.commons.model;
 
 public enum PollState {
-    DRAFT(0),
-    CLOSED(1),
-    PUBLISHED(2);
+    DRAFT(0, "Draft"),
+    CLOSED(1, "Closed"),
+    PUBLISHED(2, "Live");
 
     public int value;
+    public String shownName;
 
-    PollState(int value) {
+    PollState(int value, String shownName) {
         this.value = value;
+        this.shownName = shownName;
     }
 
     public static PollState fromValue(int value){

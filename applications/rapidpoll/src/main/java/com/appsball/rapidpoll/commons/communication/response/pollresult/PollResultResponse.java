@@ -7,5 +7,8 @@ import java.util.List;
 public class PollResultResponse extends ResponseBase {
 
     public String id;
+    public String owner_id;
+    public String poll_name;
+    public String closed_date;
     public List<PollResultQuestion> questions;
 }

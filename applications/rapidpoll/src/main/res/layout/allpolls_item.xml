@@ -7,6 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:id="@+id/listitem_layout"
         android:background="@color/listitem_purple"
         android:orientation="vertical"
         android:paddingBottom="10dp"

@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
+import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.orhanobut.hawk.Hawk;
 
@@ -38,4 +39,11 @@ public class RequestCreator {
         return builder.build();
     }
 
+    public UpdatePollStateRequest createUpdatePollStateRequest(String pollId, PollState pollState) {
+        UpdatePollStateRequest.Builder builder = UpdatePollStateRequest.builder();
+        builder.withUserId(Hawk.<String>get(USER_ID_KEY));
+        builder.withPollId(pollId);
+        builder.withPollState(pollState);
+        return builder.build();
+    }
 }

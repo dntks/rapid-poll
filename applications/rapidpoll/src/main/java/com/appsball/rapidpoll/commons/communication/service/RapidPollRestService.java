@@ -11,6 +11,7 @@ import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateReque
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequestContainer;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
@@ -61,7 +62,7 @@ public class RapidPollRestService {
         rapidPollRestInterface.registerUser(request, callback);
     }
 
-    public void managePoll(ManagePollRequest request, Callback<ResponseContainer<Object>> callback) {
+    public void managePoll(ManagePollRequest request, Callback<ResponseContainer<ManagePollResponse>> callback) {
         rapidPollRestInterface.managePoll(request, callback);
     }
 

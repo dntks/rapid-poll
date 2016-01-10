@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
@@ -125,9 +126,9 @@ public class NewPollFragment extends RapidPollFragment {
 
     private void publishPoll(String name, boolean draft) {
         ManagePoll managePoll = buildPoll(name, draft);
-        service.managePoll(createManagePollRequest(managePoll), new Callback<ResponseContainer<Object>>() {
+        service.managePoll(createManagePollRequest(managePoll), new Callback<ResponseContainer<ManagePollResponse>>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
+            public void onSuccess(Response response, ResponseContainer<ManagePollResponse> objectResponseContainer) {
                 DialogsBuilder.showErrorDialog(getActivity(), "Success", "Poll published successfully.",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -153,7 +154,7 @@ public class NewPollFragment extends RapidPollFragment {
         builder.withAllowComment(pollSettings.isAllowedToComment() ? "1" : "0");
         builder.withAnonymous(pollSettings.isAnonymous() ? "1" : "0");
         builder.withIsPublic(pollSettings.isPublic() ? "1" : "0");
-        builder.withAllowUncompleteResult(pollSettings.isAcceptCompleteOnly() ? "0" : "1");
+        builder.withAllowUncompleteAnswer(pollSettings.isAcceptCompleteOnly() ? "0" : "1");
         builder.withQuestions(managePollQuestionTransformer.transformPollQuestions(pollQuestions));
         builder.withName(name);
         builder.withDraft(draft ? "1" : "0");

@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
+import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
+import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
@@ -61,11 +63,15 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     protected abstract NavigationButton getActiveButton();
 
     private void initializeComponents() {
-        searchPollsDataState = new SearchPollsDataState();
+        searchPollsDataState = createSearchPollsDataState();
         requestCreator = new RequestCreator();
         searchPollsItemDataTransformer = new SearchPollsItemDataTransformer(getResources());
         searchPollsCallback = new SearchPollsCallback(Lists.<OnPollsReceivedListener>newArrayList(this));
         createSearchPollsAdapter(createPollItemClickListener());
+    }
+
+    protected SearchPollsDataState createSearchPollsDataState() {
+        return new SearchPollsDataState(OrderType.DESC, OrderKey.DATE);
     }
 
     protected abstract PollItemClickListener createPollItemClickListener();
@@ -73,11 +79,15 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     protected abstract void createSearchPollsAdapter(PollItemClickListener pollItemClickListener);
 
     private void initializeViews(LayoutInflater inflater, Bundle savedInstanceState, View rootView) {
-        View  moreLoadView = inflater.inflate(R.layout.loadingview, null);
+        View moreLoadView = inflater.inflate(R.layout.loadingview, null);
 
         getSearchPollsAdapter().setCustomLoadMoreView(moreLoadView);
         pollsListWrapper = createPollsListWrapper(rootView, moreLoadView);
         pollsListWrapper.initializeView(savedInstanceState);
+        setupSortingView(rootView);
+    }
+
+    protected void setupSortingView(View rootView) {
         sortingView = new SortingView(rootView, searchPollsDataState, this);
         sortingView.init();
         getRapidPollActivity().findViewById(R.id.my_toolbar).setOnTouchListener(new ToolbarTouchListener(sortingView));
@@ -176,7 +186,9 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortingView.hideSortByLayout();
+                if (sortingView != null) {
+                    sortingView.hideSortByLayout();
+                }
             }
         });
     }

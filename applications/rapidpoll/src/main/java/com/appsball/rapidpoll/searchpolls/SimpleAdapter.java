@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appsball.rapidpoll.R;
+import com.marshalchen.ultimaterecyclerview.SwipeableUltimateViewAdapter;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
-import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
 import java.util.List;
 
 
-public abstract class SimpleAdapter<T, IH extends UltimateRecyclerviewViewHolder> extends UltimateViewAdapter<IH> {
+public abstract class SimpleAdapter<T, IH extends UltimateRecyclerviewViewHolder> extends SwipeableUltimateViewAdapter {
     protected List<T> items;
 
     public SimpleAdapter(List<T> items) {

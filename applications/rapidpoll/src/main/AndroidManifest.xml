@@ -31,18 +31,18 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.example.gcm" />
+                <category android:name="com.appsball.rapidpoll" />
             </intent-filter>
         </receiver>
         <service
-            android:name=".pushnotification.MyGcmListenerService"
+            android:name="com.appsball.rapidpoll.pushnotification.MyGcmListenerService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name=".pushnotification.RapidPollIDListenerService"
+            android:name="com.appsball.rapidpoll.pushnotification.RapidPollIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />

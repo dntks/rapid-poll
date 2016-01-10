@@ -7,4 +7,5 @@
     <dimen name="general_right_padding">15dp</dimen>
     <dimen name="newpoll_listitem_double_height">50dp</dimen>
     <dimen name="commentboxMargin">15dp</dimen>
+    <dimen name="listheader_height">30dp</dimen>
 </resources>

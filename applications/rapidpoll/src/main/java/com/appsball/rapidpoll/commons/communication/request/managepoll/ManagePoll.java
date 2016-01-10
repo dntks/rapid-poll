@@ -13,17 +13,17 @@ public class ManagePoll {
     public final String isPublic;
     public final String anonymous;
     public final String allow_comment;
-    public final String allow_uncomplete_result;
+    public final String allow_uncomplete_answer;
     public final String draft;
     public final List<ManagePollQuestion> questions;
 
-    private ManagePoll(String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_result, String draft, List<ManagePollQuestion> questions) {
+    private ManagePoll(String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_answer, String draft, List<ManagePollQuestion> questions) {
         this.draft = notNull(draft, "draft must not be null");
         this.name = notNull(name, "name must not be null");
         this.isPublic = notNull(isPublic, "isPublic must not be null");
         this.anonymous = notNull(anonymous, "anonymous must not be null");
         this.allow_comment = notNull(allow_comment, "allow_comment must not be null");
-        this.allow_uncomplete_result = notNull(allow_uncomplete_result, "allow_uncomplete_result must not be null");
+        this.allow_uncomplete_answer = notNull(allow_uncomplete_answer, "allow_uncomplete_answer must not be null");
         this.questions = notNull(questions, "questions must not be null");
     }
 
@@ -38,7 +38,7 @@ public class ManagePoll {
         private String isPublic;
         private String anonymous;
         private String allow_comment;
-        private String allow_uncomplete_result;
+        private String allow_uncomplete_answer;
         private String draft;
         private List<ManagePollQuestion> questions;
 
@@ -62,8 +62,8 @@ public class ManagePoll {
             return this;
         }
 
-        public Builder withAllowUncompleteResult(String allowUncompleteResult) {
-            this.allow_uncomplete_result = allowUncompleteResult;
+        public Builder withAllowUncompleteAnswer(String allow_uncomplete_answer) {
+            this.allow_uncomplete_answer = allow_uncomplete_answer;
             return this;
         }
 
@@ -78,7 +78,7 @@ public class ManagePoll {
         }
 
         public ManagePoll build() {
-            return new ManagePoll(name, isPublic, anonymous, allow_comment, allow_uncomplete_result, draft, questions);
+            return new ManagePoll(name, isPublic, anonymous, allow_comment, allow_uncomplete_answer, draft, questions);
         }
     }
 }

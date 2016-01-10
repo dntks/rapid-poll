@@ -9,6 +9,11 @@ public class SearchPollsDataState {
     public OrderKey chosenOrderKey = OrderKey.DATE;
     public int actualPage = 1;
 
+    public SearchPollsDataState(OrderType chosenOrderType, OrderKey chosenOrderKey) {
+        this.chosenOrderType = chosenOrderType;
+        this.chosenOrderKey = chosenOrderKey;
+    }
+
     public void setDateSort(){
         chosenOrderType = OrderType.DESC;
         chosenOrderKey = OrderKey.DATE;

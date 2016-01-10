@@ -11,6 +11,7 @@ import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateReque
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
+import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
@@ -158,9 +159,9 @@ public class RestCaller {
     }
 
     public void createPoll() {
-        service.managePoll(createManagePollRequest(), new Callback<ResponseContainer<Object>>() {
+        service.managePoll(createManagePollRequest(), new Callback<ResponseContainer<ManagePollResponse>>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
+            public void onSuccess(Response response, ResponseContainer<ManagePollResponse> objectResponseContainer) {
                 Logger.i("createPoll response", objectResponseContainer);
             }
 

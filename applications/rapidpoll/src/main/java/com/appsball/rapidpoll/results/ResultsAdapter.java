@@ -10,6 +10,7 @@ import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class ResultsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     }
 
     @Override
-    public void onBindViewHolder(final SearchPollsItemViewHolder holder, int position) {
+    public void onBindViewHolder(final UltimateRecyclerviewViewHolder viewHolder, int position) {
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
+            SearchPollsItemViewHolder holder = (SearchPollsItemViewHolder)viewHolder;
             int location = customHeaderView != null ? position - 1 : position;
             final SearchPollsItemData searchPollsItemData = items.get(location);
             holder.nameTextView.setText(searchPollsItemData.name);

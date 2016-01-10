@@ -7,34 +7,46 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
 import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
+import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
 public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
-    private final PollItemClickListener pollItemClickListener;
-    private final DateStringFormatter dateStringFormatter;
+    public static final int LISTITEM_DRAFT_GREY_COLOR = R.color.listitem_draft_grey;
+    public static final int LISTITEM_BACKGROUND_COLOR = R.color.listitem_purple;
     public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
     public static final int CLOSED_LOCKET = R.drawable.lakat;
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
+    private final PollItemClickListener pollItemClickListener;
+    private final DateStringFormatter dateStringFormatter;
+    private final PollCloser pollCloser;
+    private final PollReopener pollReopener;
+
     public MyPollsAdapter(List<SearchPollsItemData> items,
                           PollItemClickListener pollItemClickListener,
-                          DateStringFormatter dateStringFormatter) {
+                          DateStringFormatter dateStringFormatter,
+                          PollCloser pollCloser,
+                          PollReopener pollReopener) {
         super(items);
         this.pollItemClickListener = pollItemClickListener;
         this.dateStringFormatter = dateStringFormatter;
+        this.pollCloser = pollCloser;
+        this.pollReopener = pollReopener;
     }
 
     @Override
-    public void onBindViewHolder(final SearchPollsItemViewHolder holder, int position) {
-        if (position < getItemCount() && (position < items.size())) {
+    public void onBindViewHolder(final UltimateRecyclerviewViewHolder viewHolder, int position) {
+        if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
+            SearchPollsItemViewHolder holder = (SearchPollsItemViewHolder) viewHolder;
             int location = customHeaderView != null ? position - 1 : position;
             final SearchPollsItemData searchPollsItemData = items.get(location);
             holder.nameTextView.setText(searchPollsItemData.name);
@@ -49,12 +61,32 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
             } else {
                 holder.itemRightImage.setImageResource(RIGHT_ARROW);
             }
+            int backgroundColor = searchPollsItemData.state == PollState.DRAFT ? LISTITEM_DRAFT_GREY_COLOR : LISTITEM_BACKGROUND_COLOR;
+            holder.listitemLayout.setBackgroundColor(holder.listitemLayout.getResources().getColor(backgroundColor));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pollItemClickListener.pollItemClicked(searchPollsItemData);
                 }
             });
+            SwipeLayout swipeLayout = viewHolder.swipeLayout;
+            if (searchPollsItemData.state != PollState.DRAFT) {
+                holder.swipeView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(searchPollsItemData.state==PollState.CLOSED){
+                            pollReopener.reopenPoll(searchPollsItemData.id);
+                        }
+                        else{
+                            pollCloser.closePoll(searchPollsItemData.id);
+                        }
+                    }
+                });
+            } else {
+                swipeLayout.setRightSwipeEnabled(false);
+                swipeLayout.setLeftSwipeEnabled(false);
+            }
+//            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
         }
     }
 
@@ -69,14 +101,39 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
         return new SearchPollsItemViewHolder(view, false);
     }
 
+
     @Override
     public SearchPollsItemViewHolder onCreateViewHolder(ViewGroup parent) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.allpolls_item, parent, false);
-        SearchPollsItemViewHolder vh = new SearchPollsItemViewHolder(v, true);
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_polls_swipeable_item, parent, false);
+        SearchPollsItemViewHolder vh = new SearchPollsItemViewHolder(view, true);
         return vh;
     }
+/*
+    @Override
+    public int getItemViewType(int position) {
+        SearchPollsItemData itemData = getItem(position);
+        return itemData.state.value;
+    }
 
+    @Override
+    public SearchPollsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View viewNormal = LayoutInflater.from(parent.getContext()).inflate(R.layout.allpolls_item, parent, false);
+        View viewSwipable = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_polls_swipeable_item, parent, false);
+
+        PollState pollState = PollState.fromValue(viewType);
+        switch (pollState) {
+            case CLOSED:
+            case PUBLISHED:
+                return new SearchPollsItemViewHolder(viewSwipable, true);
+            case DRAFT:
+            default:
+                return new SearchPollsItemViewHolder(viewNormal, true);
+        }
+    }
+*/
     @Override
     public long generateHeaderId(int position) {
         SearchPollsItemData itemData = getItem(position);
@@ -93,10 +150,11 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         SearchPollsItemData itemData = getItem(position);
-        HeaderViewHolder holder = (HeaderViewHolder)viewHolder;
-        holder.headerTextView.setText(itemData.state.toString());
+        HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
+        holder.headerTextView.setText(itemData.state.shownName);
 
     }
+
     class HeaderViewHolder extends UltimateRecyclerviewViewHolder {
 
         public TextView headerTextView;

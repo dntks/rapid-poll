@@ -37,7 +37,7 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 public class RapidPollActivity extends AppCompatActivity {
     public static final String ServerAPIKey = "AIzaSyAkliInYloQCi9nUVFZzL-N73dO32p-h9c";
     public static final String SenderID = "73756231339";
-    public static final String userid = "31000000000000000000000000000000";
+    public static final String USER_ID = "31000000000000000000000000000000";
     public static final String POLL_CODE = "poll_code";
     public static final String POLL_ID = "poll_id";
     public static final String USER_ID_KEY = "userId";
@@ -71,7 +71,9 @@ public class RapidPollActivity extends AppCompatActivity {
 
 
         rapidPollRestService = createRapidPollRestService(this);
-        Hawk.put(USER_ID_KEY, userid);
+        Hawk.put(USER_ID_KEY, USER_ID);
+//        registerGCM();
+
         if (!isRegistered()) {
             registerGCM();
         } else {
@@ -81,9 +83,9 @@ public class RapidPollActivity extends AppCompatActivity {
 
 
 
-//        RestCaller restCaller  =  new RestCaller(this);
+        RestCaller restCaller  =  new RestCaller(this);
 //        restCaller.doPoll();
-//        restCaller.createPoll();
+        restCaller.createPoll();
 //        restCaller.getPollDetails();
 //        restCaller.getPollResult();
 //        restCaller.getPolls();

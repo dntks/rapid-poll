@@ -22,5 +22,21 @@
     <color name="listitem_question_purple">#474892</color>
     <color name="listitem_answer_purple">#35366F</color>
     <color name="listitem_answer_separator">#5D5EA4</color>
+    <color name="listitem_draft_grey">#51516B</color>
+    <color name="listitem_swipe_background">#24254C</color>
+
+    <color name="result_pie_color_1">#96D34A</color>
+    <color name="result_pie_color_2">#6191CE</color>
+    <color name="result_pie_color_3">#AC3F94</color>
+    <color name="result_pie_color_4">#FF9800</color>
+    <color name="result_pie_color_5">#7E817A</color>
+    <color name="result_pie_color_6">#3E606F</color>
+    <color name="result_pie_color_7">#1F8970</color>
+    <color name="result_pie_color_8">#1695A3</color>
+    <color name="result_pie_color_9">#AC3F94</color>
+    <color name="result_pie_color_10">#FE0000</color>
+
+    <color name="splash_center">#3F4084</color>
+    <color name="splash_edge">#000042</color>
 
 </resources>

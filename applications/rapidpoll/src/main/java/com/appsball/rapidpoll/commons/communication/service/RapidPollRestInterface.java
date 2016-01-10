@@ -4,6 +4,7 @@ import com.appsball.rapidpoll.commons.communication.request.RegisterRequest;
 import com.appsball.rapidpoll.commons.communication.request.UpdatePollStateRequest;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
@@ -26,7 +27,7 @@ public interface RapidPollRestInterface {
 
     @Mock
     @POST("/managepoll")
-    void managePoll(@Body ManagePollRequest request, Callback<ResponseContainer<Object>> callback);
+    void managePoll(@Body ManagePollRequest request, Callback<ResponseContainer<ManagePollResponse>> callback);
 
     @Mock
     @GET("/polls/{userid}/{listtype}/{orderkey}/{ordertype}/{pagesize}/{page}")

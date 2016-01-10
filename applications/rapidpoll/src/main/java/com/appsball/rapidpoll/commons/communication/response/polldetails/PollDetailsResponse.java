@@ -16,6 +16,10 @@ public class PollDetailsResponse extends ResponseBase {
     public String state;
     public String publication_time;
     public String expiration_date;
+    public String closed_date;
     public String owner_id;
+    public int allow_uncomplete_answer;
+    public int comment;
+    public String email;
     public List<PollDetailsQuestion> questions;
 }

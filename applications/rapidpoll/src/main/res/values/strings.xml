@@ -34,4 +34,5 @@
     <string name="gcm_send_message">Token retrieved and sent to server!</string>
     <string name="registering_message">Generating InstanceID token...</string>
     <string name="token_error_message">An error occurred while registering your device. Please try again later.</string>
+    <string name="close">Close</string>
 </resources>
