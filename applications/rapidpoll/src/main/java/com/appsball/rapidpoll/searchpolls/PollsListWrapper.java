@@ -77,6 +77,7 @@ public class PollsListWrapper {
 
     public void resetPollsList() {
         ultimateRecyclerView.setAdapter(null);
+        ultimateRecyclerView.disableLoadmore();
         centeredLoadingView.setVisibility(View.VISIBLE);
     }
 }

@@ -23,8 +23,8 @@ public class ResultsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
     public ResultsAdapter(List<SearchPollsItemData> items,
-                           PollItemClickListener pollItemClickListener,
-                           DateStringFormatter dateStringFormatter) {
+                          PollItemClickListener pollItemClickListener,
+                          DateStringFormatter dateStringFormatter) {
         super(items);
         this.pollItemClickListener = pollItemClickListener;
         this.dateStringFormatter = dateStringFormatter;
@@ -33,27 +33,40 @@ public class ResultsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     @Override
     public void onBindViewHolder(final UltimateRecyclerviewViewHolder viewHolder, int position) {
         if (position < getItemCount() && (customHeaderView != null ? position <= items.size() : position < items.size()) && (customHeaderView != null ? position > 0 : true)) {
-            SearchPollsItemViewHolder holder = (SearchPollsItemViewHolder)viewHolder;
+            SearchPollsItemViewHolder holder = (SearchPollsItemViewHolder) viewHolder;
             int location = customHeaderView != null ? position - 1 : position;
             final SearchPollsItemData searchPollsItemData = items.get(location);
             holder.nameTextView.setText(searchPollsItemData.name);
-            //TODO: no closed date in server api yet
-            String publicatedDaysAgoText = dateStringFormatter.createClosedDaysAgoFormatFromDate(searchPollsItemData.publicationDate);
-            holder.startedTextView.setText(publicatedDaysAgoText);
             holder.votesTextView.setText(searchPollsItemData.votesText);
             holder.answeredQuestionsBar.setProgress(searchPollsItemData.answeredQuestionsRatioFor100);
-            if (!searchPollsItemData.isPublic) {
-                int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-                holder.itemRightImage.setImageResource(locketImageId);
-            } else {
-                holder.itemRightImage.setImageResource(RIGHT_ARROW);
-            }
+            setLocketImage(holder, searchPollsItemData);
+
+            setDaysAgoText(holder, searchPollsItemData);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pollItemClickListener.pollItemClicked(searchPollsItemData);
                 }
             });
+        }
+    }
+
+    private void setLocketImage(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
+        if (!searchPollsItemData.isPublic) {
+            int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
+            holder.itemRightImage.setImageResource(locketImageId);
+        } else {
+            holder.itemRightImage.setImageResource(RIGHT_ARROW);
+        }
+    }
+
+    private void setDaysAgoText(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
+        if (searchPollsItemData.closedDate.isPresent()) {
+            String publicatedDaysAgoText = dateStringFormatter.createClosedDaysAgoFormatFromDate(searchPollsItemData.closedDate.get());
+            holder.startedTextView.setText(publicatedDaysAgoText);
+        }
+        else{
+            holder.startedTextView.setText("");
         }
     }
 

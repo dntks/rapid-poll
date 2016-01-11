@@ -17,7 +17,7 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/swip_text"
+                android:id="@+id/swipe_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/close" />

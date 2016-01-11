@@ -11,6 +11,7 @@ public class PollsResponse extends ResponseBase {
     public int anonymous;
     public int allow_comment;
     public String expiration_date;
+    public String closed_date;
     public String owner_id;
     public String state;
     public String publication_date;

@@ -43,6 +43,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     private SortingView sortingView;
     private SearchPollsCallback searchPollsCallback;
     protected RequestCreator requestCreator;
+    private View moreLoadView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +68,6 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         requestCreator = new RequestCreator();
         searchPollsItemDataTransformer = new SearchPollsItemDataTransformer(getResources());
         searchPollsCallback = new SearchPollsCallback(Lists.<OnPollsReceivedListener>newArrayList(this));
-        createSearchPollsAdapter(createPollItemClickListener());
     }
 
     protected SearchPollsDataState createSearchPollsDataState() {
@@ -76,12 +76,12 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
 
     protected abstract PollItemClickListener createPollItemClickListener();
 
-    protected abstract void createSearchPollsAdapter(PollItemClickListener pollItemClickListener);
+    protected abstract void createSearchPollsAdapter(PollItemClickListener pollItemClickListener, View moreLoadView);
 
     private void initializeViews(LayoutInflater inflater, Bundle savedInstanceState, View rootView) {
-        View moreLoadView = inflater.inflate(R.layout.loadingview, null);
+        moreLoadView = inflater.inflate(R.layout.loadingview, null);
 
-        getSearchPollsAdapter().setCustomLoadMoreView(moreLoadView);
+        createSearchPollsAdapter(createPollItemClickListener(), moreLoadView);
         pollsListWrapper = createPollsListWrapper(rootView, moreLoadView);
         pollsListWrapper.initializeView(savedInstanceState);
         setupSortingView(rootView);
@@ -146,6 +146,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         searchPollsDataState.actualPage = 1;
         getSearchPollsAdapter().removeAllItems();
         pollsListWrapper.resetPollsList();
+        createSearchPollsAdapter(createPollItemClickListener(), moreLoadView);
     }
 
     public boolean searchForText(String searchPhrase) {

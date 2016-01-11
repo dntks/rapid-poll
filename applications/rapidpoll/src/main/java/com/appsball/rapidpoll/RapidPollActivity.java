@@ -83,9 +83,9 @@ public class RapidPollActivity extends AppCompatActivity {
 
 
 
-        RestCaller restCaller  =  new RestCaller(this);
+//        RestCaller restCaller  =  new RestCaller(this);
 //        restCaller.doPoll();
-        restCaller.createPoll();
+//        restCaller.createPoll();
 //        restCaller.getPollDetails();
 //        restCaller.getPollResult();
 //        restCaller.getPolls();

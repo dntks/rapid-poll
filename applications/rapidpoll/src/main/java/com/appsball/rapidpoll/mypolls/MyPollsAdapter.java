@@ -22,6 +22,8 @@ import java.util.List;
 public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
     public static final int LISTITEM_DRAFT_GREY_COLOR = R.color.listitem_draft_grey;
     public static final int LISTITEM_BACKGROUND_COLOR = R.color.listitem_purple;
+    public static final int SWIPE_CLOSE_TEXT_ID = R.string.close;
+    public static final int SWIPE_REOPEN_TEXT_ID = R.string.reopen;
     public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
     public static final int CLOSED_LOCKET = R.drawable.lakat;
     public static final int RIGHT_ARROW = R.drawable.jobbranyil;
@@ -49,18 +51,13 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
             SearchPollsItemViewHolder holder = (SearchPollsItemViewHolder) viewHolder;
             int location = customHeaderView != null ? position - 1 : position;
             final SearchPollsItemData searchPollsItemData = items.get(location);
+
             holder.nameTextView.setText(searchPollsItemData.name);
-            //TODO: no closed date in server api yet
-            String publicatedDaysAgoText = dateStringFormatter.createClosedDaysAgoFormatFromDate(searchPollsItemData.publicationDate);
-            holder.startedTextView.setText(publicatedDaysAgoText);
+            setDaysAgoText(holder, searchPollsItemData);
+
             holder.votesTextView.setText(searchPollsItemData.votesText);
             holder.answeredQuestionsBar.setProgress(searchPollsItemData.answeredQuestionsRatioFor100);
-            if (!searchPollsItemData.isPublic) {
-                int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-                holder.itemRightImage.setImageResource(locketImageId);
-            } else {
-                holder.itemRightImage.setImageResource(RIGHT_ARROW);
-            }
+            setLocketImage(holder, searchPollsItemData);
             int backgroundColor = searchPollsItemData.state == PollState.DRAFT ? LISTITEM_DRAFT_GREY_COLOR : LISTITEM_BACKGROUND_COLOR;
             holder.listitemLayout.setBackgroundColor(holder.listitemLayout.getResources().getColor(backgroundColor));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -69,24 +66,52 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
                     pollItemClickListener.pollItemClicked(searchPollsItemData);
                 }
             });
-            SwipeLayout swipeLayout = viewHolder.swipeLayout;
-            if (searchPollsItemData.state != PollState.DRAFT) {
-                holder.swipeView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(searchPollsItemData.state==PollState.CLOSED){
-                            pollReopener.reopenPoll(searchPollsItemData.id);
-                        }
-                        else{
-                            pollCloser.closePoll(searchPollsItemData.id);
-                        }
-                    }
-                });
-            } else {
-                swipeLayout.setRightSwipeEnabled(false);
-                swipeLayout.setLeftSwipeEnabled(false);
+                setSwipeViewProperties(holder, searchPollsItemData);
+
+        }
+    }
+
+    private void setLocketImage(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
+        if (!searchPollsItemData.isPublic) {
+            int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
+            holder.itemRightImage.setImageResource(locketImageId);
+        } else {
+            holder.itemRightImage.setImageResource(RIGHT_ARROW);
+        }
+    }
+
+    private void setDaysAgoText(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
+        if (searchPollsItemData.state == PollState.CLOSED) {
+            if(searchPollsItemData.closedDate.isPresent()) {
+                String closedDaysAgoText = dateStringFormatter.createClosedDaysAgoFormatFromDate(searchPollsItemData.closedDate.get());
+                holder.startedTextView.setText(closedDaysAgoText);
+            }else{
+                holder.startedTextView.setText("");
             }
-//            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        } else {
+        String startedDaysAgoText = dateStringFormatter.createStartedDaysAgoFormatFromDate(searchPollsItemData.publicationDate);
+            holder.startedTextView.setText(startedDaysAgoText);
+        }
+    }
+
+    private void setSwipeViewProperties(SearchPollsItemViewHolder holder, final SearchPollsItemData searchPollsItemData) {
+        SwipeLayout swipeLayout = holder.swipeLayout;
+        if (searchPollsItemData.state != PollState.DRAFT) {
+        final boolean isInClosedState = searchPollsItemData.state == PollState.CLOSED;
+        holder.swipeViewText.setText(isInClosedState ? SWIPE_REOPEN_TEXT_ID : SWIPE_CLOSE_TEXT_ID);
+        holder.swipeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isInClosedState) {
+                    pollReopener.reopenPoll(searchPollsItemData.id);
+                } else {
+                    pollCloser.closePoll(searchPollsItemData.id);
+                }
+            }
+        });
+        } else {
+            swipeLayout.setRightSwipeEnabled(false);
+            swipeLayout.setLeftSwipeEnabled(false);
         }
     }
 
@@ -111,29 +136,30 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
         SearchPollsItemViewHolder vh = new SearchPollsItemViewHolder(view, true);
         return vh;
     }
-/*
-    @Override
-    public int getItemViewType(int position) {
-        SearchPollsItemData itemData = getItem(position);
-        return itemData.state.value;
-    }
 
-    @Override
-    public SearchPollsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewNormal = LayoutInflater.from(parent.getContext()).inflate(R.layout.allpolls_item, parent, false);
-        View viewSwipable = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_polls_swipeable_item, parent, false);
-
-        PollState pollState = PollState.fromValue(viewType);
-        switch (pollState) {
-            case CLOSED:
-            case PUBLISHED:
-                return new SearchPollsItemViewHolder(viewSwipable, true);
-            case DRAFT:
-            default:
-                return new SearchPollsItemViewHolder(viewNormal, true);
+    /*
+        @Override
+        public int getItemViewType(int position) {
+            SearchPollsItemData itemData = getItem(position);
+            return itemData.state.value;
         }
-    }
-*/
+
+        @Override
+        public SearchPollsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View viewNormal = LayoutInflater.from(parent.getContext()).inflate(R.layout.allpolls_item, parent, false);
+            View viewSwipable = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_polls_swipeable_item, parent, false);
+
+            PollState pollState = PollState.fromValue(viewType);
+            switch (pollState) {
+                case CLOSED:
+                case PUBLISHED:
+                    return new SearchPollsItemViewHolder(viewSwipable, true);
+                case DRAFT:
+                default:
+                    return new SearchPollsItemViewHolder(viewNormal, true);
+            }
+        }
+    */
     @Override
     public long generateHeaderId(int position) {
         SearchPollsItemData itemData = getItem(position);
@@ -149,10 +175,11 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
 
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        SearchPollsItemData itemData = getItem(position);
-        HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
-        holder.headerTextView.setText(itemData.state.shownName);
-
+        if(position<items.size()) {
+            SearchPollsItemData itemData = getItem(position);
+            HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
+            holder.headerTextView.setText(itemData.state.shownName);
+        }
     }
 
     class HeaderViewHolder extends UltimateRecyclerviewViewHolder {

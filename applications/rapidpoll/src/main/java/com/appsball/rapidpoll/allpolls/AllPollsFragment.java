@@ -1,5 +1,7 @@
 package com.appsball.rapidpoll.allpolls;
 
+import android.view.View;
+
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
@@ -24,8 +26,9 @@ public class AllPollsFragment extends SearchPollsFragment {
     }
 
     @Override
-    protected void createSearchPollsAdapter(PollItemClickListener pollItemClickListener) {
+    protected void createSearchPollsAdapter(PollItemClickListener pollItemClickListener, View moreLoadView) {
         allPollsAdapter = new AllPollsAdapter(Lists.<SearchPollsItemData>newArrayList(), pollItemClickListener, new DateStringFormatter(getResources()));
+        allPollsAdapter.setCustomLoadMoreView(moreLoadView);
     }
 
     @Override

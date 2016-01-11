@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll.searchpolls.model;
 
 import com.appsball.rapidpoll.commons.model.PollState;
+import com.google.common.base.Optional;
 
 public class SearchPollsItemData {
 
@@ -13,6 +14,7 @@ public class SearchPollsItemData {
     public final String ownerId;
     public final PollState state;
     public final String publicationDate;
+    public final Optional<String> closedDate;
     public final int numberOfQuestions;
     public final int answeredQuestionsByUser;
     public final int answeredQuestionsRatioFor100;
@@ -29,6 +31,7 @@ public class SearchPollsItemData {
                                String ownerId,
                                PollState state,
                                String publicationDate,
+                               Optional<String> closedDate,
                                int numberOfQuestions,
                                int answeredQuestionsByUser,
                                int numberOfVotes,
@@ -43,6 +46,7 @@ public class SearchPollsItemData {
         this.ownerId = ownerId;
         this.state = state;
         this.publicationDate = publicationDate;
+        this.closedDate = closedDate;
         this.numberOfQuestions = numberOfQuestions;
         this.answeredQuestionsByUser = answeredQuestionsByUser;
         this.numberOfVotes = numberOfVotes;
@@ -66,6 +70,7 @@ public class SearchPollsItemData {
         private String ownerId;
         private PollState state;
         private String publicationDate;
+        private Optional<String> closedDate = Optional.absent();
         private int numberOfQuestions;
         private int answeredQuestionsByUser;
         private int numberOfVotes;
@@ -117,6 +122,11 @@ public class SearchPollsItemData {
             return this;
         }
 
+        public Builder withClosedDate(String closedDate) {
+            this.closedDate = Optional.fromNullable(closedDate);
+            return this;
+        }
+
         public Builder withNumberOfQuestions(int numberOfQuestions) {
             this.numberOfQuestions = numberOfQuestions;
             return this;
@@ -144,19 +154,20 @@ public class SearchPollsItemData {
 
         public SearchPollsItemData build() {
             return new SearchPollsItemData(id,
-                                        name,
-                                        isPublic,
-                                        anonymous,
-                                        allowComment,
-                                        expirationDate,
-                                        ownerId,
-                                        state,
-                                        publicationDate,
-                                        numberOfQuestions,
-                                        answeredQuestionsByUser,
-                                        numberOfVotes,
-                                        answeredQuestionsRatioFor100,
-                                        votesText);
+                    name,
+                    isPublic,
+                    anonymous,
+                    allowComment,
+                    expirationDate,
+                    ownerId,
+                    state,
+                    publicationDate,
+                    closedDate,
+                    numberOfQuestions,
+                    answeredQuestionsByUser,
+                    numberOfVotes,
+                    answeredQuestionsRatioFor100,
+                    votesText);
         }
     }
 }

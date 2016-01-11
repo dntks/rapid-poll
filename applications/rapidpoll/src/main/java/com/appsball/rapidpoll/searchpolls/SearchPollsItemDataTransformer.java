@@ -41,6 +41,7 @@ public class SearchPollsItemDataTransformer {
         builder.withNumberOfVotes(input.number_of_votes);
         builder.withOwnerId(input.owner_id);
         builder.withPublicationDate(input.publication_date);
+        builder.withClosedDate(input.closed_date);
         builder.withState(PollState.valueOf(input.state));
         int answeredQuestionsRatioFor100 = calculateAnsweredQuestionRatioFor100(input.number_of_answered_questions_by_the_user, input.number_of_questions);
         builder.withAnsweredQuestionsRatioFor100(answeredQuestionsRatioFor100);

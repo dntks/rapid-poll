@@ -41,8 +41,9 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
     }
 
     @Override
-    protected void createSearchPollsAdapter(PollItemClickListener pollItemClickListener) {
+    protected void createSearchPollsAdapter(PollItemClickListener pollItemClickListener, View moreLoadView) {
         resultsAdapter = new MyPollsAdapter(Lists.<SearchPollsItemData>newArrayList(), pollItemClickListener, new DateStringFormatter(getResources()), this, this);
+        resultsAdapter.setCustomLoadMoreView(moreLoadView);
     }
 
     @Override

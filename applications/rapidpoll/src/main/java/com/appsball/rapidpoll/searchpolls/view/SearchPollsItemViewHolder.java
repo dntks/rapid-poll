@@ -17,6 +17,7 @@ public class SearchPollsItemViewHolder extends UltimateRecyclerviewViewHolder {
     public ImageView itemRightImage;
     public View listitemLayout;
     public View swipeView;
+    public TextView swipeViewText;
 
     public SearchPollsItemViewHolder(View itemView, boolean isItem) {
         super(itemView);
@@ -28,6 +29,7 @@ public class SearchPollsItemViewHolder extends UltimateRecyclerviewViewHolder {
             itemRightImage = (ImageView) itemView.findViewById(R.id.item_right_image);
             listitemLayout = itemView.findViewById(R.id.listitem_layout);
             swipeView = itemView.findViewById(R.id.swipe_view);
+            swipeViewText = (TextView) itemView.findViewById(R.id.swipe_text);
         }
     }
 }
