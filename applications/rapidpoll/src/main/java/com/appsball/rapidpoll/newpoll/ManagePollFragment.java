@@ -65,7 +65,7 @@ public class ManagePollFragment extends RapidPollFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-//        getRapidPollActivity().setHomeTitle("New Poll");
+        getRapidPollActivity().setHomeTitle("New Poll");
         setupHomeTitleEditable();
         service = getRapidPollActivity().getRestService();
 
@@ -82,9 +82,9 @@ public class ManagePollFragment extends RapidPollFragment {
 
         initializeList(savedInstanceState);
 
-        String pollId = getArguments().getString(POLL_ID);
-        if (pollId != null) {
-            loadExistingPoll(requestCreator.createPollDetailsRequest(pollId, PUBLIC_POLL_CODE));
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.getString(POLL_ID) != null) {
+            loadExistingPoll(requestCreator.createPollDetailsRequest(arguments.getString(POLL_ID), PUBLIC_POLL_CODE));
         } else {
             initializeListWithNewPoll();
         }
