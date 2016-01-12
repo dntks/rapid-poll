@@ -60,12 +60,7 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
             setLocketImage(holder, searchPollsItemData);
             int backgroundColor = searchPollsItemData.state == PollState.DRAFT ? LISTITEM_DRAFT_GREY_COLOR : LISTITEM_BACKGROUND_COLOR;
             holder.listitemLayout.setBackgroundColor(holder.listitemLayout.getResources().getColor(backgroundColor));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pollItemClickListener.pollItemClicked(searchPollsItemData);
-                }
-            });
+
                 setSwipeViewProperties(holder, searchPollsItemData);
 
         }
@@ -96,6 +91,12 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
 
     private void setSwipeViewProperties(SearchPollsItemViewHolder holder, final SearchPollsItemData searchPollsItemData) {
         SwipeLayout swipeLayout = holder.swipeLayout;
+        swipeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pollItemClickListener.pollItemClicked(searchPollsItemData);
+            }
+        });
         if (searchPollsItemData.state != PollState.DRAFT) {
         final boolean isInClosedState = searchPollsItemData.state == PollState.CLOSED;
         holder.swipeViewText.setText(isInClosedState ? SWIPE_REOPEN_TEXT_ID : SWIPE_CLOSE_TEXT_ID);
@@ -137,29 +138,6 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
         return vh;
     }
 
-    /*
-        @Override
-        public int getItemViewType(int position) {
-            SearchPollsItemData itemData = getItem(position);
-            return itemData.state.value;
-        }
-
-        @Override
-        public SearchPollsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View viewNormal = LayoutInflater.from(parent.getContext()).inflate(R.layout.allpolls_item, parent, false);
-            View viewSwipable = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_polls_swipeable_item, parent, false);
-
-            PollState pollState = PollState.fromValue(viewType);
-            switch (pollState) {
-                case CLOSED:
-                case PUBLISHED:
-                    return new SearchPollsItemViewHolder(viewSwipable, true);
-                case DRAFT:
-                default:
-                    return new SearchPollsItemViewHolder(viewNormal, true);
-            }
-        }
-    */
     @Override
     public long generateHeaderId(int position) {
         SearchPollsItemData itemData = getItem(position);

@@ -14,19 +14,24 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
+import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
+import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
+import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.appsball.rapidpoll.newpoll.listadapter.NewPollQuestionsAdapter;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.appsball.rapidpoll.newpoll.model.PollSettings;
 import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionAlternativeTransformer;
 import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionTransformer;
+import com.appsball.rapidpoll.newpoll.transformer.NewPollQuestionsTransformer;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.wasp.Callback;
@@ -35,11 +40,13 @@ import com.orhanobut.wasp.WaspError;
 
 import java.util.List;
 
+import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
+import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class NewPollFragment extends RapidPollFragment {
+public class ManagePollFragment extends RapidPollFragment {
 
     public static final int NEWPOLL_LAYOUT = R.layout.newpoll_layout;
 
@@ -52,22 +59,62 @@ public class NewPollFragment extends RapidPollFragment {
     private List<NewPollQuestion> pollQuestions;
     private ManagePollQuestionTransformer managePollQuestionTransformer;
     private EditText editableTitle;
+    private NewPollQuestionsTransformer newPollQuestionsTransformer;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        getRapidPollActivity().setHomeTitle("New Poll");
+//        getRapidPollActivity().setHomeTitle("New Poll");
         setupHomeTitleEditable();
         service = getRapidPollActivity().getRestService();
+
         rootView = inflater.inflate(NEWPOLL_LAYOUT, container, false);
         newQuestionCreator = new NewQuestionCreator();
-        initializeList(savedInstanceState);
+        RequestCreator requestCreator  = new RequestCreator();
+
         pollSettings = new PollSettings();
         PollSettingsView pollSettingsView = new PollSettingsView(pollSettings, rootView);
         pollSettingsView.initSettingsButtonListeners();
+
         managePollQuestionTransformer = new ManagePollQuestionTransformer(new ManagePollQuestionAlternativeTransformer());
+        newPollQuestionsTransformer = new NewPollQuestionsTransformer();
+
+        initializeList(savedInstanceState);
+
+        String pollId = getArguments().getString(POLL_ID);
+        if (pollId != null) {
+            loadExistingPoll(requestCreator.createPollDetailsRequest(pollId, PUBLIC_POLL_CODE));
+        } else {
+            initializeListWithNewPoll();
+        }
+
         return rootView;
+    }
+
+    private void loadExistingPoll(PollDetailsRequest pollDetailsRequest) {
+        service.pollDetails(pollDetailsRequest, new PollDetailsResponseCallback() {
+            @Override
+            public void onWrongCodeGiven() {
+                getRapidPollActivity().toAllPolls();
+            }
+
+            @Override
+            public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                pollQuestions = newPollQuestionsTransformer.transformQuestions(pollDetailsResponse);
+                setupAdapterWithQuestions();
+                setHomeTitleName(pollDetailsResponse.name);
+                pollSettings.setIsAllowedToComment(pollDetailsResponse.allow_comment==1);
+                pollSettings.setIsPublic(pollDetailsResponse.isPublic==1);
+                pollSettings.setIsAnonymous(pollDetailsResponse.anonymous==1);
+                pollSettings.setAcceptCompleteOnly(pollDetailsResponse.allow_uncomplete_answer==0);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                getRapidPollActivity().toAllPolls();
+            }
+        });
     }
 
     private void setupHomeTitleEditable() {
@@ -77,6 +124,10 @@ public class NewPollFragment extends RapidPollFragment {
         editableTitle.setVisibility(View.VISIBLE);
     }
 
+    private void setHomeTitleName(String existingName) {
+        editableTitle.setText(existingName);
+    }
+
 
     public void initializeList(Bundle savedInstanceState) {
         ultimateRecyclerView = (UltimateRecyclerView) rootView.findViewById(R.id.questions_list_view);
@@ -84,9 +135,15 @@ public class NewPollFragment extends RapidPollFragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         ultimateRecyclerView.setLayoutManager(linearLayoutManager);
+    }
 
+    private void initializeListWithNewPoll() {
         NewPollQuestion question = newQuestionCreator.createNewQuestion(1);
         pollQuestions = newArrayList(question);
+        setupAdapterWithQuestions();
+    }
+
+    private void setupAdapterWithQuestions() {
         NewPollQuestionsAdapter newPollAdapter = new NewPollQuestionsAdapter(pollQuestions, newQuestionCreator);
         ultimateRecyclerView.setAdapter(newPollAdapter);
     }
@@ -110,7 +167,7 @@ public class NewPollFragment extends RapidPollFragment {
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
 
@@ -133,7 +190,7 @@ public class NewPollFragment extends RapidPollFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                NewPollFragment.this.getFragmentManager().popBackStack();
+                                ManagePollFragment.this.getFragmentManager().popBackStack();
                             }
                         });
             }

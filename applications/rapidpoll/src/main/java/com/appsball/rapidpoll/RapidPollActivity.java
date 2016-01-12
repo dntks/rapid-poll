@@ -20,7 +20,8 @@ import com.appsball.rapidpoll.allpolls.AllPollsFragment;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.fillpoll.FillPollFragment;
 import com.appsball.rapidpoll.mypolls.MyPollsFragment;
-import com.appsball.rapidpoll.newpoll.NewPollFragment;
+import com.appsball.rapidpoll.newpoll.ManagePollFragment;
+import com.appsball.rapidpoll.pollresult.PollResultFragment;
 import com.appsball.rapidpoll.pushnotification.RegistrationAsyncTask;
 import com.appsball.rapidpoll.pushnotification.RegistrationIntentService;
 import com.appsball.rapidpoll.register.UserRegister;
@@ -45,6 +46,7 @@ public class RapidPollActivity extends AppCompatActivity {
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String NO_ID = "no id";
+    public static final String PUBLIC_POLL_CODE = "NONE";
     private RapidPollRestService rapidPollRestService;
     private EditText editableTitle;
 
@@ -80,7 +82,6 @@ public class RapidPollActivity extends AppCompatActivity {
             hideRegisterViews();
             toAllPolls();
         }
-
 
 
 //        RestCaller restCaller  =  new RestCaller(this);
@@ -142,11 +143,6 @@ public class RapidPollActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
     private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
@@ -217,8 +213,24 @@ public class RapidPollActivity extends AppCompatActivity {
         switchToFragment(fragment, false);
     }
 
-    public void toCreatePoll() {
-        final Fragment fragment = new NewPollFragment();
+    public void toManagePoll() {
+        final Fragment fragment = new ManagePollFragment();
+        switchToFragment(fragment, true);
+    }
+
+    public void toManagePoll(String pollId) {
+        final Fragment fragment = new ManagePollFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(POLL_ID, pollId);
+        fragment.setArguments(bundle);
+        switchToFragment(fragment, true);
+    }
+
+    public void toPollResult(String pollId) {
+        final Fragment fragment = new PollResultFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(POLL_ID, pollId);
+        fragment.setArguments(bundle);
         switchToFragment(fragment, true);
     }
 
@@ -247,4 +259,5 @@ public class RapidPollActivity extends AppCompatActivity {
         getSupportFragmentManager().popBackStack();
         return true;
     }
+
 }

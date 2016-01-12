@@ -16,7 +16,6 @@ public class AllPollsItemClickListener implements PollItemClickListener {
     private final RapidPollActivity rapidPollActivity;
     private final RequestCreator requestCreator;
     private final RapidPollRestService service;
-    public static final String PUBLIC_POLL_CODE = "NONE";
 
     public AllPollsItemClickListener(RapidPollActivity rapidPollActivity, RequestCreator requestCreator, RapidPollRestService service) {
         this.rapidPollActivity = rapidPollActivity;
@@ -27,7 +26,7 @@ public class AllPollsItemClickListener implements PollItemClickListener {
     @Override
     public void pollItemClicked(final SearchPollsItemData searchPollsItemData) {
         if (searchPollsItemData.isPublic) {
-            rapidPollActivity.toFillPoll(searchPollsItemData.id, PUBLIC_POLL_CODE, searchPollsItemData.name);
+            rapidPollActivity.toFillPoll(searchPollsItemData.id, RapidPollActivity.PUBLIC_POLL_CODE, searchPollsItemData.name);
         } else {
             showEnterPollCodeDialog(searchPollsItemData.id);
         }
