@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark_purple"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/poll_settings_button_row"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/newpoll_listitem_height"
+        android:background="@drawable/comment_box"
+        android:layout_margin="15dp"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/poll_code" />
+
+        <TextView
+            android:id="@+id/pollcode_value"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pollsettings"
+            android:textColor="@color/text_lightpurple" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/share" />
+
+    </LinearLayout>
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/questions_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/list_size_helper"
+        android:layout_marginTop="2dp"
+        android:scrollbars="none" />
+</LinearLayout>

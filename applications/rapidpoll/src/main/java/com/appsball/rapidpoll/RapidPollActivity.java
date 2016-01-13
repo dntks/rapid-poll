@@ -73,7 +73,7 @@ public class RapidPollActivity extends AppCompatActivity {
 
 
         rapidPollRestService = createRapidPollRestService(this);
-        Hawk.put(USER_ID_KEY, USER_ID);
+//        Hawk.put(USER_ID_KEY, USER_ID);
 //        registerGCM();
 
         if (!isRegistered()) {

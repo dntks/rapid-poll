@@ -39,4 +39,6 @@
     <color name="splash_center">#3F4084</color>
     <color name="splash_edge">#000042</color>
 
+    <color name="text_lightpurple">#A66DD9</color>
+
 </resources>

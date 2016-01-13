@@ -36,4 +36,6 @@
     <string name="token_error_message">An error occurred while registering your device. Please try again later.</string>
     <string name="close">Close</string>
     <string name="reopen">Reopen</string>
+    <string name="poll_code">Poll code</string>
+    <string name="share">Share</string>
 </resources>

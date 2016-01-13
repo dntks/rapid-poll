@@ -46,4 +46,12 @@ public class RequestCreator {
         builder.withPollState(pollState);
         return builder.build();
     }
+
+    public PollResultRequest createPollResultRequest(String pollId, String pollCode) {
+        PollResultRequest.Builder builder = PollResultRequest.builder();
+        builder.withPollId(pollId);
+        builder.withUserId(Hawk.<String>get(USER_ID_KEY));
+        builder.withPollCode(pollCode);
+        return builder.build();
+    }
 }
