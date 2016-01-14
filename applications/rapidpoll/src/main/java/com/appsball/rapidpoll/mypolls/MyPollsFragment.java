@@ -37,7 +37,7 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
     @Override
     protected PollItemClickListener createPollItemClickListener() {
-        return new MyPollsItemClickListener(getRapidPollActivity(), requestCreator, service);
+        return new MyPollsItemClickListener(getRapidPollActivity());
     }
 
     @Override

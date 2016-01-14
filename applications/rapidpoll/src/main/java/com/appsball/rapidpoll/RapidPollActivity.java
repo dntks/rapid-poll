@@ -226,20 +226,22 @@ public class RapidPollActivity extends AppCompatActivity {
         switchToFragment(fragment, true);
     }
 
-    public void toPollResult(String pollId) {
+    public void toPollResult(PollIdentifierData pollIdentifierData) {
         final Fragment fragment = new PollResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(POLL_ID, pollId);
+        bundle.putString(POLL_CODE, pollIdentifierData.pollCode);
+        bundle.putString(POLL_ID, pollIdentifierData.pollId);
+        bundle.putString(POLL_TITLE, pollIdentifierData.pollTitle);
         fragment.setArguments(bundle);
         switchToFragment(fragment, true);
     }
 
-    public void toFillPoll(String pollId, String pollCode, String pollTitle) {
+    public void toFillPoll(PollIdentifierData pollIdentifierData) {
         final Fragment fragment = new FillPollFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(POLL_CODE, pollCode);
-        bundle.putString(POLL_ID, pollId);
-        bundle.putString(POLL_TITLE, pollTitle);
+        bundle.putString(POLL_CODE, pollIdentifierData.pollCode);
+        bundle.putString(POLL_ID, pollIdentifierData.pollId);
+        bundle.putString(POLL_TITLE, pollIdentifierData.pollTitle);
         fragment.setArguments(bundle);
         switchToFragment(fragment, true);
     }
