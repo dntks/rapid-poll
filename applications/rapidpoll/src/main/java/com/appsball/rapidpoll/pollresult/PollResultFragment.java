@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll.pollresult;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +20,7 @@ import com.appsball.rapidpoll.fillpoll.model.FillPollDetails;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsAnswersTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsQuestionsTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransformer;
-import com.appsball.rapidpoll.pollresult.model.CommentItem;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
-import com.appsball.rapidpoll.pollresult.model.PollResultQuestionItem;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultAnswerTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultQuestionTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultTransformer;
@@ -30,12 +29,10 @@ import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.Response;
 import com.orhanobut.wasp.WaspError;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
+import static com.appsball.rapidpoll.commons.communication.service.RapidPollRestService.SUCCESS_MESSAGE;
 
 public class PollResultFragment extends RapidPollFragment {
     public static final int POLLRESULT_LAYOUT = R.layout.pollresult_layout;
@@ -72,8 +69,10 @@ public class PollResultFragment extends RapidPollFragment {
         service.pollResult(pollResultRequest, new Callback<ResponseContainer<PollResultResponse>>() {
             @Override
             public void onSuccess(Response response, ResponseContainer<PollResultResponse> responseContainer) {
-                PollResult pollResult = resultTransformer.transformPollResult(responseContainer.result);
-                initializeListWithQuestions(pollResult.questions);
+                if(SUCCESS_MESSAGE.equals(responseContainer.status)) {
+                    PollResult pollResult = resultTransformer.transformPollResult(responseContainer.result);
+                    initializeListWithQuestions(pollResult);
+                }
             }
 
             @Override
@@ -83,8 +82,8 @@ public class PollResultFragment extends RapidPollFragment {
         });
     }
 
-    private void initializeListWithQuestions(List<PollResultQuestionItem> questions) {
-        PollResultAdapter pollResultAdapter = new PollResultAdapter(questions, new ArrayList<CommentItem>());
+    private void initializeListWithQuestions(PollResult pollResult) {
+        PollResultQuestionAdapter pollResultAdapter = new PollResultQuestionAdapter(pollResult);
         questionsList.setAdapter(pollResultAdapter);
     }
 
@@ -93,7 +92,11 @@ public class PollResultFragment extends RapidPollFragment {
     }
 
     private void initializeList(Bundle savedInstanceState) {
+        questionsList = (UltimateRecyclerView) rootView.findViewById(R.id.questions_list_view);
+        questionsList.setHasFixedSize(false);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        questionsList.setLayoutManager(linearLayoutManager);
     }
 
 

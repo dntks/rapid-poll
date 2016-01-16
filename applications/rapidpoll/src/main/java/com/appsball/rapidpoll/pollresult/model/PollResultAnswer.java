@@ -3,12 +3,12 @@ package com.appsball.rapidpoll.pollresult.model;
 public class PollResultAnswer {
 
     public final long alternativeId;
-    public final String alternativeName;
+    public final String name;
     public final float percentageValue;
 
-    public PollResultAnswer(long alternativeId, String alternativeName, float percentageValue) {
+    public PollResultAnswer(long alternativeId, String name, float percentageValue) {
         this.alternativeId = alternativeId;
-        this.alternativeName = alternativeName;
+        this.name = name;
         this.percentageValue = percentageValue;
     }
 

@@ -108,7 +108,7 @@ public class RapidPollRestService {
     }
 
     public void pollResult(PollResultRequest pollResultRequest, Callback<ResponseContainer<PollResultResponse>> callback) {
-        rapidPollRestInterface.pollResult(pollResultRequest.userId, pollResultRequest.pollId, callback);
+        rapidPollRestInterface.pollResult(pollResultRequest.userId, pollResultRequest.pollId, pollResultRequest.pollCode, callback);
     }
 
     public void searchPoll(SearchPollRequest searchPollRequest, Callback<ResponseContainer<List<PollsResponse>>> callback) {

@@ -40,5 +40,7 @@
     <color name="splash_edge">#000042</color>
 
     <color name="text_lightpurple">#A66DD9</color>
+    <color name="pollresult_question">#6061A5</color>
+    <color name="pollresult_answers">#2B2C5B</color>
 
 </resources>

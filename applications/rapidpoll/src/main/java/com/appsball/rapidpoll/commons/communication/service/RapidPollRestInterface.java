@@ -51,9 +51,10 @@ public interface RapidPollRestInterface {
     void doPoll(@Body DoPollRequest request, Callback<ResponseContainer<Object>> callback);
 
     @Mock
-    @GET("/pollresult/{userid}/{pollid}")
+    @GET("/pollresult/{userid}/{pollid}/{code}")
     void pollResult(@Path("userid") String userid,
                     @Path("pollid") String pollId,
+                    @Path("code") String code,
                     Callback<ResponseContainer<PollResultResponse>> callback);
 
     @Mock

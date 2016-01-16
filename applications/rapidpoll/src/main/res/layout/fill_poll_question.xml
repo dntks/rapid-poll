@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/newpoll_listitem_height"
+    android:layout_height="wrap_content"
     android:background="@color/listitem_question_purple"
+    android:minHeight="@dimen/newpoll_listitem_height"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/general_left_padding"
     android:paddingRight="@dimen/general_right_padding">
 
 
-        <TextView
-            android:id="@+id/question_textview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="question"
-            />
+    <TextView
+        android:id="@+id/question_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="question" />
 
-        <TextView
-            android:id="@+id/multichoice_textview"
-            android:text="@string/multi"
-            android:textColor="@color/text_greypurple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/multichoice_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/multi"
+        android:textColor="@color/text_greypurple" />
 
 </LinearLayout>

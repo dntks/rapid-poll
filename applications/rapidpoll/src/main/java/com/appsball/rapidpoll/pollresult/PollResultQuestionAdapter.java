@@ -6,35 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.fillpoll.model.FillPollAlternative;
-import com.appsball.rapidpoll.fillpoll.model.FillPollListItem;
-import com.appsball.rapidpoll.fillpoll.viewholder.AlternativeCheckUpdater;
 import com.appsball.rapidpoll.newpoll.model.ViewType;
-import com.appsball.rapidpoll.pollresult.model.CommentItem;
+import com.appsball.rapidpoll.pollresult.model.PollResult;
 import com.appsball.rapidpoll.pollresult.model.PollResultListItem;
 import com.appsball.rapidpoll.pollresult.model.PollResultQuestionItem;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultCommentViewHolder;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultQuestionViewHolder;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultViewHolderParent;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
 import static com.appsball.rapidpoll.newpoll.model.ViewType.fromValue;
 
-public class PollResultAdapter  extends RecyclerView.Adapter<PollResultViewHolderParent> implements AlternativeCheckUpdater {
+public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultViewHolderParent> implements PollResultQuestionItemClickListener {
 
-    private List<PollResultQuestionItem> pollResultQuestionItems;
-    private List<CommentItem> commentItems;
+    private final PollResult pollResult;
     private List<PollResultListItem> allListItems;
 
-    public PollResultAdapter(List<PollResultQuestionItem> pollResultQuestionItems, List<CommentItem> commentItems) {
-        this.pollResultQuestionItems = pollResultQuestionItems;
-        this.commentItems = commentItems;
+    public PollResultQuestionAdapter(PollResult pollResult) {
+        this.pollResult = pollResult;
         allListItems = Lists.newArrayList();
-        allListItems.addAll(pollResultQuestionItems);
-        allListItems.addAll(commentItems);
+        allListItems.addAll(pollResult.questions);
+        allListItems.addAll(pollResult.comments);
     }
 
     @Override
@@ -47,8 +41,8 @@ public class PollResultAdapter  extends RecyclerView.Adapter<PollResultViewHolde
                 return new PollResultCommentViewHolder(view);
             case QUESTION:
             default:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fill_poll_question, parent, false);
-                return new PollResultQuestionViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pollresult_item, parent, false);
+                return new PollResultQuestionViewHolder(view, this);
         }
     }
 
@@ -62,26 +56,12 @@ public class PollResultAdapter  extends RecyclerView.Adapter<PollResultViewHolde
         return allListItems.size();
     }
 
-
     @Override
     public int getItemViewType(int position) {
         return allListItems.get(position).getViewType().value;
     }
 
     @Override
-    public void alternativeUnchecked(FillPollAlternative prevCheckedAlternative) {
-        Optional<Integer> location = getLocationOfItem(prevCheckedAlternative);
-        if (location.isPresent()) {
-            notifyItemChanged(location.get());
-        }
-    }
-
-    private Optional<Integer> getLocationOfItem(FillPollListItem fillPollListItem) {
-        for (int i = 0; i < allListItems.size(); i++) {
-            if (allListItems.get(i).equals(fillPollListItem)) {
-                return Optional.of(i);
-            }
-        }
-        return Optional.absent();
+    public void onPollResultQuestionItemClicked(PollResultQuestionItem pollResultQuestionItem) {
     }
 }
