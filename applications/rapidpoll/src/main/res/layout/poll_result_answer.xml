@@ -10,20 +10,18 @@
     <TextView
         android:id="@+id/answer_textview"
         android:layout_width="0dp"
-        android:paddingLeft="@dimen/general_left_padding"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="answer" />
-    <ImageView
+    <View
         android:id="@+id/color_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:src="@drawable/users"
-        android:layout_margin="@dimen/general_right_padding" />
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/result_color_square"
+        android:layout_gravity="center"
+        android:layout_margin="5dp" />
 
     <TextView
         android:id="@+id/percentage_textview"

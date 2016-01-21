@@ -14,16 +14,16 @@ import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
-import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
+import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
 import com.appsball.rapidpoll.fillpoll.adapter.FillPollAdapter;
 import com.appsball.rapidpoll.fillpoll.model.FillPollDetails;
 import com.appsball.rapidpoll.fillpoll.model.FillPollQuestion;
-import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.appsball.rapidpoll.fillpoll.transformer.FillPollAlternativesToDoPollAnswersTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.FillPollDetailsToDoPollRequestTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.FillPollQuestionsToDoPollQuestionsTransformer;
@@ -31,9 +31,6 @@ import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsAnswersTransformer
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsQuestionsTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransformer;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-import com.orhanobut.wasp.Callback;
-import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.WaspError;
 
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
@@ -76,9 +73,9 @@ public class FillPollFragment extends RapidPollFragment {
     }
 
     private void callPollDetails(PollDetailsRequest pollDetailsRequest) {
-        service.pollDetails(pollDetailsRequest, new PollDetailsResponseCallback() {
+        service.pollDetails(pollDetailsRequest, new ResponseContainerCallback<PollDetailsResponse>() {
             @Override
-            public void onWrongCodeGiven() {
+            public void onFailure() {
                 getRapidPollActivity().toAllPolls();
             }
 
@@ -139,16 +136,19 @@ public class FillPollFragment extends RapidPollFragment {
 
     private void submitPoll() {
         DoPollRequest doPollRequest = requestTransformer.transform(fillPollDetails);
-        service.doPoll(doPollRequest, new Callback<ResponseContainer<Object>>() {
+        service.doPoll(doPollRequest, new ResponseCallback() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
-                if(RapidPollRestService.SUCCESS_MESSAGE.equals(objectResponseContainer.status)){
-                    showSuccessDialog();
-                }
+            public void onSuccess() {
+                showSuccessDialog();
             }
 
             @Override
-            public void onError(WaspError error) {
+            public void onFailure() {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
 
             }
         });

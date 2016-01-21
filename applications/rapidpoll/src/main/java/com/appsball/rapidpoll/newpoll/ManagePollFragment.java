@@ -19,13 +19,12 @@ import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
-import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
-import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.appsball.rapidpoll.newpoll.listadapter.NewPollQuestionsAdapter;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.appsball.rapidpoll.newpoll.model.PollSettings;
@@ -34,9 +33,6 @@ import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionTransformer;
 import com.appsball.rapidpoll.newpoll.transformer.NewPollQuestionsTransformer;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.orhanobut.hawk.Hawk;
-import com.orhanobut.wasp.Callback;
-import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.WaspError;
 
 import java.util.List;
 
@@ -71,7 +67,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
         rootView = inflater.inflate(NEWPOLL_LAYOUT, container, false);
         newQuestionCreator = new NewQuestionCreator();
-        RequestCreator requestCreator  = new RequestCreator();
+        RequestCreator requestCreator = new RequestCreator();
 
         pollSettings = new PollSettings();
         PollSettingsView pollSettingsView = new PollSettingsView(pollSettings, rootView);
@@ -93,9 +89,9 @@ public class ManagePollFragment extends RapidPollFragment {
     }
 
     private void loadExistingPoll(PollDetailsRequest pollDetailsRequest) {
-        service.pollDetails(pollDetailsRequest, new PollDetailsResponseCallback() {
+        service.pollDetails(pollDetailsRequest, new ResponseContainerCallback<PollDetailsResponse>() {
             @Override
-            public void onWrongCodeGiven() {
+            public void onFailure() {
                 getRapidPollActivity().toAllPolls();
             }
 
@@ -104,10 +100,10 @@ public class ManagePollFragment extends RapidPollFragment {
                 pollQuestions = newPollQuestionsTransformer.transformQuestions(pollDetailsResponse);
                 setupAdapterWithQuestions();
                 setHomeTitleName(pollDetailsResponse.name);
-                pollSettings.setIsAllowedToComment(pollDetailsResponse.allow_comment==1);
-                pollSettings.setIsPublic(pollDetailsResponse.isPublic==1);
-                pollSettings.setIsAnonymous(pollDetailsResponse.anonymous==1);
-                pollSettings.setAcceptCompleteOnly(pollDetailsResponse.allow_uncomplete_answer==0);
+                pollSettings.setIsAllowedToComment(pollDetailsResponse.allow_comment == 1);
+                pollSettings.setIsPublic(pollDetailsResponse.isPublic == 1);
+                pollSettings.setIsAnonymous(pollDetailsResponse.anonymous == 1);
+                pollSettings.setAcceptCompleteOnly(pollDetailsResponse.allow_uncomplete_answer == 0);
             }
 
             @Override
@@ -183,9 +179,9 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void publishPoll(String name, boolean draft) {
         ManagePoll managePoll = buildPoll(name, draft);
-        service.managePoll(createManagePollRequest(managePoll), new Callback<ResponseContainer<ManagePollResponse>>() {
+        service.managePoll(createManagePollRequest(managePoll), new ResponseContainerCallback<ManagePollResponse>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<ManagePollResponse> objectResponseContainer) {
+            public void onSuccess(ManagePollResponse managePollResponse) {
                 DialogsBuilder.showErrorDialog(getActivity(), "Success", "Poll published successfully.",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -196,9 +192,15 @@ public class ManagePollFragment extends RapidPollFragment {
             }
 
             @Override
-            public void onError(WaspError error) {
+            public void onFailure() {
                 DialogsBuilder.showErrorDialog(getActivity(), "Failure", "Couldn't publish poll. Please try again.");
             }
+
+            @Override
+            public void onError(String errorMessage) {
+                onFailure();
+            }
+
         });
     }
 

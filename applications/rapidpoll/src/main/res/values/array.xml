@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pie_colors">
+        <item>@color/result_pie_color_1</item>
+        <item>@color/result_pie_color_2</item>
+        <item>@color/result_pie_color_3</item>
+        <item>@color/result_pie_color_4</item>
+        <item>@color/result_pie_color_5</item>
+        <item>@color/result_pie_color_6</item>
+        <item>@color/result_pie_color_7</item>
+        <item>@color/result_pie_color_8</item>
+        <item>@color/result_pie_color_9</item>
+        <item>@color/result_pie_color_10</item>
+    </array>
+</resources>

@@ -6,7 +6,7 @@ import android.view.View;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
-import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
+import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
@@ -17,9 +17,6 @@ import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.google.common.collect.Lists;
-import com.orhanobut.wasp.Callback;
-import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.WaspError;
 
 public class MyPollsFragment extends SearchPollsFragment implements PollCloser, PollReopener {
 
@@ -74,15 +71,20 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
         service.updatePollState(requestCreator.createUpdatePollStateRequest(pollId, PollState.PUBLISHED), createUpdatePollStateCallback());
     }
 
-    private Callback<ResponseContainer<Object>> createUpdatePollStateCallback() {
-        return new Callback<ResponseContainer<Object>>() {
+    private ResponseCallback createUpdatePollStateCallback() {
+        return new ResponseCallback() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
+            public void onSuccess() {
                 resetAdapterAndGetPolls();
             }
 
             @Override
-            public void onError(WaspError error) {
+            public void onFailure() {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
 
             }
         };

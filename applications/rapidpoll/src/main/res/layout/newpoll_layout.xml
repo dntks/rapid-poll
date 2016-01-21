@@ -10,8 +10,8 @@
         android:id="@+id/poll_settings_button_row"
         android:layout_width="match_parent"
         android:layout_height="@dimen/newpoll_listitem_height"
-        android:paddingLeft="@dimen/general_left_padding"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/general_left_padding">
 
         <TextView
             android:layout_width="0dp"
@@ -32,10 +32,9 @@
     <View
         android:id="@+id/list_size_helper"
         android:layout_width="match_parent"
-        android:layout_below="@id/poll_settings_button_row"
         android:layout_height="204dp"
-        android:visibility="gone"
-        />
+        android:layout_below="@id/poll_settings_button_row"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/new_poll_settings_layout"
@@ -55,8 +54,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/newpoll_listitem_height"
-            android:paddingRight="25dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingRight="25dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -64,10 +63,12 @@
                 android:layout_weight="1"
                 android:text="@string/publicity"
                 android:textColor="@android:color/white" />
+
             <CheckBox
                 android:id="@+id/public_checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:button="@drawable/settings_checkbox" />
 
         </LinearLayout>
 
@@ -80,8 +81,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/newpoll_listitem_height"
-            android:paddingRight="25dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingRight="25dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -89,10 +90,12 @@
                 android:layout_weight="1"
                 android:text="@string/anonymous"
                 android:textColor="@android:color/white" />
+
             <CheckBox
                 android:id="@+id/anonymous_checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:button="@drawable/settings_checkbox" />
 
         </LinearLayout>
 
@@ -105,8 +108,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/newpoll_listitem_height"
-            android:paddingRight="25dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingRight="25dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -114,10 +117,12 @@
                 android:layout_weight="1"
                 android:text="@string/allowtocomment"
                 android:textColor="@android:color/white" />
+
             <CheckBox
                 android:id="@+id/allowcomment_checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:button="@drawable/settings_checkbox" />
 
         </LinearLayout>
 
@@ -130,8 +135,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/newpoll_listitem_height"
-            android:paddingRight="25dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingRight="25dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -139,16 +144,14 @@
                 android:layout_weight="1"
                 android:text="@string/acceptcompleteonly"
                 android:textColor="@android:color/white" />
+
             <CheckBox
                 android:id="@+id/acceptcompleteonly_checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+                android:layout_height="wrap_content"
+                android:button="@drawable/settings_checkbox" />
         </LinearLayout>
-
     </LinearLayout>
-
-
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/questions_list_view"
         android:layout_width="match_parent"

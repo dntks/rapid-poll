@@ -72,4 +72,13 @@ public interface RapidPollRestInterface {
     @POST("/updatepollstate")
     void updatePollState(@Body UpdatePollStateRequest request, Callback<ResponseContainer<Object>> callback);
 
+    @Mock
+    @GET("/pollresultexport/{userid}/{pollid}/{exporttype}/{code}")
+    void exportPollResult(@Path("userid") String userid,
+                          @Path("pollid") String pollId,
+                          @Path("exporttype") String exportType,
+                          @Path("code") String code,
+                          Callback<String> callback);
+
+
 }

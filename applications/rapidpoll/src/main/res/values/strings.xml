@@ -38,4 +38,5 @@
     <string name="reopen">Reopen</string>
     <string name="poll_code">Poll code</string>
     <string name="share">Share</string>
+    <string name="no_answers_received">No answers received to this question.</string>
 </resources>

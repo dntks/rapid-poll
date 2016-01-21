@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
+import com.appsball.rapidpoll.commons.communication.request.SearchPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
@@ -151,8 +152,8 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
 
     public boolean searchForText(String searchPhrase) {
         if (checkIsOnlineAndShowSimpleDialog()) {
-            service.searchPoll(requestCreator.createSearchPollRequest(searchPhrase, searchPollsDataState, getListType()),
-                    searchPollsCallback);
+            SearchPollRequest searchPollRequest = requestCreator.createSearchPollRequest(searchPhrase, searchPollsDataState, getListType());
+            service.searchPoll(searchPollRequest, searchPollsCallback);
             return true;
         }
         return false;

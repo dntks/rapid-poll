@@ -1,6 +1,8 @@
 package com.appsball.rapidpoll.pollresult.viewholder;
 
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,34 +17,38 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
 
     private PollResultQuestionItemClickListener pollResultQuestionItemClickListener;
-    private TextView textView;
+    private TextView questionTextView;
+    private TextView noAnswersTextView;
     private LinearLayout answersLayout;
     private PieChart pieChart;
     private LayoutInflater layoutInflater;
+    private List<Integer> answerColors;
 
-    public PollResultQuestionViewHolder(View parent, PollResultQuestionItemClickListener pollResultQuestionItemClickListener) {
+    public PollResultQuestionViewHolder(View parent,
+                                        PollResultQuestionItemClickListener pollResultQuestionItemClickListener,
+                                        List<Integer> answerColors) {
         super(parent);
-        layoutInflater = LayoutInflater.from(parent.getContext());
-        textView = (TextView) itemView.findViewById(R.id.question_textview);
         this.pollResultQuestionItemClickListener = pollResultQuestionItemClickListener;
+        this.answerColors = answerColors;
+        layoutInflater = LayoutInflater.from(parent.getContext());
+        questionTextView = (TextView) itemView.findViewById(R.id.question_textview);
         pieChart = (PieChart) itemView.findViewById(R.id.pie_chart);
         answersLayout = (LinearLayout) itemView.findViewById(R.id.answers_container);
+        noAnswersTextView = (TextView) itemView.findViewById(R.id.no_answers_textview);
     }
 
     @Override
     public void bindView(PollResultListItem pollResultListItem) {
+        answersLayout.removeAllViews();
         final PollResultQuestionItem pollResultQuestionItem = (PollResultQuestionItem) pollResultListItem;
-        textView.setText(pollResultQuestionItem.questionName);
+        questionTextView.setText(pollResultQuestionItem.questionName);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,112 +56,85 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
             }
         });
 
-        setupAnswerViews(pollResultQuestionItem);
-        setupPieChart(pollResultQuestionItem);
+        setupResultAnswerView(pollResultQuestionItem.alternatives);
     }
 
-    private void setupAnswerViews(PollResultQuestionItem pollResultQuestionItem) {
-        int i = 1;
-        for (PollResultAnswer resultAnswer : pollResultQuestionItem.alternatives) {
+    private void setupResultAnswerView(List<PollResultAnswer> resultAnswers) {
+        if (resultAnswers.size() > 0) {
+            setupAnswerViews(resultAnswers);
+            setupPieChart(resultAnswers);
+            hideViewRelatingToHavingAnswers(true);
+        } else {
+            hideViewRelatingToHavingAnswers(false);
+        }
+    }
+
+    private void hideViewRelatingToHavingAnswers(boolean questionHasAnswers) {
+        noAnswersTextView.setVisibility(questionHasAnswers ? View.GONE : View.VISIBLE);
+        answersLayout.setVisibility(questionHasAnswers ? View.VISIBLE : View.GONE);
+        pieChart.setVisibility(questionHasAnswers ? View.VISIBLE : View.GONE);
+    }
+
+    private void setupAnswerViews(List<PollResultAnswer> resultAnswers) {
+        int i = 0;
+        for (PollResultAnswer resultAnswer : resultAnswers) {
             String alternativeName = resultAnswer.name;
             String percentageString = resultAnswer.getPercentageString();
             View answerRow = layoutInflater.inflate(R.layout.poll_result_answer, null);
             answersLayout.addView(answerRow);
             TextView nameTextView = (TextView) answerRow.findViewById(R.id.answer_textview);
             TextView percentageTextView = (TextView) answerRow.findViewById(R.id.percentage_textview);
-            nameTextView.setText(i + ".) " + alternativeName);
+            View colorView = answerRow.findViewById(R.id.color_view);
             percentageTextView.setText(percentageString);
+            Integer color = answerColors.get(i);
+            setColorView(colorView, color);
             i++;
+            nameTextView.setText(i + ".) " + alternativeName);
         }
     }
 
-    private void setupPieChart(PollResultQuestionItem pollResultQuestionItem) {
-        List<PollResultAnswer> resultAnswers = pollResultQuestionItem.alternatives;
+    private void setColorView(View colorView, Integer color) {
+        Drawable background = colorView.getBackground();
+        if (background instanceof ShapeDrawable) {
+            ((ShapeDrawable)background).getPaint().setColor(color);
+        } else if (background instanceof GradientDrawable) {
+            ((GradientDrawable)background).setColor(color);
+        }
+    }
+
+    private void setupPieChart(List<PollResultAnswer> resultAnswers) {
+        pieChart.setUsePercentValues(true);
+        pieChart.setDescription("");
+        pieChart.setTouchEnabled(false);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setDrawMarkerViews(false);
+        pieChart.setDrawSliceText(false);
+        pieChart.getLegend().setEnabled(false);
+        setData(pieChart, resultAnswers);
+    }
+
+    private void setData(PieChart mChart, List<PollResultAnswer> resultAnswers) {
         List<Entry> pieEntries = Lists.newArrayList();
         List<String> pieEntryNames = Lists.newArrayList();
         for (int i = 0; i < resultAnswers.size(); i++) {
             PollResultAnswer resultAnswer = resultAnswers.get(i);
-            pieEntries.add(new Entry(i, i));
+            pieEntries.add(new Entry(resultAnswer.percentageValue, i));
             pieEntryNames.add(resultAnswer.name);
         }
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Answers");
-        PieData pieData = new PieData(pieEntryNames, pieDataSet);
-//        pieChart.setData(pieData);
-        pieChart.setHoleRadius(0);
-       pieChart.setUsePercentValues(true);
-       pieChart.setDescription("");
-       pieChart.setExtraOffsets(5, 10, 5, 5);
 
-       pieChart.setDragDecelerationFrictionCoef(0.95f);
-
-       pieChart.setDrawHoleEnabled(false);
-       pieChart.setHoleColorTransparent(true);
-
-       pieChart.setTransparentCircleColor(Color.TRANSPARENT);
-       pieChart.setTransparentCircleAlpha(0);
-
-       pieChart.setHoleRadius(58f);
-       pieChart.setTransparentCircleRadius(61f);
-
-       pieChart.setDrawCenterText(true);
-        setData(3,5, pieChart);
-    }
-    protected String[] mParties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
-            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
-            "Party Y", "Party Z"
-    };
-    private void setData(int count, float range, PieChart mChart) {
-
-        float mult = range;
-
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-
-        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-        // xIndex (even if from different DataSets), since no values can be
-        // drawn above each other.
-        for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
-        }
-
-        ArrayList<String> xVals = new ArrayList<String>();
-
-        for (int i = 0; i < count + 1; i++)
-            xVals.add(mParties[i % mParties.length]);
-
-        PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
         dataSet.setSliceSpace(2f);
         dataSet.setSelectionShift(5f);
-
+        dataSet.setDrawValues(false);
+//        dataSet.setVisible(false);
         // add a lot of colors
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-
-        dataSet.setColors(colors);
+        dataSet.setColors(answerColors);
         //dataSet.setSelectionShift(0f);
 
-        PieData data = new PieData(xVals, dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+        PieData data = new PieData(pieEntryNames, dataSet);
+        data.setDrawValues(false);
         mChart.setData(data);
 
         // undo all highlights
@@ -163,4 +142,5 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
 
         mChart.invalidate();
     }
+
 }

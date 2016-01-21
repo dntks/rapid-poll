@@ -22,10 +22,12 @@ import static com.appsball.rapidpoll.newpoll.model.ViewType.fromValue;
 public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultViewHolderParent> implements PollResultQuestionItemClickListener {
 
     private final PollResult pollResult;
-    private List<PollResultListItem> allListItems;
+    private final List<PollResultListItem> allListItems;
+    private final List<Integer> answerColors;
 
-    public PollResultQuestionAdapter(PollResult pollResult) {
+    public PollResultQuestionAdapter(PollResult pollResult, List<Integer> answerColors) {
         this.pollResult = pollResult;
+        this.answerColors = answerColors;
         allListItems = Lists.newArrayList();
         allListItems.addAll(pollResult.questions);
         allListItems.addAll(pollResult.comments);
@@ -42,7 +44,7 @@ public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultVi
             case QUESTION:
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pollresult_item, parent, false);
-                return new PollResultQuestionViewHolder(view, this);
+                return new PollResultQuestionViewHolder(view, this, answerColors);
         }
     }
 

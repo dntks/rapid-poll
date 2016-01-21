@@ -5,9 +5,9 @@ import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
-import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.orhanobut.hawk.Hawk;
 
@@ -54,9 +54,9 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
     }
 
     private void callGetDetails(final String id, final String code) {
-        service.pollDetails(requestCreator.createPollDetailsRequest(id, code), new PollDetailsResponseCallback() {
+        service.pollDetails(requestCreator.createPollDetailsRequest(id, code), new ResponseContainerCallback<PollDetailsResponse>(){
             @Override
-            public void onWrongCodeGiven() {
+            public void onFailure(){
                 showEnterPollCodeDialog(id);
             }
 

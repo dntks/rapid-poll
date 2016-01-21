@@ -1,14 +1,11 @@
 package com.appsball.rapidpoll.searchpolls.service;
 
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
-import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
-import com.orhanobut.wasp.Callback;
-import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.WaspError;
+import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 
 import java.util.List;
 
-public class SearchPollsCallback implements Callback<ResponseContainer<List<PollsResponse>>> {
+public class SearchPollsCallback implements ResponseContainerCallback<List<PollsResponse>> {
 
     private List<OnPollsReceivedListener> onPollsReceivedListeners;
 
@@ -17,15 +14,21 @@ public class SearchPollsCallback implements Callback<ResponseContainer<List<Poll
     }
 
     @Override
-    public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
+    public void onSuccess(List<PollsResponse> responseList) {
         for(OnPollsReceivedListener listener : onPollsReceivedListeners){
-            listener.onPollsReceived(listResponseContainer.result);
+            listener.onPollsReceived(responseList);
         }
     }
 
     @Override
-    public void onError(WaspError error) {
+    public void onFailure() {
 
     }
+
+    @Override
+    public void onError(String errorMessage) {
+        onFailure();
+    }
+
 }
 

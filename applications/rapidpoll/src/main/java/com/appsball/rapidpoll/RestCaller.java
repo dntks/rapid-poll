@@ -14,16 +14,13 @@ import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
-import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
+import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 import com.appsball.rapidpoll.commons.model.PollState;
-import com.appsball.rapidpoll.fillpoll.service.PollDetailsResponseCallback;
 import com.orhanobut.logger.Logger;
-import com.orhanobut.wasp.Callback;
-import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.WaspError;
 
 import java.util.List;
 
@@ -63,15 +60,21 @@ public class RestCaller {
     }
 
     public void updatePollState() {
-        service.updatePollState(createUpdatePollStateRequest(), new Callback<ResponseContainer<Object>>() {
+        service.updatePollState(createUpdatePollStateRequest(), new ResponseCallback() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
-                Logger.i("updatepoll response", objectResponseContainer);
+            public void onSuccess() {
+                Logger.i("register response");
             }
 
             @Override
-            public void onError(WaspError error) {
-                Logger.e("updatepoll response", error);
+            public void onFailure() {
+                Logger.e("register failure");
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("register response", errorMessage);
             }
         });
     }
@@ -85,64 +88,78 @@ public class RestCaller {
     }
 
     public void searchPoll() {
-        service.searchPoll(createSearchPollRequest(), new Callback<ResponseContainer<List<PollsResponse>>>() {
+        service.searchPoll(createSearchPollRequest(), new ResponseContainerCallback<List<PollsResponse>>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
-                Logger.wtf("wtf0");
-            }
-
-            @Override
-            public void onError(WaspError error) {
-                Logger.e("searchPoll response", error);
-            }
-        });
-    }
-
-    public void getPollResult() {
-        service.pollResult(createPollResultRequest(), new Callback<ResponseContainer<PollResultResponse>>() {
-            @Override
-            public void onSuccess(Response response, ResponseContainer<PollResultResponse> pollResultResponseResponseContainer) {
-                Logger.i("getPollResult response", pollResultResponseResponseContainer);
-            }
-
-            @Override
-            public void onError(WaspError error) {
-                Logger.e("getPollResult response", error);
-            }
-        });
-    }
-
-    public void doPoll() {
-        service.doPoll(createDoPollRequest(), new Callback<ResponseContainer<Object>>() {
-            @Override
-            public void onSuccess(Response response, ResponseContainer<Object> objectResponseContainer) {
-                Logger.i("doPoll response", objectResponseContainer);
-            }
-
-            @Override
-            public void onError(WaspError error) {
-                Logger.e("doPoll response", error);
-            }
-        });
-    }
-
-    public void getPollDetails() {
-        service.pollDetails(createPollDetailsRequest(), new PollDetailsResponseCallback() {
-            @Override
-            public void onWrongCodeGiven() {
-                Logger.i("getPollDetails response", "wrong code");
-            }
-
-            @Override
-            public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+            public void onSuccess(List<PollsResponse> pollDetailsResponse) {
                 Logger.e("getPollDetails response", pollDetailsResponse);
+            }
 
+            @Override
+            public void onFailure() {
+                Logger.i("getPollDetails response", "wrong code");
             }
 
             @Override
             public void onError(String errorMessage) {
                 Logger.e("getPollDetails response", errorMessage);
+            }
+        });
+    }
 
+    public void getPollResult() {
+        service.pollResult(createPollResultRequest(), new ResponseContainerCallback<PollResultResponse>() {
+            @Override
+            public void onSuccess(PollResultResponse pollDetailsResponse) {
+                Logger.e("getPollDetails response", pollDetailsResponse);
+            }
+
+            @Override
+            public void onFailure() {
+                Logger.i("getPollDetails response", "wrong code");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("getPollDetails response", errorMessage);
+            }
+        });
+    }
+
+    public void doPoll() {
+        service.doPoll(createDoPollRequest(), new ResponseCallback() {
+            @Override
+            public void onSuccess() {
+                Logger.i("register response");
+            }
+
+            @Override
+            public void onFailure() {
+                Logger.e("register failure");
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("register response", errorMessage);
+            }
+        });
+    }
+
+    public void getPollDetails() {
+        service.pollDetails(createPollDetailsRequest(), new ResponseContainerCallback<PollDetailsResponse>() {
+            @Override
+            public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                Logger.e("getPollDetails response", pollDetailsResponse);
+            }
+
+            @Override
+            public void onFailure() {
+                Logger.i("getPollDetails response", "wrong code");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("getPollDetails response", errorMessage);
             }
         });
     }
@@ -159,49 +176,64 @@ public class RestCaller {
     }
 
     public void createPoll() {
-        service.managePoll(createManagePollRequest(), new Callback<ResponseContainer<ManagePollResponse>>() {
+        service.managePoll(createManagePollRequest(), new ResponseContainerCallback<ManagePollResponse>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<ManagePollResponse> objectResponseContainer) {
-                Logger.i("createPoll response", objectResponseContainer);
+            public void onSuccess(ManagePollResponse response) {
+                Logger.i("register response", response);
             }
 
             @Override
-            public void onError(WaspError error) {
-                Logger.e("createPoll response", error);
+            public void onFailure() {
+                Logger.e("register failure");
 
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("register response", errorMessage);
             }
         });
     }
 
     public void register() {
         RegisterRequest registerRequest = registerRequest("sdef_626");
-        service.registerUser(registerRequest, new Callback<ResponseContainer<RegisterResponse>>() {
+        service.registerUser(registerRequest, new ResponseContainerCallback<RegisterResponse>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<RegisterResponse> registerResponseResponseContainer) {
-                Logger.i("register response", registerResponseResponseContainer);
+            public void onSuccess(RegisterResponse response) {
+                Logger.i("register response", response);
             }
 
             @Override
-            public void onError(WaspError error) {
-                Logger.e("register response", error);
+            public void onFailure() {
+                Logger.e("register failure");
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Logger.e("register response", errorMessage);
             }
         });
     }
 
     public void getPolls() {
-        service.getPolls(createPollsRequest(),
-                         new Callback<ResponseContainer<List<PollsResponse>>>() {
-                             @Override
-                             public void onSuccess(Response response, ResponseContainer<List<PollsResponse>> listResponseContainer) {
-                                 Logger.i("getPolls response", listResponseContainer);
-                             }
+        service.getPolls(createPollsRequest(), new ResponseContainerCallback<List<PollsResponse>>() {
+                    @Override
+                    public void onSuccess(List<PollsResponse> response) {
+                        Logger.i("register response", response);
+                    }
 
-                             @Override
-                             public void onError(WaspError error) {
-                                 Logger.e("getPolls response", error);
+                    @Override
+                    public void onFailure() {
+                        Logger.e("register failure");
 
-                             }
-                         }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Logger.e("register response", errorMessage);
+                    }
+                }
         );
     }
 }

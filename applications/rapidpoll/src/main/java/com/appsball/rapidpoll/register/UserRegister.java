@@ -2,12 +2,9 @@ package com.appsball.rapidpoll.register;
 
 import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
-import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 import com.orhanobut.hawk.Hawk;
-import com.orhanobut.wasp.Callback;
-import com.orhanobut.wasp.Response;
-import com.orhanobut.wasp.WaspError;
 
 import static com.appsball.rapidpoll.commons.communication.request.RegisterRequest.registerRequest;
 
@@ -21,31 +18,33 @@ public class UserRegister {
         this.onRegisterListener = onRegisterListener;
     }
 
-    public void registerUser(String gcmToken){
-        rapidPollRestService.registerUser(registerRequest(gcmToken), new Callback<ResponseContainer<RegisterResponse>>() {
+    public void registerUser(String gcmToken) {
+        rapidPollRestService.registerUser(registerRequest(gcmToken), new ResponseContainerCallback<RegisterResponse>() {
             @Override
-            public void onSuccess(Response response, ResponseContainer<RegisterResponse> responseContainer) {
-                if(RapidPollRestService.SUCCESS_MESSAGE.equals(responseContainer.status)){
-                    Hawk.put(RapidPollActivity.USER_ID_KEY, responseContainer.result.user_id);
-                    onRegisterListener.succesfulRegister();
-                }else {
-                    onRegisterListener.failedRegister();
-                }
+            public void onSuccess(RegisterResponse response) {
+                Hawk.put(RapidPollActivity.USER_ID_KEY, response.user_id);
+                onRegisterListener.succesfulRegister();
             }
 
             @Override
-            public void onError(WaspError error) {
+            public void onFailure() {
                 onRegisterListener.failedRegister();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                onFailure();
             }
         });
     }
 
-    public void gcmFailed(){
+    public void gcmFailed() {
         onRegisterListener.failedRegister();
     }
 
     public interface OnRegisterListener {
         void succesfulRegister();
+
         void failedRegister();
     }
 }

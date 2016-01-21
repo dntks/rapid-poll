@@ -1,5 +1,6 @@
 package com.appsball.rapidpoll.commons.communication.request;
 
+import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
@@ -47,11 +48,20 @@ public class RequestCreator {
         return builder.build();
     }
 
-    public PollResultRequest createPollResultRequest(String pollId, String pollCode) {
+    public PollResultRequest createPollResultRequest(PollIdentifierData pollIdentifierData) {
         PollResultRequest.Builder builder = PollResultRequest.builder();
-        builder.withPollId(pollId);
+        builder.withPollId(pollIdentifierData.pollId);
         builder.withUserId(Hawk.<String>get(USER_ID_KEY));
-        builder.withPollCode(pollCode);
+        builder.withPollCode(pollIdentifierData.pollCode);
+        return builder.build();
+    }
+
+    public ExportPollResultRequest createExportPollResultRequest(PollIdentifierData pollIdentifierData, ExportType exportType) {
+        ExportPollResultRequest.Builder builder = ExportPollResultRequest.builder();
+        builder.withPollId(pollIdentifierData.pollId);
+        builder.withUserId(Hawk.<String>get(USER_ID_KEY));
+        builder.withCode(pollIdentifierData.pollCode);
+        builder.withExportType(exportType);
         return builder.build();
     }
 }
