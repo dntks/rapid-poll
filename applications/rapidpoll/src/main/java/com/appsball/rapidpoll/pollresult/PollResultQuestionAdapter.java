@@ -39,7 +39,7 @@ public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultVi
         ViewType type = fromValue(viewType);
         switch (type) {
             case COMMENT:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fill_poll_comment, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pollresult_comment, parent, false);
                 return new PollResultCommentViewHolder(view);
             case QUESTION:
             default:

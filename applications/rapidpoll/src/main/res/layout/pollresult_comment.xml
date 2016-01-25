@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_dark_purple"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/commentboxMargin"
+    android:paddingBottom="@dimen/commentboxMargin"
+    android:paddingLeft="@dimen/general_left_padding"
+    android:paddingRight="@dimen/general_left_padding">
+
+
+    <TextView
+        android:id="@+id/comment_text"
+        style="@style/CommentBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/newpoll_listitem_height"
+        android:hint="@string/add_comment"
+        />
+
+
+</LinearLayout>

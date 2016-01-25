@@ -75,6 +75,8 @@ public class DefaultRequestBuilders {
         builder.withUserId(USER_ID);
         builder.withComment(Optional.of("Here is a comment."));
         builder.withPollId("1");
+        builder.withEmail(Optional.of("email@oe.com"));
+        builder.withCode("123456");
         builder.withQuestions(createDoPollQuestions());
         return builder.build();
     }

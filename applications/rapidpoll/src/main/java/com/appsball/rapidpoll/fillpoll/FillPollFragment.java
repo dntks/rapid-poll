@@ -30,6 +30,7 @@ import com.appsball.rapidpoll.fillpoll.transformer.FillPollQuestionsToDoPollQues
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsAnswersTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsQuestionsTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransformer;
+import com.google.common.base.Optional;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
@@ -48,6 +49,7 @@ public class FillPollFragment extends RapidPollFragment {
     private FillPollDetails fillPollDetails;
     private RequestCreator requestCreator;
     private FillPollDetailsToDoPollRequestTransformer requestTransformer;
+    private String pollCode;
 
 
     @Override
@@ -56,7 +58,7 @@ public class FillPollFragment extends RapidPollFragment {
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(FILLPOLL_LAYOUT, container, false);
         initializeList(savedInstanceState);
-        String pollCode = getArguments().getString(POLL_CODE);
+        pollCode = getArguments().getString(POLL_CODE);
         String pollId = getArguments().getString(POLL_ID);
         String pollTitle = getArguments().getString(POLL_TITLE);
         getRapidPollActivity().setHomeTitle(pollTitle);
@@ -130,12 +132,11 @@ public class FillPollFragment extends RapidPollFragment {
         } else if (!fillPollDetails.isAnonymous) {
             showEmailDialog();
         } else {
-            submitPoll();
+            submitPoll(requestTransformer.transformAnonymPoll(fillPollDetails, pollCode));
         }
     }
 
-    private void submitPoll() {
-        DoPollRequest doPollRequest = requestTransformer.transform(fillPollDetails);
+    private void submitPoll(DoPollRequest doPollRequest) {
         service.doPoll(doPollRequest, new ResponseCallback() {
             @Override
             public void onSuccess() {
@@ -176,7 +177,7 @@ public class FillPollFragment extends RapidPollFragment {
 
 
     private void submitPoll(String emailAddress) {
-        submitPoll();
+        submitPoll(requestTransformer.transform(fillPollDetails, pollCode, Optional.of(emailAddress)));
     }
 
     private void showEmailDialog() {

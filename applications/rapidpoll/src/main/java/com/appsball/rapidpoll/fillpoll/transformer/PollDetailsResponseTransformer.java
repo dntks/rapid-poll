@@ -16,9 +16,11 @@ public class PollDetailsResponseTransformer {
         builder.withPollId(String.valueOf(pollDetailsResponse.id));
         builder.withQuestions(pollDetailsQuestionsTransformer.transformQuestions(pollDetailsResponse.questions));
         builder.withName(pollDetailsResponse.name);
-        builder.withAllowComment(pollDetailsResponse.allow_comment==1);
+        builder.withAllowComment(pollDetailsResponse.allow_comment == 1);
         builder.withAllowUncompleteResult(true);
-        //builder.withCommentOptional();
+        builder.withCommentOptional(pollDetailsResponse.comment);
+        builder.withCode(pollDetailsResponse.code);
+        builder.withEmail(pollDetailsResponse.email);
         builder.withIsAnonymous(pollDetailsResponse.anonymous==1);
         builder.withIsPublic(pollDetailsResponse.isPublic==1);
         return builder.build();

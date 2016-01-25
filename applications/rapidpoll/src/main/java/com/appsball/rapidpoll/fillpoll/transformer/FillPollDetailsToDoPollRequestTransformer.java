@@ -15,7 +15,11 @@ public class FillPollDetailsToDoPollRequestTransformer {
         this.questionsTransformer = questionsTransformer;
     }
 
-    public DoPollRequest transform(FillPollDetails fillPollDetails) {
+    public DoPollRequest transformAnonymPoll(FillPollDetails fillPollDetails, String code) {
+        return transform(fillPollDetails, code, Optional.<String>absent());
+    }
+
+    public DoPollRequest transform(FillPollDetails fillPollDetails, String code, Optional<String> email) {
         DoPollRequest.Builder builder = DoPollRequest.builder();
         builder.withPollId(fillPollDetails.pollId);
         builder.withUserId(Hawk.<String>get(RapidPollActivity.USER_ID_KEY));
@@ -24,6 +28,8 @@ public class FillPollDetailsToDoPollRequestTransformer {
             builder.withComment(comment.get().getComment());
         }
         builder.withQuestions(questionsTransformer.transformQuestions(fillPollDetails.questions));
+        builder.withEmail(email);
+        builder.withCode(code);
         return builder.build();
     }
 

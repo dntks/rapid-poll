@@ -23,6 +23,7 @@ import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCal
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultAnswerTransformer;
+import com.appsball.rapidpoll.pollresult.transformer.PollResultCommentTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultQuestionTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultTransformer;
 import com.google.common.primitives.Ints;
@@ -138,7 +139,7 @@ public class PollResultFragment extends RapidPollFragment {
     }
 
     private PollResultTransformer createPollResultTransformer() {
-        return new PollResultTransformer(new PollResultQuestionTransformer(new PollResultAnswerTransformer()));
+        return new PollResultTransformer(new PollResultQuestionTransformer(new PollResultAnswerTransformer()), new PollResultCommentTransformer());
     }
 
     private void initializeList(Bundle savedInstanceState) {
