@@ -15,6 +15,7 @@ public class SortingView {
 
     private SearchPollsDataState searchPollsDataState;
     private PollsListInitializer pollsListInitializer;
+    private boolean isAnimating = false;
 
     private View dateSortButton;
     private View titleSortButton;
@@ -22,6 +23,7 @@ public class SortingView {
     private View publicitySortButton;
     private View statusSortButton;
     private View sortByLayout;
+    private View listSizeHelper;
     private View pagingView;
 
     public SortingView(View rootView, SearchPollsDataState searchPollsDataState, PollsListInitializer pollsListInitializer) {
@@ -34,9 +36,10 @@ public class SortingView {
         voteSortButton = rootView.findViewById(R.id.sort_by_vote_button);
         publicitySortButton = rootView.findViewById(R.id.sort_by_publicity_button);
         statusSortButton = rootView.findViewById(R.id.sort_by_status_button);
+        listSizeHelper = rootView.findViewById(R.id.list_size_helper);
     }
 
-    public void init(){
+    public void init() {
         setSortByViewSwipeListener();
         createSortButtonListeners();
     }
@@ -69,37 +72,50 @@ public class SortingView {
         });
     }
 
-    public void showSortByLayout() {
-        if(sortByLayout.getVisibility() == View.VISIBLE){
+    public void hideSortByLayout() {
+        if (!isSortingVisible() || isAnimating) {
             return;
         }
-        sortByLayout.setVisibility(View.VISIBLE);
-        pagingView.setTranslationY(sortByLayout.getHeight() * -1);
+        isAnimating = true;
+        int height = sortByLayout.getHeight();
+        listSizeHelper.setVisibility(View.GONE);
+        pagingView.setTranslationY(height);
         pagingView.animate()
                 .translationY(0)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        pagingView.setTranslationY(0);
+                        sortByLayout.setVisibility(View.INVISIBLE);
+                        isAnimating = false;
                     }
                 });
+
     }
 
-    public void hideSortByLayout() {
-        if(sortByLayout.getVisibility() == View.GONE){
+    public void showSortByLayout() {
+        if (isSortingVisible() || isAnimating) {
             return;
         }
+        isAnimating = true;
+        sortByLayout.setVisibility(View.VISIBLE);
+        int height = sortByLayout.getHeight();
         pagingView.animate()
-                .translationY(sortByLayout.getHeight() * -1)
+                .translationY(height)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        sortByLayout.setVisibility(View.GONE);
+                        listSizeHelper.setVisibility(View.VISIBLE);
                         pagingView.setTranslationY(0);
+                        isAnimating = false;
                     }
                 });
+    }
+
+    private boolean isSortingVisible() {
+        return sortByLayout.getVisibility() == View.VISIBLE
+                && listSizeHelper.getVisibility() == View.VISIBLE;
     }
 
     private void createSortButtonListeners() {

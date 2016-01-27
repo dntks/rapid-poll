@@ -19,6 +19,8 @@ public class PollsListWrapper {
     protected View moreLoadView;
     private GetPollsCaller getPollsCaller;
     private SearchPollsCaller searchPollsCaller;
+    private int normalListEmptyViewResourceId = R.layout.get_polls_emptyview;
+    private int searchListEmptyViewResourceId = R.layout.search_polls_emptyview;
 
     public PollsListWrapper(LinearLayoutManager linearLayoutManager,
                             View rootView,
@@ -37,11 +39,11 @@ public class PollsListWrapper {
 
         ultimateRecyclerView = (UltimateRecyclerView) rootView.findViewById(R.id.paging_list_view);
         ultimateRecyclerView.setHasFixedSize(false);
-
         ultimateRecyclerView.setLayoutManager(linearLayoutManager);
         ultimateRecyclerView.enableLoadmore();
         setGetPollsMoreListener();
     }
+
 
     public void setGetPollsMoreListener() {
         ultimateRecyclerView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
@@ -79,5 +81,9 @@ public class PollsListWrapper {
         ultimateRecyclerView.setAdapter(null);
         ultimateRecyclerView.disableLoadmore();
         centeredLoadingView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideList() {
+        ultimateRecyclerView.setVisibility(View.GONE);
     }
 }

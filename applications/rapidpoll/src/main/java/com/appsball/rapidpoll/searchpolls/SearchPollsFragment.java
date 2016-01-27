@@ -49,17 +49,25 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View rootView = inflater.inflate(SEARCHPOLLS_LAYOUT, container, false);
+        View rootView = inflater.inflate(getSearchpollsLayout(), container, false);
         getRapidPollActivity().hideBackButton();
         service = getRapidPollActivity().getRestService();
         initializeComponents();
 
         initializeViews(inflater, savedInstanceState, rootView);
         createNavigationButtonListeners(rootView, getActiveButton());
-
+        additionalPageSetup(rootView);
         callGetPolls();
 
         return rootView;
+    }
+
+    protected void additionalPageSetup(View rootView) {
+
+    }
+
+    protected int getSearchpollsLayout() {
+        return SEARCHPOLLS_LAYOUT;
     }
 
     protected abstract NavigationButton getActiveButton();
@@ -87,6 +95,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         pollsListWrapper.initializeView(savedInstanceState);
         setupSortingView(rootView);
     }
+
 
     protected void setupSortingView(View rootView) {
         sortingView = new SortingView(rootView, searchPollsDataState, this);
@@ -134,6 +143,13 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         List<SearchPollsItemData> items = searchPollsItemDataTransformer.transformAll(pollsResponses);
         adapter.insertAll(items, adapter.getAdapterItemCount());
         pollsListWrapper.disableLoadMoreIfNoMoreItems(items);
+        if (items.size() == 0 && searchPollsDataState.actualPage == 2) {
+            onNoPollsReceived();
+        }
+    }
+
+    protected void onNoPollsReceived() {
+        pollsListWrapper.hideList();
     }
 
     @Override

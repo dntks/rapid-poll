@@ -16,7 +16,7 @@ public class PollSettingsView {
     private View listSizeHelper;
     private View settingsLayout;
 
-    public boolean isAnimating = false;
+    private boolean isAnimating = false;
     private final View pagingView;
     private final ImageView settingsButton;
     private final View settingsButtonRow;
@@ -113,7 +113,6 @@ public class PollSettingsView {
                         settingsButton.setImageResource(R.drawable.felfele);
                     }
                 });
-
     }
 
     private boolean isSettingsVisible() {

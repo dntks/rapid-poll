@@ -3,6 +3,7 @@ package com.appsball.rapidpoll.mypolls;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
@@ -20,8 +21,18 @@ import com.google.common.collect.Lists;
 
 public class MyPollsFragment extends SearchPollsFragment implements PollCloser, PollReopener {
 
+    private static final int MY_POLLS_LAYOUT = R.layout.mypolls_layout;
     private MyPollsAdapter resultsAdapter;
 
+    @Override
+    protected void additionalPageSetup(View rootView) {
+        rootView.findViewById(R.id.create_new_poll_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRapidPollActivity().toManagePoll();
+            }
+        });
+    }
 
     @Override
     protected void setupSortingView(View rootView) {
@@ -35,6 +46,10 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
     @Override
     protected PollItemClickListener createPollItemClickListener() {
         return new MyPollsItemClickListener(getRapidPollActivity());
+    }
+
+    protected int getSearchpollsLayout() {
+        return MY_POLLS_LAYOUT;
     }
 
     @Override

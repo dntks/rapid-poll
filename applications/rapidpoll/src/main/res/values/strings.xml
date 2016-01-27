@@ -39,4 +39,7 @@
     <string name="poll_code">Poll code</string>
     <string name="share">Share</string>
     <string name="no_answers_received">No answers received to this question.</string>
+    <string name="create_new_poll">Create New Poll</string>
+    <string name="no_search_results">No results for the given search term.</string>
+    <string name="no_getpoll_results">No polls were found.</string>
 </resources>

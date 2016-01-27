@@ -11,8 +11,8 @@
         android:id="@+id/question_edit_text"
         style="@style/NewPollListQuestionEditText"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/newpoll_listitem_height"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/newpoll_listitem_height" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -30,7 +30,8 @@
         <CheckBox
             android:id="@+id/multichoice_checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:button="@drawable/settings_checkbox" />
 
     </LinearLayout>
 </LinearLayout>

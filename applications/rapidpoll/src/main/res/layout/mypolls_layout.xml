@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_edge">
+
+    <include
+        android:id="@+id/navButtonsLayout"
+        layout="@layout/navbuttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <HorizontalScrollView
+        android:id="@+id/sort_horizontal_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/sortby_background_purple"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/sortby_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="14dp"
+                android:paddingBottom="2dp"
+                android:text="@string/sort_by"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/sort_by_date_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/date" />
+
+            <Button
+                android:id="@+id/sort_by_title_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title" />
+
+            <Button
+                android:id="@+id/sort_by_vote_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vote" />
+
+            <Button
+                android:id="@+id/sort_by_status_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status" />
+
+            <Button
+                android:id="@+id/sort_by_publicity_button"
+                style="@style/SortByTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publicity" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/create_new_poll_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/navButtonsLayout"
+        android:background="@drawable/blurry_gradient"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_marginTop="@dimen/create_new_poll_top_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_new" />
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_new_poll" />
+    </LinearLayout>
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/paging_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/navButtonsLayout"
+        android:layout_below="@id/sort_horizontal_scrollview"
+        android:layout_marginTop="2dp"
+        android:background="@color/background_dark_purple"
+        android:divider="@android:color/black"
+        android:listDivider="@drawable/actionbar_gradient"
+        android:scrollbars="none" />
+
+    <include
+        android:id="@+id/centered_loading_view"
+        layout="@layout/loadingview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sort_horizontal_scrollview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp" />
+
+</RelativeLayout>

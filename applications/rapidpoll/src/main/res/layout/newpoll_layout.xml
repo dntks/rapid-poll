@@ -152,6 +152,7 @@
                 android:button="@drawable/settings_checkbox" />
         </LinearLayout>
     </LinearLayout>
+
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/questions_list_view"
         android:layout_width="match_parent"
@@ -159,4 +160,5 @@
         android:layout_below="@id/list_size_helper"
         android:layout_marginTop="2dp"
         android:scrollbars="none" />
+
 </RelativeLayout>
