@@ -9,7 +9,6 @@ import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.newpoll.model.ViewType;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
 import com.appsball.rapidpoll.pollresult.model.PollResultListItem;
-import com.appsball.rapidpoll.pollresult.model.PollResultQuestionItem;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultCommentViewHolder;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultQuestionViewHolder;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultViewHolderParent;
@@ -19,15 +18,22 @@ import java.util.List;
 
 import static com.appsball.rapidpoll.newpoll.model.ViewType.fromValue;
 
-public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultViewHolderParent> implements PollResultQuestionItemClickListener {
+public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultViewHolderParent>{
 
     private final PollResult pollResult;
     private final List<PollResultListItem> allListItems;
     private final List<Integer> answerColors;
+    private final boolean isAnonymous;
+    private final PollResultQuestionItemClickListener pollResultQuestionItemClickListener;
 
-    public PollResultQuestionAdapter(PollResult pollResult, List<Integer> answerColors) {
+    public PollResultQuestionAdapter(PollResult pollResult,
+                                     List<Integer> answerColors,
+                                     boolean isAnonymous,
+                                     PollResultQuestionItemClickListener pollResultQuestionItemClickListener) {
         this.pollResult = pollResult;
         this.answerColors = answerColors;
+        this.isAnonymous = isAnonymous;
+        this.pollResultQuestionItemClickListener = pollResultQuestionItemClickListener;
         allListItems = Lists.newArrayList();
         allListItems.addAll(pollResult.questions);
         allListItems.addAll(pollResult.comments);
@@ -44,7 +50,7 @@ public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultVi
             case QUESTION:
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pollresult_item, parent, false);
-                return new PollResultQuestionViewHolder(view, this, answerColors);
+                return new PollResultQuestionViewHolder(view, pollResultQuestionItemClickListener, answerColors, isAnonymous);
         }
     }
 
@@ -63,7 +69,4 @@ public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultVi
         return allListItems.get(position).getViewType().value;
     }
 
-    @Override
-    public void onPollResultQuestionItemClicked(PollResultQuestionItem pollResultQuestionItem) {
-    }
 }

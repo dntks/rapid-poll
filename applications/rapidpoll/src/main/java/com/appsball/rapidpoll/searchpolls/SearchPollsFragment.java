@@ -218,7 +218,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
                 item.expandActionView();
                 return true;
             case R.id.add_poll:
-                getRapidPollActivity().toManagePoll();
+                getFragmentSwitcher().toManagePoll();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

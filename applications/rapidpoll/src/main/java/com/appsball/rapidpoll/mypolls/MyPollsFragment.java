@@ -29,7 +29,7 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
         rootView.findViewById(R.id.create_new_poll_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRapidPollActivity().toManagePoll();
+                getFragmentSwitcher().toManagePoll();
             }
         });
     }
@@ -45,7 +45,7 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
     @Override
     protected PollItemClickListener createPollItemClickListener() {
-        return new MyPollsItemClickListener(getRapidPollActivity());
+        return new MyPollsItemClickListener(getFragmentSwitcher());
     }
 
     protected int getSearchpollsLayout() {

@@ -7,8 +7,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,16 +17,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.appsball.rapidpoll.allpolls.AllPollsFragment;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
-import com.appsball.rapidpoll.fillpoll.FillPollFragment;
-import com.appsball.rapidpoll.mypolls.MyPollsFragment;
-import com.appsball.rapidpoll.newpoll.ManagePollFragment;
-import com.appsball.rapidpoll.pollresult.PollResultFragment;
 import com.appsball.rapidpoll.pushnotification.RegistrationAsyncTask;
 import com.appsball.rapidpoll.pushnotification.RegistrationIntentService;
 import com.appsball.rapidpoll.register.UserRegister;
-import com.appsball.rapidpoll.results.ResultsFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.orhanobut.hawk.Hawk;
@@ -52,6 +44,7 @@ public class RapidPollActivity extends AppCompatActivity {
     public static final String PUBLIC_POLL_CODE = "NONE";
     private RapidPollRestService rapidPollRestService;
     private EditText editableTitle;
+    private FragmentSwitcher fragmentSwitcher;
 
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -65,6 +58,7 @@ public class RapidPollActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +81,7 @@ public class RapidPollActivity extends AppCompatActivity {
 
         Logger.init();
         initHawk();
-
+        fragmentSwitcher = new FragmentSwitcher(getSupportFragmentManager());
 
         rapidPollRestService = createRapidPollRestService(this);
 //        Hawk.put(USER_ID_KEY, USER_ID);
@@ -97,7 +91,7 @@ public class RapidPollActivity extends AppCompatActivity {
             registerGCM();
         } else {
             hideRegisterViews();
-            toAllPolls();
+            fragmentSwitcher.toAllPolls();
         }
 
 
@@ -117,12 +111,10 @@ public class RapidPollActivity extends AppCompatActivity {
     }
 
     private boolean isRegistered() {
-
         return !NO_ID.equals(Hawk.get(USER_ID_KEY, NO_ID));
     }
 
     public void registerGCM() {
-
         if (checkPlayServices()) {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
@@ -131,7 +123,7 @@ public class RapidPollActivity extends AppCompatActivity {
                 public void succesfulRegister() {
                     mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
                     hideRegisterViews();
-                    toAllPolls();
+                    fragmentSwitcher.toAllPolls();
                 }
 
                 @Override
@@ -215,63 +207,6 @@ public class RapidPollActivity extends AppCompatActivity {
         return rapidPollRestService;
     }
 
-    public void toAllPolls() {
-        final Fragment fragment = new AllPollsFragment();
-        switchToFragment(fragment, false);
-    }
-
-    public void toResults() {
-        final Fragment fragment = new ResultsFragment();
-        switchToFragment(fragment, false);
-    }
-
-    public void toMyPolls() {
-        final Fragment fragment = new MyPollsFragment();
-        switchToFragment(fragment, false);
-    }
-
-    public void toManagePoll() {
-        final Fragment fragment = new ManagePollFragment();
-        switchToFragment(fragment, true);
-    }
-
-    public void toManagePoll(String pollId) {
-        final Fragment fragment = new ManagePollFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(POLL_ID, pollId);
-        fragment.setArguments(bundle);
-        switchToFragment(fragment, true);
-    }
-
-    public void toPollResult(PollIdentifierData pollIdentifierData) {
-        final Fragment fragment = new PollResultFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(POLL_CODE, pollIdentifierData.pollCode);
-        bundle.putString(POLL_ID, pollIdentifierData.pollId);
-        bundle.putString(POLL_TITLE, pollIdentifierData.pollTitle);
-        fragment.setArguments(bundle);
-        switchToFragment(fragment, true);
-    }
-
-    public void toFillPoll(PollIdentifierData pollIdentifierData) {
-        final Fragment fragment = new FillPollFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(POLL_CODE, pollIdentifierData.pollCode);
-        bundle.putString(POLL_ID, pollIdentifierData.pollId);
-        bundle.putString(POLL_TITLE, pollIdentifierData.pollTitle);
-        fragment.setArguments(bundle);
-        switchToFragment(fragment, true);
-    }
-
-    private void switchToFragment(Fragment fragment, boolean addToBackStack) {
-        final String backStateName = fragment.getClass().getName();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragment, backStateName);
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(backStateName);
-        }
-        fragmentTransaction.commit();
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -279,4 +214,7 @@ public class RapidPollActivity extends AppCompatActivity {
         return true;
     }
 
+    public FragmentSwitcher getFragmentSwitcher() {
+        return fragmentSwitcher;
+    }
 }

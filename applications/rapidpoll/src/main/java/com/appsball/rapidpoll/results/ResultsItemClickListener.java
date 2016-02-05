@@ -13,6 +13,6 @@ public class ResultsItemClickListener extends CommonPollItemClickListener {
     }
 
     protected void onItemSuccessfullyChosen(PollIdentifierData pollIdentifierData) {
-        rapidPollActivity.toPollResult(pollIdentifierData);
+        rapidPollActivity.getFragmentSwitcher().toPollResult(pollIdentifierData);
     }
 }

@@ -12,19 +12,19 @@ public class BottomBarNavigationFragment extends RapidPollFragment {
         rootView.findViewById(R.id.my_polls_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRapidPollActivity().toMyPolls();
+                getFragmentSwitcher().toMyPolls();
             }
         });
         rootView.findViewById(R.id.polls_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
         });
         rootView.findViewById(R.id.results_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRapidPollActivity().toResults();
+                getFragmentSwitcher().toResults();
             }
         });
     }

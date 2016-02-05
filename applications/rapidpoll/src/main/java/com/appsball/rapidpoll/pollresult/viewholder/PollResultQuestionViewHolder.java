@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,19 +27,24 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
     private PollResultQuestionItemClickListener pollResultQuestionItemClickListener;
     private TextView questionTextView;
     private TextView noAnswersTextView;
+    private ImageView peopleImg;
     private LinearLayout answersLayout;
     private PieChart pieChart;
     private LayoutInflater layoutInflater;
     private List<Integer> answerColors;
+    private boolean isAnonymous;
 
     public PollResultQuestionViewHolder(View parent,
                                         PollResultQuestionItemClickListener pollResultQuestionItemClickListener,
-                                        List<Integer> answerColors) {
+                                        List<Integer> answerColors,
+                                        boolean isAnonymous) {
         super(parent);
         this.pollResultQuestionItemClickListener = pollResultQuestionItemClickListener;
         this.answerColors = answerColors;
+        this.isAnonymous = isAnonymous;
         layoutInflater = LayoutInflater.from(parent.getContext());
         questionTextView = (TextView) itemView.findViewById(R.id.question_textview);
+        peopleImg = (ImageView) itemView.findViewById(R.id.people_img);
         pieChart = (PieChart) itemView.findViewById(R.id.pie_chart);
         answersLayout = (LinearLayout) itemView.findViewById(R.id.answers_container);
         noAnswersTextView = (TextView) itemView.findViewById(R.id.no_answers_textview);
@@ -55,6 +61,7 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
                 pollResultQuestionItemClickListener.onPollResultQuestionItemClicked(pollResultQuestionItem);
             }
         });
+        peopleImg.setVisibility(isAnonymous ? View.GONE : View.VISIBLE);
 
         setupResultAnswerView(pollResultQuestionItem.alternatives);
     }
@@ -96,9 +103,9 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
     private void setColorView(View colorView, Integer color) {
         Drawable background = colorView.getBackground();
         if (background instanceof ShapeDrawable) {
-            ((ShapeDrawable)background).getPaint().setColor(color);
+            ((ShapeDrawable) background).getPaint().setColor(color);
         } else if (background instanceof GradientDrawable) {
-            ((GradientDrawable)background).setColor(color);
+            ((GradientDrawable) background).setColor(color);
         }
     }
 

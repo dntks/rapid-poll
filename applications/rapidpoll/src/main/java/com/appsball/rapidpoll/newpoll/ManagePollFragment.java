@@ -92,7 +92,7 @@ public class ManagePollFragment extends RapidPollFragment {
         service.pollDetails(pollDetailsRequest, new ResponseContainerCallback<PollDetailsResponse>() {
             @Override
             public void onFailure() {
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
 
             @Override
@@ -108,7 +108,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
             @Override
             public void onError(String errorMessage) {
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
         });
     }

@@ -78,7 +78,7 @@ public class FillPollFragment extends RapidPollFragment {
         service.pollDetails(pollDetailsRequest, new ResponseContainerCallback<PollDetailsResponse>() {
             @Override
             public void onFailure() {
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
 
             @Override
@@ -89,7 +89,7 @@ public class FillPollFragment extends RapidPollFragment {
 
             @Override
             public void onError(String errorMessage) {
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
         });
     }
@@ -160,13 +160,13 @@ public class FillPollFragment extends RapidPollFragment {
         DialogsBuilder.showErrorDialog(getActivity(), getString(R.string.submit_success), getString(R.string.invite), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
         }, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 inviteFriendsForPoll();
-                getRapidPollActivity().toAllPolls();
+                getFragmentSwitcher().toAllPolls();
             }
         });
     }

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.support.v4.app.Fragment;
 
+import com.appsball.rapidpoll.FragmentSwitcher;
 import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.utils.Utils;
 
@@ -13,6 +14,10 @@ public class RapidPollFragment extends Fragment {
 
     public RapidPollActivity getRapidPollActivity() {
         return (RapidPollActivity) getActivity();
+    }
+
+    public FragmentSwitcher getFragmentSwitcher(){
+        return getRapidPollActivity().getFragmentSwitcher();
     }
 
     public boolean checkIsOnlineAndShowSimpleDialog() {

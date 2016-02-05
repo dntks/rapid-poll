@@ -22,6 +22,7 @@ import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
+import com.appsball.rapidpoll.pollresult.model.PollResultQuestionItem;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultAnswerTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultCommentTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultQuestionTransformer;
@@ -38,12 +39,13 @@ import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
 import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
 
-public class PollResultFragment extends RapidPollFragment {
+public class PollResultFragment extends RapidPollFragment implements PollResultQuestionItemClickListener {
     public static final int POLLRESULT_LAYOUT = R.layout.pollresult_layout;
 
     private UltimateRecyclerView questionsList;
 
     private View rootView;
+    private View centeredLoadingView;
     private RapidPollRestService service;
     private RequestCreator requestCreator;
     private PollResultTransformer resultTransformer;
@@ -57,6 +59,7 @@ public class PollResultFragment extends RapidPollFragment {
         setHasOptionsMenu(true);
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(POLLRESULT_LAYOUT, container, false);
+        centeredLoadingView = rootView.findViewById(R.id.centered_loading_view);
         initializeList(savedInstanceState);
         pollIdentifierData = PollIdentifierData.builder()
                 .withPollCode(getArguments().getString(POLL_CODE))
@@ -65,22 +68,21 @@ public class PollResultFragment extends RapidPollFragment {
         getRapidPollActivity().setHomeTitle("Results " + pollIdentifierData.pollTitle);
         requestCreator = new RequestCreator();
         resultTransformer = createPollResultTransformer();
-        setupPollShareView(pollIdentifierData);
+        isAnonymousPoll = pollIdentifierData.pollCode.equals(PUBLIC_POLL_CODE);
         callPollResult(requestCreator.createPollResultRequest(pollIdentifierData));
 
         return rootView;
     }
 
-    private void setupPollShareView(final PollIdentifierData pollIdentifierData) {
-        boolean isAnonymousPoll = pollIdentifierData.pollCode.equals(PUBLIC_POLL_CODE);
-        View pollShareView = rootView.findViewById(R.id.poll_settings_button_row);
-        pollShareView.setVisibility(isAnonymousPoll ? View.GONE : View.VISIBLE);
+    private void setupPollShareView() {
+        View pollShareView = rootView.findViewById(R.id.poll_share_row);
+        pollShareView.setVisibility(isMyPoll ? View.VISIBLE : View.GONE);
         TextView pollCodeView = (TextView) rootView.findViewById(R.id.pollcode_value);
         pollCodeView.setText(pollIdentifierData.pollCode);
         pollShareView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exportPoll(pollIdentifierData);
+                sharePoll();
             }
         });
     }
@@ -110,9 +112,11 @@ public class PollResultFragment extends RapidPollFragment {
             @Override
             public void onSuccess(PollResultResponse response) {
                 PollResult pollResult = resultTransformer.transformPollResult(response);
-                initializeListWithQuestions(pollResult);
                 isMyPoll = pollResult.ownerId.equals(Hawk.<String>get(USER_ID_KEY));
+                initializeListWithQuestions(pollResult);
                 getRapidPollActivity().invalidateOptionsMenu();
+                centeredLoadingView.setVisibility(View.GONE);
+                setupPollShareView();
             }
 
             @Override
@@ -129,7 +133,7 @@ public class PollResultFragment extends RapidPollFragment {
     }
 
     private void initializeListWithQuestions(PollResult pollResult) {
-        PollResultQuestionAdapter pollResultAdapter = new PollResultQuestionAdapter(pollResult, getAnswerColors());
+        PollResultQuestionAdapter pollResultAdapter = new PollResultQuestionAdapter(pollResult, getAnswerColors(), isAnonymousPoll, this);
         questionsList.setAdapter(pollResultAdapter);
     }
 
@@ -180,5 +184,9 @@ public class PollResultFragment extends RapidPollFragment {
 
     private void tryToEditPoll() {
 
+    }
+
+    @Override
+    public void onPollResultQuestionItemClicked(PollResultQuestionItem pollResultQuestionItem) {
     }
 }
