@@ -39,7 +39,7 @@ import java.util.List;
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
 import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
-import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
+import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEmailInputDialog;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ManagePollFragment extends RapidPollFragment {
@@ -169,7 +169,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
 
     private void showNameDialog() {
-        showEditTextDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
+        showEmailInputDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
             @Override
             public void textEntered(String text) {
                 publishPoll(text, false);

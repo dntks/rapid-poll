@@ -19,26 +19,31 @@ package com.appsball.rapidpoll.commons.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 
 /**
  * This class contains static utility methods.
  */
 public class Utils {
 
-	// Prevents instantiation.
-	private Utils() {
-	}
+    // Prevents instantiation.
+    private Utils() {
+    }
 
-	public static boolean isOnline(final Context context) {
-		try {
-			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo netInfo = cm.getActiveNetworkInfo();
-			if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-				return true;
-			}
-		} catch (Exception e) {
-			return false;
-		}
-		return false;
-	}
+    public static boolean isOnline(final Context context) {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
+    public static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 }

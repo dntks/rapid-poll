@@ -26,6 +26,7 @@
     <string name="acceptcompleteonly">Accept complete only</string>
     <string name="notCompletedPoll">You haven\'t completed your vote.</string>
     <string name="enter_email">This is a non-anonymous poll, please enter your e-mail address</string>
+    <string name="enter_email_wrong_format">This is a non-anonymous poll, please enter your e-mail address\n\nWrong e-mail format!</string>
     <string name="email_hint">Email address</string>
     <string name="submit_success">You have successfully submitted your vote</string>
     <string name="invite">Invite</string>

@@ -35,6 +35,12 @@ public class FillPollAlternativeViewHolder extends FillPollViewHolderParent {
                 checkChanged(fillPollAlternative, isChecked);
             }
         });
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBox.setChecked(!checkBox.isChecked());
+            }
+        });
     }
 
     private boolean checkAnyOtherIsSet(FillPollAlternative fillPollAlternative) {

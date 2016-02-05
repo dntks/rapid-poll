@@ -181,9 +181,9 @@ public class FillPollFragment extends RapidPollFragment {
     }
 
     private void showEmailDialog() {
-        DialogsBuilder.showEditTextDialog(getActivity(),
+        DialogsBuilder.showEmailInputDialog(getActivity(),
                 getString(R.string.enter_email),
-                getString(R.string.email_hint),
+                fillPollDetails.email.or(""),
                 new TextEnteredListener() {
                     @Override
                     public void textEntered(String text) {

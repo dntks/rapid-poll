@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.utils.Utils;
 
 
 public class DialogsBuilder {
@@ -152,7 +153,6 @@ public class DialogsBuilder {
             }
         });
     }
-
     public static void showEditTextDialog(final Activity activity,
                                           String errorMessage,
                                           String editTextHint,
@@ -181,4 +181,35 @@ public class DialogsBuilder {
                         }).show();
     }
 
+    public static void showEmailInputDialog(final Activity activity,
+                                            final String errorMessage,
+                                            final String editTextMessage,
+                                            final TextEnteredListener textEnteredListener) {
+        final EditText inputView = new EditText(activity);
+        inputView.setHint(activity.getString(R.string.email_hint));
+        inputView.setText(editTextMessage);
+        new android.support.v7.app.AlertDialog.Builder(activity)
+                .setIcon(0)
+                .setMessage(errorMessage)
+                .setView(inputView)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String editTextContent = inputView.getText().toString();
+                        dialog.dismiss();
+                        if (Utils.isValidEmail(editTextContent)) {
+                            textEnteredListener.textEntered(editTextContent);
+                        } else {
+                            showEmailInputDialog(activity,  activity.getString(R.string.enter_email_wrong_format),
+                                    editTextMessage, textEnteredListener);
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+    }
 }
