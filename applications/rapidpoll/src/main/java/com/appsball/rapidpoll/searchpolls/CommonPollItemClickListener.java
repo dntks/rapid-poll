@@ -28,14 +28,21 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
 
     public void pollItemClicked(final SearchPollsItemData searchPollsItemData) {
         if (searchPollsItemData.isPublic || isOwnPoll(searchPollsItemData)) {
-            PollIdentifierData pollIdentifierData = PollIdentifierData.builder()
-                    .withPollId(searchPollsItemData.id)
-                    .withPollCode(PUBLIC_POLL_CODE)
-                    .withPollTitle(searchPollsItemData.name).build();
+            PollIdentifierData pollIdentifierData = createPollIdentifierDataForCode(searchPollsItemData, PUBLIC_POLL_CODE);
+            onItemSuccessfullyChosen(pollIdentifierData);
+        } else if(Hawk.contains(searchPollsItemData.id)){
+            PollIdentifierData pollIdentifierData = createPollIdentifierDataForCode(searchPollsItemData, Hawk.<String>get(searchPollsItemData.id));
             onItemSuccessfullyChosen(pollIdentifierData);
         } else {
             showEnterPollCodeDialog(searchPollsItemData.id);
         }
+    }
+
+    private PollIdentifierData createPollIdentifierDataForCode(SearchPollsItemData searchPollsItemData, String code) {
+        return PollIdentifierData.builder()
+                        .withPollId(searchPollsItemData.id)
+                        .withPollCode(code)
+                        .withPollTitle(searchPollsItemData.name).build();
     }
 
     protected abstract void onItemSuccessfullyChosen(PollIdentifierData pollIdentifierData);
@@ -62,6 +69,7 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                Hawk.put(id, pollDetailsResponse.code);
                 PollIdentifierData pollIdentifierData = PollIdentifierData.builder()
                         .withPollId(id)
                         .withPollCode(pollDetailsResponse.code)
