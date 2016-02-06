@@ -1,11 +1,14 @@
 package com.appsball.rapidpoll.newpoll.model;
 
+import com.appsball.rapidpoll.commons.model.PollState;
+
 public class PollSettings {
 
     private boolean isPublic;
     private boolean isAnonymous;
     private boolean isAllowedToComment;
     private boolean acceptCompleteOnly;
+    private PollState pollState;
 
     public boolean isPublic() {
         return isPublic;
@@ -37,5 +40,14 @@ public class PollSettings {
 
     public void setAcceptCompleteOnly(boolean acceptCompleteOnly) {
         this.acceptCompleteOnly = acceptCompleteOnly;
+    }
+
+    public PollState getPollState() {
+        return pollState;
+    }
+
+    public PollSettings setPollState(PollState pollState) {
+        this.pollState = pollState;
+        return this;
     }
 }

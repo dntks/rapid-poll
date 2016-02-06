@@ -66,66 +66,20 @@ public class DialogsBuilder {
         });
     }
 
-    public static void showErrorDialog(final Activity activity, String errorTitle, String errorMessage, OnClickListener clickListener) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(errorMessage);
-        builder.setIcon(0);
-
-        builder.setPositiveButton(R.string.ok, clickListener);
-        builder.setNegativeButton(R.string.cancel, new OnClickListener() {
+    public static void showErrorDialog(final Activity activity, String errorMessage, OnClickListener clickListener) {
+        showErrorDialog(activity, errorMessage, clickListener, new OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
                 dialog.dismiss();
             }
         });
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        activity.runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                builder.show();
-            }
-        });
     }
 
-    public static void showDialogWithOnlyOkButton(final Activity activity, String errorMessage, OnClickListener clickListener) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(errorMessage);
-        builder.setIcon(0);
-
-        builder.setPositiveButton(R.string.ok, clickListener);
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        activity.runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                builder.show();
-            }
-        });
-    }
-
-    public static void showErrorDialog(final Activity activity, String errorMessage, OnClickListener okClickListener,
+    public static void showErrorDialog(final Activity activity,
+                                       String errorMessage,
+                                       OnClickListener okClickListener,
                                        final OnClickListener cancelClickListener) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setIcon(0);
-        builder.setMessage(errorMessage);
-
-        builder.setPositiveButton(R.string.ok, okClickListener);
-        builder.setNegativeButton(R.string.cancel, new OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                cancelClickListener.onClick(dialog, which);
-                dialog.dismiss();
-            }
-        });
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        activity.runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                builder.show();
-            }
-        });
+        showErrorDialog(activity, errorMessage, activity.getString(R.string.cancel), okClickListener, cancelClickListener);
     }
 
     public static void showErrorDialog(final Activity activity,
@@ -133,18 +87,21 @@ public class DialogsBuilder {
                                        String negativeButtonText,
                                        OnClickListener okClickListener,
                                        final OnClickListener cancelClickListener) {
+        showErrorDialog(activity, errorMessage, activity.getString(R.string.ok), negativeButtonText, okClickListener, cancelClickListener);
+    }
+
+    public static void showErrorDialog(final Activity activity,
+                                       String errorMessage,
+                                       String positiveButtonText,
+                                       String negativeButtonText,
+                                       OnClickListener okClickListener,
+                                       final OnClickListener cancelClickListener) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setIcon(0);
         builder.setMessage(errorMessage);
 
-        builder.setPositiveButton(R.string.ok, okClickListener);
-        builder.setNegativeButton(negativeButtonText, new OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                cancelClickListener.onClick(dialog, which);
-                dialog.dismiss();
-            }
-        });
+        builder.setPositiveButton(positiveButtonText, okClickListener);
+        builder.setNegativeButton(negativeButtonText, cancelClickListener);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         activity.runOnUiThread(new Runnable() {
 
@@ -219,7 +176,7 @@ public class DialogsBuilder {
 
     public static void showLoadingDialog(Context context, String message) {
         hideLoadingDialog();
-        loadingDialog= new android.support.v7.app.AlertDialog.Builder(context)
+        loadingDialog = new android.support.v7.app.AlertDialog.Builder(context)
                 .setIcon(0)
                 .setMessage(message)
                 .setView(R.layout.loading_view).create();

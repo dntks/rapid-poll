@@ -43,4 +43,8 @@
     <string name="create_new_poll">Create New Poll</string>
     <string name="no_search_results">No results for the given search term.</string>
     <string name="no_getpoll_results">No polls were found.</string>
+    <string name="shareStatisticsText">Result of %s Poll from Rapid Poll application. Check this out here: </string>
+    <string name="exportDialogQuestion">What would you like to share?</string>
+    <string name="exportPDF">Result screen</string>
+    <string name="exportXLS">Analytical data</string>
 </resources>

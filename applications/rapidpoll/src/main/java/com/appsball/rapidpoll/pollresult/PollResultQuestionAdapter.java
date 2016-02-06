@@ -9,7 +9,7 @@ import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.newpoll.model.ViewType;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
 import com.appsball.rapidpoll.pollresult.model.PollResultListItem;
-import com.appsball.rapidpoll.pollresult.viewholder.PollResultCommentViewHolder;
+import com.appsball.rapidpoll.pollresult.viewholder.PollResultCommentHolder;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultQuestionViewHolder;
 import com.appsball.rapidpoll.pollresult.viewholder.PollResultViewHolderParent;
 import com.google.common.collect.Lists;
@@ -46,7 +46,7 @@ public class PollResultQuestionAdapter extends RecyclerView.Adapter<PollResultVi
         switch (type) {
             case COMMENT:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pollresult_comment, parent, false);
-                return new PollResultCommentViewHolder(view);
+                return new PollResultCommentHolder(view);
             case QUESTION:
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pollresult_item, parent, false);

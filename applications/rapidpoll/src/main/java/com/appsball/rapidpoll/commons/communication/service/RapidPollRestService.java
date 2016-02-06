@@ -109,15 +109,16 @@ public class RapidPollRestService {
         rapidPollRestInterface.updatePollState(request, new EmptyResponseCallback(callback));
     }
 
-    public void exportPollResult(ExportPollResultRequest request, final ResponseCallback callback) {
+    public void exportPollResult(ExportPollResultRequest request, final ResponseContainerCallback<File> callback) {
         DialogsBuilder.showLoadingDialog(context, "Saving file to share...");
         FileRequest fileRequest =
-                new FileRequest(SERVER_ADDRESS + "/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code,
+                new FileRequest(request,
                         context,
                         new com.android.volley.Response.Listener<File>() {
                             @Override
                             public void onResponse(File response) {
                                 DialogsBuilder.hideLoadingDialog();
+                                callback.onSuccess(response);
                             }
                         },
                         new com.android.volley.Response.ErrorListener() {

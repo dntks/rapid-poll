@@ -26,19 +26,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.appsball.rapidpoll.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
         <activity
             android:name=".DeepLinkActivity"
             android:screenOrientation="portrait">
-            <!-- ATTENTION: This intent was auto-generated. Follow instructions at
-              https://g.co/AppIndexing/AndroidStudio to publish your Android app deep links. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="rapidpoll.appsball.com"
                     android:pathPrefix="/deeplink"
+                    android:scheme="http" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="rapidpoll.appsball.com"
+                    android:pathPrefix="/pollresult"
                     android:scheme="http" />
             </intent-filter>
         </activity>

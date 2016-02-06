@@ -8,8 +8,9 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.JsonSyntaxException;
+import com.appsball.rapidpoll.commons.communication.request.ExportPollResultRequest;
 import com.orhanobut.logger.Logger;
 
 import java.io.BufferedOutputStream;
@@ -17,23 +18,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
+
+import static com.appsball.rapidpoll.commons.communication.service.RapidPollRestService.SERVER_ADDRESS;
 
 public class FileRequest extends Request<File> {
     private final Response.Listener<File> listener;
-    Context context;
+    private final Context context;
+    private final ExportPollResultRequest request;
 
-    /**
-     * Make a GET request and return a parsed object from JSON.
-     *
-     * @param url URL of the request to make
-     */
-    public FileRequest(String url,
+    public FileRequest(ExportPollResultRequest request,
                        Context context,
                        Response.Listener<File> listener,
                        Response.ErrorListener errorListener) {
-        super(Method.GET, url, errorListener);
+        super(Method.GET,
+                SERVER_ADDRESS + "/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code,
+                errorListener);
+        String url = SERVER_ADDRESS + "/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code;
+        Logger.e("URL: " + url);
+        this.request = request;
         this.listener = listener;
         this.context = context;
     }
@@ -51,42 +54,16 @@ public class FileRequest extends Request<File> {
     @Override
     protected Response<File> parseNetworkResponse(NetworkResponse response) {
         if (!isExternalStorageWritable()) {
-            return Response.success(
-                    null,
-                    HttpHeaderParser.parseCacheHeaders(response));
+            return Response.error(new VolleyError("storage is not writable"));
         }
         try {
-            File file = new File(new File(Environment.getExternalStorageDirectory(), "Pictures"), "dummy.pdf");
-            File file2 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "dummy2.pdf");
-            File file3 = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "dummy3.pdf");
-            String fileContent = new String(
-                    response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
-            String filename = "myfile";
-            String string = "Hello world!";
-            OutputStream outputStream;
-            OutputStream outputStream2;
-            OutputStream outputStream3;
-
-            outputStream = new BufferedOutputStream(new FileOutputStream(file));
+            String fileName = request.pollId + "." + request.exportType.fileFormatString;
+            File file = new File(context.getFilesDir(), fileName);
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
             outputStream.write(response.data);
             outputStream.close();
 
-            outputStream2 = new BufferedOutputStream(new FileOutputStream(file2));
-            outputStream2.write(response.data);
-            outputStream2.close();
-
-            outputStream3 = new BufferedOutputStream(new FileOutputStream(file3));
-            outputStream3.write(response.data);
-            outputStream3.close();
-
-            return Response.success(
-                    file,
-                    HttpHeaderParser.parseCacheHeaders(response));
-        } catch (UnsupportedEncodingException e) {
-            return Response.error(new ParseError(e));
-        } catch (JsonSyntaxException e) {
-            return Response.error(new ParseError(e));
+            return Response.success(file, HttpHeaderParser.parseCacheHeaders(response));
         } catch (IOException e) {
             return Response.error(new ParseError(e));
         }

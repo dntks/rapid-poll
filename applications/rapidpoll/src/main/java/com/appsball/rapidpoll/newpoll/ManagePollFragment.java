@@ -22,6 +22,7 @@ import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
+import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
@@ -40,6 +41,7 @@ import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
 import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ManagePollFragment extends RapidPollFragment {
 
@@ -101,8 +103,10 @@ public class ManagePollFragment extends RapidPollFragment {
                 setHomeTitleName(pollDetailsResponse.name);
                 pollSettings.setIsAllowedToComment(pollDetailsResponse.allow_comment == 1);
                 pollSettings.setIsPublic(pollDetailsResponse.isPublic == 1);
+                pollSettings.setPollState(PollState.valueOf(pollDetailsResponse.state));
                 pollSettings.setIsAnonymous(pollDetailsResponse.anonymous == 1);
                 pollSettings.setAcceptCompleteOnly(pollDetailsResponse.allow_uncomplete_answer == 0);
+                getRapidPollActivity().invalidateOptionsMenu();
             }
 
             @Override
@@ -146,6 +150,9 @@ public class ManagePollFragment extends RapidPollFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.newpoll_menu, menu);
+        if(pollSettings.getPollState()!=null){
+            menu.findItem(R.id.publish).setTitle(pollSettings.getPollState().nextStateCommand);
+        }
     }
 
     @Override
@@ -153,12 +160,40 @@ public class ManagePollFragment extends RapidPollFragment {
         switch (item.getItemId()) {
             case R.id.publish:
                 showNameDialog();
+                tryToPublishPoll();
+                return true;
+
+            case android.R.id.home:
+                showSaveModificationsCheckerDialog();
                 return true;
             default:
                 hideKeyboard();
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void tryToPublishPoll() {
+        String pollName = editableTitle.getText().toString();
+        if (!isEmpty(pollName)) {
+            publishPoll(pollName, false);
+        } else {
+            showNameDialog();
+        }
+    }
+
+    private void showSaveModificationsCheckerDialog() {
+        DialogsBuilder.showErrorDialog(getActivity(), "Save modifications?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                publishPoll(editableTitle.getText().toString(), true);
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     private void hideKeyboard() {
@@ -181,7 +216,7 @@ public class ManagePollFragment extends RapidPollFragment {
         service.managePoll(createManagePollRequest(managePoll), new ResponseContainerCallback<ManagePollResponse>() {
             @Override
             public void onSuccess(ManagePollResponse managePollResponse) {
-                DialogsBuilder.showErrorDialog(getActivity(), "Success", "Poll published successfully.",
+                DialogsBuilder.showErrorDialog(getActivity(), "Poll published successfully.",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
