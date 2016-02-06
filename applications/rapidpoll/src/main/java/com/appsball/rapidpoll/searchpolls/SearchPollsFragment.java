@@ -144,12 +144,10 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         adapter.insertAll(items, adapter.getAdapterItemCount());
         pollsListWrapper.disableLoadMoreIfNoMoreItems(items);
         if (items.size() == 0 && searchPollsDataState.actualPage == 2) {
-            onNoPollsReceived();
+            pollsListWrapper.hideList();
+        }else{
+            pollsListWrapper.showList();
         }
-    }
-
-    protected void onNoPollsReceived() {
-        pollsListWrapper.hideList();
     }
 
     @Override

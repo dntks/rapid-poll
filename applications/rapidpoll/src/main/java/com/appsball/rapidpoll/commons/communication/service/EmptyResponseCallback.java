@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll.commons.communication.service;
 
 import com.appsball.rapidpoll.commons.communication.response.ResponseContainer;
+import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.orhanobut.wasp.Callback;
 import com.orhanobut.wasp.WaspError;
 
@@ -15,6 +16,7 @@ public class EmptyResponseCallback implements Callback<ResponseContainer<Object>
     }
     @Override
     public void onSuccess(com.orhanobut.wasp.Response response, ResponseContainer<Object> responseContainer) {
+        DialogsBuilder.hideLoadingDialog();
         if(SUCCESS_MESSAGE.equals(responseContainer.status)){
             callback.onSuccess();
         }
@@ -31,6 +33,7 @@ public class EmptyResponseCallback implements Callback<ResponseContainer<Object>
 
     @Override
     public void onError(WaspError error) {
+        DialogsBuilder.hideLoadingDialog();
         callback.onError(error.getErrorMessage());
     }
 }

@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll.commons.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -153,10 +154,11 @@ public class DialogsBuilder {
             }
         });
     }
+
     public static void showEditTextDialog(final Activity activity,
                                           String errorMessage,
                                           String editTextHint,
-                                          final TextEnteredListener textEnteredListener){
+                                          final TextEnteredListener textEnteredListener) {
         final EditText inputView = new EditText(activity);
         inputView.setHint(editTextHint);
         new android.support.v7.app.AlertDialog.Builder(activity)
@@ -199,7 +201,7 @@ public class DialogsBuilder {
                         if (Utils.isValidEmail(editTextContent)) {
                             textEnteredListener.textEntered(editTextContent);
                         } else {
-                            showEmailInputDialog(activity,  activity.getString(R.string.enter_email_wrong_format),
+                            showEmailInputDialog(activity, activity.getString(R.string.enter_email_wrong_format),
                                     editTextMessage, textEnteredListener);
                         }
                     }
@@ -211,5 +213,22 @@ public class DialogsBuilder {
                                 dialog.dismiss();
                             }
                         }).show();
+    }
+
+    private static android.support.v7.app.AlertDialog loadingDialog;
+
+    public static void showLoadingDialog(Context context, String message) {
+        hideLoadingDialog();
+        loadingDialog= new android.support.v7.app.AlertDialog.Builder(context)
+                .setIcon(0)
+                .setMessage(message)
+                .setView(R.layout.loading_view).create();
+        loadingDialog.show();
+    }
+
+    public static void hideLoadingDialog() {
+        if (loadingDialog != null && loadingDialog.isShowing() && loadingDialog.getContext() != null) {
+            loadingDialog.hide();
+        }
     }
 }

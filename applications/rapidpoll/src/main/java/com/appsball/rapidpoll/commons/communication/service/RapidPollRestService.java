@@ -1,9 +1,6 @@
 package com.appsball.rapidpoll.commons.communication.service;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -23,13 +20,12 @@ import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
+import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.orhanobut.wasp.Wasp;
 import com.orhanobut.wasp.utils.LogLevel;
 import com.orhanobut.wasp.utils.NetworkMode;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 public class RapidPollRestService {
@@ -37,7 +33,7 @@ public class RapidPollRestService {
     public static final String SERVER_ADDRESS = "http://rapidpoll.appsball.com:3000";
     public static final String SUCCESS_MESSAGE = "SUCCESS";
     RapidPollRestInterface rapidPollRestInterface;
-   private Context context;
+    private Context context;
 
     private RapidPollRestService(RapidPollRestInterface rapidPollRestInterface, Context context) {
         this.rapidPollRestInterface = rapidPollRestInterface;
@@ -65,10 +61,12 @@ public class RapidPollRestService {
     }
 
     public void registerUser(RegisterRequest request, ResponseContainerCallback<RegisterResponse> callback) {
+        DialogsBuilder.showLoadingDialog(context, "Please wait");
         rapidPollRestInterface.registerUser(request, new DefaultResponseContainerCallback<>(callback));
     }
 
     public void managePoll(ManagePollRequest request, ResponseContainerCallback<ManagePollResponse> callback) {
+        DialogsBuilder.showLoadingDialog(context, "Saving poll modifications...");
         rapidPollRestInterface.managePoll(request, new DefaultResponseContainerCallback<>(callback));
     }
 
@@ -87,6 +85,7 @@ public class RapidPollRestService {
     }
 
     public void doPoll(DoPollRequest request, ResponseCallback callback) {
+        DialogsBuilder.showLoadingDialog(context, "Submitting votes...");
         rapidPollRestInterface.doPoll(request, new EmptyResponseCallback(callback));
     }
 
@@ -106,63 +105,30 @@ public class RapidPollRestService {
     }
 
     public void updatePollState(UpdatePollStateRequest request, ResponseCallback callback) {
+        DialogsBuilder.showLoadingDialog(context, "Updating poll state...");
         rapidPollRestInterface.updatePollState(request, new EmptyResponseCallback(callback));
     }
 
     public void exportPollResult(ExportPollResultRequest request, final ResponseCallback callback) {
+        DialogsBuilder.showLoadingDialog(context, "Saving file to share...");
         FileRequest fileRequest =
-                new FileRequest("http://rapidpoll.appsball.com:3000/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code,
+                new FileRequest(SERVER_ADDRESS + "/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code,
                         context,
                         new com.android.volley.Response.Listener<File>() {
                             @Override
                             public void onResponse(File response) {
-
+                                DialogsBuilder.hideLoadingDialog();
                             }
                         },
                         new com.android.volley.Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
+                                DialogsBuilder.hideLoadingDialog();
                             }
-                        }) ;
+                        });
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(fileRequest);
-        /*
-        rapidPollRestInterface.exportPollResult(request.userId,
-                request.pollId, request.exportType.name(), request.code,
-                new Callback<String>() {
-                    @Override
-                    public void onSuccess(Response response, String object) {
-                        String toFile = object;
-                        callback.onSuccess();
-                    }
-
-                    @Override
-                    public void onError(WaspError error) {
-
-                    }
-                });
-        */
-    }
-    public Uri saveImageAlternativeMode(Bitmap bmp, String filename) {
-        File lastpicture = new File(new File(Environment.getExternalStorageDirectory(), "Pictures" ), filename);
-
-        FileOutputStream fout = null;
-        try {
-            fout = new FileOutputStream(lastpicture);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, fout);
-            fout.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fout != null)
-                    fout.close();
-            } catch (IOException ignore) {
-            }
-        }
-        return Uri.fromFile(lastpicture);
     }
 
 }

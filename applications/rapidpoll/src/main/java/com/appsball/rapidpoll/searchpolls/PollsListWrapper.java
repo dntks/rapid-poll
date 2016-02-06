@@ -86,4 +86,8 @@ public class PollsListWrapper {
     public void hideList() {
         ultimateRecyclerView.setVisibility(View.GONE);
     }
+
+    public void showList() {
+        ultimateRecyclerView.setVisibility(View.VISIBLE);
+    }
 }
