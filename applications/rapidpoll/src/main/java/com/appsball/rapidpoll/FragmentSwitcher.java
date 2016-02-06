@@ -80,4 +80,15 @@ public class FragmentSwitcher {
         }
         fragmentTransaction.commit();
     }
+
+    public void toFragmentScreenByBundle(Bundle extras) {
+        String fragmentName = extras.getString(RapidPollActivity.FRAGMENT_NAME);
+        String pollTitle = extras.getString(RapidPollActivity.POLL_TITLE);
+        String pollCode = extras.getString(RapidPollActivity.POLL_CODE);
+        String pollId = extras.getString(RapidPollActivity.POLL_ID);
+        if (fragmentName.equals(ScreenFragment.POLL_RESULT.apiName)) {
+            PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollCode(pollCode).withPollId(pollId).withPollTitle(pollTitle).build();
+            toPollResult(pollIdentifierData);
+        }
+    }
 }

@@ -20,6 +20,7 @@ import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
+import com.appsball.rapidpoll.commons.utils.Utils;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.orhanobut.wasp.Wasp;
 import com.orhanobut.wasp.utils.LogLevel;
@@ -111,22 +112,23 @@ public class RapidPollRestService {
 
     public void exportPollResult(ExportPollResultRequest request, final ResponseContainerCallback<File> callback) {
         DialogsBuilder.showLoadingDialog(context, "Saving file to share...");
-        FileRequest fileRequest =
-                new FileRequest(request,
-                        context,
-                        new com.android.volley.Response.Listener<File>() {
-                            @Override
-                            public void onResponse(File response) {
-                                DialogsBuilder.hideLoadingDialog();
-                                callback.onSuccess(response);
-                            }
-                        },
-                        new com.android.volley.Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                DialogsBuilder.hideLoadingDialog();
-                            }
-                        });
+        String url = Utils.ON_SLASH_JOINER.join(SERVER_ADDRESS, "pollresultexport", request.userId, request.pollId, request.exportType.name(), request.code);
+        FileRequest fileRequest = new FileRequest(request,
+                url,
+                context,
+                new com.android.volley.Response.Listener<File>() {
+                    @Override
+                    public void onResponse(File response) {
+                        DialogsBuilder.hideLoadingDialog();
+                        callback.onSuccess(response);
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogsBuilder.hideLoadingDialog();
+                    }
+                });
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(fileRequest);

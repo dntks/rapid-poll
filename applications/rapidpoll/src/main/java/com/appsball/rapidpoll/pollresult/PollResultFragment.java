@@ -33,7 +33,6 @@ import com.appsball.rapidpoll.pollresult.transformer.PollResultAnswerTransformer
 import com.appsball.rapidpoll.pollresult.transformer.PollResultCommentTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultQuestionTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultTransformer;
-import com.google.common.base.Joiner;
 import com.google.common.primitives.Ints;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.orhanobut.hawk.Hawk;
@@ -48,10 +47,10 @@ import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
 import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
 import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
 import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
+import static com.appsball.rapidpoll.commons.utils.Utils.ON_SLASH_JOINER;
 
 public class PollResultFragment extends RapidPollFragment implements PollResultQuestionItemClickListener {
     public static final int POLLRESULT_LAYOUT = R.layout.pollresult_layout;
-    public static final Joiner ON_SLASH_JOINER = Joiner.on("/");
 
     private UltimateRecyclerView questionsList;
 
@@ -130,7 +129,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
         shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
         shareIntent.setType(Utils.getMimeTypeOfFile(file, context));
         String shareString = String.format(getString(R.string.shareStatisticsText), pollIdentifierData.pollTitle);
-        String pollResultLink = ON_SLASH_JOINER.join("http://rapidpoll.appsball.com/pollresult",
+        String pollResultLink = ON_SLASH_JOINER.join(" rapidpoll.appsball.com/pollresult",
                 URLEncoder.encode(pollIdentifierData.pollTitle, "utf-8"),
                 pollIdentifierData.pollId,
                 pollIdentifierData.pollCode);

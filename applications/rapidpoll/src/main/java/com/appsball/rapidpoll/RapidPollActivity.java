@@ -33,6 +33,7 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 public class RapidPollActivity extends AppCompatActivity {
     public static final String ServerAPIKey = "AIzaSyAkliInYloQCi9nUVFZzL-N73dO32p-h9c";
     public static final String SenderID = "73756231339";
+    public static final String FRAGMENT_NAME = "fragmentName";
     public static final String USER_ID = "31000000000000000000000000000000";
     public static final String POLL_CODE = "poll_code";
     public static final String POLL_ID = "poll_id";
@@ -86,9 +87,13 @@ public class RapidPollActivity extends AppCompatActivity {
         rapidPollRestService = createRapidPollRestService(this);
 //        Hawk.put(USER_ID_KEY, USER_ID);
 //        registerGCM();
+        Bundle extras = getIntent().getExtras();
 
         if (!isRegistered()) {
             registerGCM();
+        } else if (extras != null) {
+            hideRegisterViews();
+            fragmentSwitcher.toFragmentScreenByBundle(extras);
         } else {
             hideRegisterViews();
             fragmentSwitcher.toAllPolls();

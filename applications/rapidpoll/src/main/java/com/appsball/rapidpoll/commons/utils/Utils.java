@@ -24,6 +24,9 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+
 import java.io.File;
 
 /**
@@ -34,6 +37,9 @@ public class Utils {
     // Prevents instantiation.
     private Utils() {
     }
+
+    public static final Joiner ON_SLASH_JOINER = Joiner.on("/");
+    public static final Splitter ON_SLASH_SPLITTER = Splitter.on("/");
 
     public static boolean isOnline(final Context context) {
         try {

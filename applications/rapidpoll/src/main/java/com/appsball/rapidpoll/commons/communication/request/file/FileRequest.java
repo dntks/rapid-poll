@@ -20,21 +20,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
-import static com.appsball.rapidpoll.commons.communication.service.RapidPollRestService.SERVER_ADDRESS;
-
 public class FileRequest extends Request<File> {
     private final Response.Listener<File> listener;
     private final Context context;
     private final ExportPollResultRequest request;
 
     public FileRequest(ExportPollResultRequest request,
+                       String url,
                        Context context,
                        Response.Listener<File> listener,
                        Response.ErrorListener errorListener) {
         super(Method.GET,
-                SERVER_ADDRESS + "/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code,
+                url,
                 errorListener);
-        String url = SERVER_ADDRESS + "/pollresultexport/" + request.userId + "/" + request.pollId + "/" + request.exportType.name() + "/" + request.code;
         Logger.e("URL: " + url);
         this.request = request;
         this.listener = listener;
