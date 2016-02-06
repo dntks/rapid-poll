@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 import com.appsball.rapidpoll.commons.utils.Utils;
 
@@ -20,23 +19,23 @@ import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
 public class DeepLinkActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.emptyview);
 
-        TextView textView = (TextView) findViewById(R.id.textView);
-
         Uri data = getIntent().getData();
         String urlString = data.toString();
         String urlStringWithoutHttp = urlString.replaceFirst("http://", "");
-        textView.setText("mopsz " + urlString);
+
         List<String> urlParts = Utils.ON_SLASH_SPLITTER.splitToList(urlStringWithoutHttp);
+
         String serverAddress = urlParts.get(0);
         String screenName = urlParts.get(1);
+        Intent rapidPollIntent = new Intent(this, RapidPollActivity.class);
+
         if ("pollresult".equals(screenName)) {
-            String pollTitle="";
+            String pollTitle = "";
             try {
                 pollTitle = URLDecoder.decode(urlParts.get(2), "utf-8");
             } catch (UnsupportedEncodingException e) {
@@ -44,12 +43,11 @@ public class DeepLinkActivity extends AppCompatActivity {
             }
             String pollId = urlParts.get(3);
             String pollCode = urlParts.get(4);
-            Intent rapidPollIntent = new Intent(this, RapidPollActivity.class);
             rapidPollIntent.putExtra(FRAGMENT_NAME, screenName);
             rapidPollIntent.putExtra(POLL_TITLE, pollTitle);
             rapidPollIntent.putExtra(POLL_ID, pollId);
             rapidPollIntent.putExtra(POLL_CODE, pollCode);
-            startActivity(rapidPollIntent);
         }
+        startActivity(rapidPollIntent);
     }
 }
