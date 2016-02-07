@@ -6,7 +6,7 @@ import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 
-import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
 
 public class MyPollsItemClickListener implements PollItemClickListener {
     private final FragmentSwitcher fragmentSwitcher;

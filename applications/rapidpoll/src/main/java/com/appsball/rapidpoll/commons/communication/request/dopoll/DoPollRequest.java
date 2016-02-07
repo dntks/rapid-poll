@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 
 import java.util.List;
 
-import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
 import static org.apache.commons.lang3.Validate.notNull;
 
 public class DoPollRequest {
