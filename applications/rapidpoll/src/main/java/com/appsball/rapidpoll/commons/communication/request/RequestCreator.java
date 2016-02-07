@@ -2,6 +2,9 @@ package com.appsball.rapidpoll.commons.communication.request;
 
 import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
+import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
+import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.model.ManagePollActionType;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.orhanobut.hawk.Hawk;
@@ -62,6 +65,22 @@ public class RequestCreator {
         builder.withUserId(Hawk.<String>get(USER_ID_KEY));
         builder.withCode(pollIdentifierData.pollCode);
         builder.withExportType(exportType);
+        return builder.build();
+    }
+
+    public UpdatePollStateRequest createUpdatePollStateRequest(PollState pollState, String pollId) {
+        UpdatePollStateRequest.Builder builder = UpdatePollStateRequest.builder();
+        builder.withPollId(pollId);
+        builder.withUserId(Hawk.<String>get(USER_ID_KEY));
+        builder.withPollState(pollState);
+        return builder.build();
+    }
+
+    public ManagePollRequest createManagePollRequest(ManagePoll managePoll, ManagePollActionType managePollActionType) {
+        ManagePollRequest.Builder builder = ManagePollRequest.builder();
+        builder.withPoll(managePoll);
+        builder.withAction(managePollActionType);
+        builder.withUserId(Hawk.<String>get(USER_ID_KEY));
         return builder.build();
     }
 }

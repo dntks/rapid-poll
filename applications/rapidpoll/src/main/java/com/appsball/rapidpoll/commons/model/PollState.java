@@ -26,4 +26,14 @@ public enum PollState {
                 return DRAFT;
         }
     }
+
+    public PollState nextState(){
+        if(this == PUBLISHED){
+            return CLOSED;
+        }else if(this == CLOSED){
+            return PUBLISHED;
+        }else {
+            return DRAFT;
+        }
+    }
 }

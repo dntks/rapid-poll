@@ -84,12 +84,14 @@ public class FragmentSwitcher {
 
     public void toFragmentScreenByBundle(Bundle extras) {
         String fragmentName = extras.getString(Constants.FRAGMENT_NAME);
-        String pollTitle = extras.getString(RapidPollActivity.POLL_TITLE);
-        String pollCode = extras.getString(RapidPollActivity.POLL_CODE);
-        String pollId = extras.getString(RapidPollActivity.POLL_ID);
-        if (fragmentName.equals(ScreenFragment.POLL_RESULT.apiName)) {
+        String pollTitle = extras.getString(Constants.POLL_TITLE);
+        String pollCode = extras.getString(Constants.POLL_CODE);
+        String pollId = extras.getString(Constants.POLL_ID);
+        if (ScreenFragment.POLL_RESULT.apiName.equals(fragmentName)) {
             PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollCode(pollCode).withPollId(pollId).withPollTitle(pollTitle).build();
             toPollResult(pollIdentifierData);
+        }else{
+            toAllPolls();
         }
     }
 }

@@ -17,11 +17,12 @@ import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePoll;
-import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
 import com.appsball.rapidpoll.commons.communication.response.ManagePollResponse;
 import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDetailsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
+import com.appsball.rapidpoll.commons.model.ManagePollActionType;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
@@ -33,13 +34,11 @@ import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionAlternativeT
 import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionTransformer;
 import com.appsball.rapidpoll.newpoll.transformer.NewPollQuestionsTransformer;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
 import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
-import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID_KEY;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -57,6 +56,8 @@ public class ManagePollFragment extends RapidPollFragment {
     private ManagePollQuestionTransformer managePollQuestionTransformer;
     private EditText editableTitle;
     private NewPollQuestionsTransformer newPollQuestionsTransformer;
+    private PollSettingsView pollSettingsView;
+    private RequestCreator requestCreator;
 
 
     @Override
@@ -68,10 +69,10 @@ public class ManagePollFragment extends RapidPollFragment {
 
         rootView = inflater.inflate(NEWPOLL_LAYOUT, container, false);
         newQuestionCreator = new NewQuestionCreator();
-        RequestCreator requestCreator = new RequestCreator();
+        requestCreator = new RequestCreator();
 
         pollSettings = new PollSettings();
-        PollSettingsView pollSettingsView = new PollSettingsView(pollSettings, rootView);
+        pollSettingsView = new PollSettingsView(pollSettings, rootView);
         pollSettingsView.initSettingsButtonListeners();
 
         managePollQuestionTransformer = new ManagePollQuestionTransformer(new ManagePollQuestionAlternativeTransformer());
@@ -89,7 +90,7 @@ public class ManagePollFragment extends RapidPollFragment {
         return rootView;
     }
 
-    private void loadExistingPoll(PollDetailsRequest pollDetailsRequest) {
+    private void loadExistingPoll(final PollDetailsRequest pollDetailsRequest) {
         service.pollDetails(pollDetailsRequest, new ResponseContainerCallback<PollDetailsResponse>() {
             @Override
             public void onFailure() {
@@ -98,7 +99,9 @@ public class ManagePollFragment extends RapidPollFragment {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
-                pollQuestions = newPollQuestionsTransformer.transformQuestions(pollDetailsResponse);
+                pollSettings.setManagePollActionType(ManagePollActionType.MODIFY);
+                pollSettings.setId(String.valueOf(pollDetailsResponse.id));
+                pollQuestions = newArrayList(newPollQuestionsTransformer.transformQuestions(pollDetailsResponse));
                 setupAdapterWithQuestions();
                 setHomeTitleName(pollDetailsResponse.name);
                 pollSettings.setIsAllowedToComment(pollDetailsResponse.allow_comment == 1);
@@ -106,6 +109,7 @@ public class ManagePollFragment extends RapidPollFragment {
                 pollSettings.setPollState(PollState.valueOf(pollDetailsResponse.state));
                 pollSettings.setIsAnonymous(pollDetailsResponse.anonymous == 1);
                 pollSettings.setAcceptCompleteOnly(pollDetailsResponse.allow_uncomplete_answer == 0);
+                pollSettingsView.refreshView();
                 getRapidPollActivity().invalidateOptionsMenu();
             }
 
@@ -116,6 +120,7 @@ public class ManagePollFragment extends RapidPollFragment {
         });
     }
 
+
     private void setupHomeTitleEditable() {
         editableTitle = getRapidPollActivity().getEditableTitle();
         editableTitle.setHint("New Poll");
@@ -125,6 +130,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void setHomeTitleName(String existingName) {
         editableTitle.setText(existingName);
+        editableTitle.setEnabled(false);
     }
 
 
@@ -150,22 +156,30 @@ public class ManagePollFragment extends RapidPollFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.newpoll_menu, menu);
-        if(pollSettings.getPollState()!=null){
+        if (pollSettings.getPollState() != null) {
             menu.findItem(R.id.publish).setTitle(pollSettings.getPollState().nextStateCommand);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        PollState pollState = pollSettings.getPollState();
         switch (item.getItemId()) {
             case R.id.publish:
-                showNameDialog();
-                tryToPublishPoll();
+                if (pollState == PollState.DRAFT) {
+                    tryToPublishPoll(false);
+                } else if (pollState == PollState.PUBLISHED || pollState == PollState.CLOSED) {
+                    updatePollState(pollState.nextState());
+                }
                 return true;
 
             case android.R.id.home:
-                showSaveModificationsCheckerDialog();
-                return true;
+                if(pollState == PollState.DRAFT){
+                    showSaveModificationsCheckerDialog();
+                    return true;
+                }else{
+                    return super.onOptionsItemSelected(item);
+                }
             default:
                 hideKeyboard();
                 return super.onOptionsItemSelected(item);
@@ -173,12 +187,12 @@ public class ManagePollFragment extends RapidPollFragment {
         }
     }
 
-    private void tryToPublishPoll() {
+    private void tryToPublishPoll(boolean isDraft) {
         String pollName = editableTitle.getText().toString();
         if (!isEmpty(pollName)) {
-            publishPoll(pollName, false);
+            publishPoll(pollName, isDraft);
         } else {
-            showNameDialog();
+            showNameDialog(isDraft);
         }
     }
 
@@ -186,7 +200,7 @@ public class ManagePollFragment extends RapidPollFragment {
         DialogsBuilder.showErrorDialog(getActivity(), "Save modifications?", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                publishPoll(editableTitle.getText().toString(), true);
+                tryToPublishPoll(true);
             }
         }, new DialogInterface.OnClickListener() {
             @Override
@@ -202,21 +216,21 @@ public class ManagePollFragment extends RapidPollFragment {
     }
 
 
-    private void showNameDialog() {
+    private void showNameDialog(final boolean isDraft) {
         DialogsBuilder.showEditTextDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
             @Override
             public void textEntered(String text) {
-                publishPoll(text, false);
+                publishPoll(text, isDraft);
             }
         });
     }
 
     private void publishPoll(String name, boolean draft) {
         ManagePoll managePoll = buildPoll(name, draft);
-        service.managePoll(createManagePollRequest(managePoll), new ResponseContainerCallback<ManagePollResponse>() {
+        service.managePoll(requestCreator.createManagePollRequest(managePoll, pollSettings.getManagePollActionType()), new ResponseContainerCallback<ManagePollResponse>() {
             @Override
             public void onSuccess(ManagePollResponse managePollResponse) {
-                DialogsBuilder.showErrorDialog(getActivity(), "Poll published successfully.",
+                DialogsBuilder.showErrorDialog(getActivity(), "Poll saved successfully.",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -238,8 +252,29 @@ public class ManagePollFragment extends RapidPollFragment {
         });
     }
 
-    private ManagePollRequest createManagePollRequest(ManagePoll managePoll) {
-        return ManagePollRequest.builder().withPoll(managePoll).withAction("CREATE").withUserId(Hawk.<String>get(USER_ID_KEY)).build();
+    private void updatePollState(PollState toPollState) {
+        service.updatePollState(requestCreator.createUpdatePollStateRequest(toPollState, pollSettings.getId()), new ResponseCallback() {
+            @Override
+            public void onSuccess() {
+                DialogsBuilder.showErrorDialog(getActivity(), "Poll updated successfully.",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ManagePollFragment.this.getFragmentManager().popBackStack();
+                            }
+                        });
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
     private ManagePoll buildPoll(String name, boolean draft) {
@@ -250,6 +285,7 @@ public class ManagePollFragment extends RapidPollFragment {
         builder.withAllowUncompleteAnswer(pollSettings.isAcceptCompleteOnly() ? "0" : "1");
         builder.withQuestions(managePollQuestionTransformer.transformPollQuestions(pollQuestions));
         builder.withName(name);
+        builder.withId(pollSettings.getId());
         builder.withDraft(draft ? "1" : "0");
         return builder.build();
     }

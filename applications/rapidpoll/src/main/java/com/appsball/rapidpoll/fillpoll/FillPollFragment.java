@@ -83,6 +83,7 @@ public class FillPollFragment extends RapidPollFragment {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                pollCode = pollDetailsResponse.code;
                 fillPollDetails = pollDetailsResponseTransformer.transform(pollDetailsResponse);
                 initializeListWithDetails(fillPollDetails);
             }

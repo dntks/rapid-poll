@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 public class ManagePoll {
 
+    public final String id;
     public final String name;
     @SerializedName("public")
     public final String isPublic;
@@ -17,7 +18,8 @@ public class ManagePoll {
     public final String draft;
     public final List<ManagePollQuestion> questions;
 
-    private ManagePoll(String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_answer, String draft, List<ManagePollQuestion> questions) {
+    private ManagePoll(String id, String name, String isPublic, String anonymous, String allow_comment, String allow_uncomplete_answer, String draft, List<ManagePollQuestion> questions) {
+        this.id = notNull(id, "id must not be null!");
         this.draft = notNull(draft, "draft must not be null");
         this.name = notNull(name, "name must not be null");
         this.isPublic = notNull(isPublic, "isPublic must not be null");
@@ -33,7 +35,7 @@ public class ManagePoll {
     }
 
     public static class Builder {
-
+        private String id="";
         private String name;
         private String isPublic;
         private String anonymous;
@@ -41,6 +43,11 @@ public class ManagePoll {
         private String allow_uncomplete_answer;
         private String draft;
         private List<ManagePollQuestion> questions;
+
+        public Builder withId(String id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder withName(String name) {
             this.name = name;
@@ -78,7 +85,7 @@ public class ManagePoll {
         }
 
         public ManagePoll build() {
-            return new ManagePoll(name, isPublic, anonymous, allow_comment, allow_uncomplete_answer, draft, questions);
+            return new ManagePoll(id, name, isPublic, anonymous, allow_comment, allow_uncomplete_answer, draft, questions);
         }
     }
 }

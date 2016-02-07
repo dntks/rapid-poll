@@ -6,14 +6,15 @@ import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDet
 import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 import java.util.List;
+
+import static com.google.common.collect.Lists.transform;
 
 public class NewPollQuestionsTransformer {
 
     public List<NewPollQuestion> transformQuestions(PollDetailsResponse pollDetailsResponse) {
-        return Lists.transform(pollDetailsResponse.questions, new Function<PollDetailsQuestion, NewPollQuestion>() {
+        return transform(pollDetailsResponse.questions, new Function<PollDetailsQuestion, NewPollQuestion>() {
             @Override
             public NewPollQuestion apply(PollDetailsQuestion input) {
                 return transformQuestion(input);

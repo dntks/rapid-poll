@@ -20,6 +20,10 @@ public class PollSettingsView {
     private final View pagingView;
     private final ImageView settingsButton;
     private final View settingsButtonRow;
+    private CheckBox allowCommentCheckBox;
+    private CheckBox anonymousCheckBox;
+    private CheckBox publicCheckBox;
+    private CheckBox acceptCompleteOnlyCheckBox;
 
     public PollSettingsView(PollSettings pollSettings, View rootView) {
         this.pollSettings = pollSettings;
@@ -41,10 +45,10 @@ public class PollSettingsView {
                 }
             }
         });
-        CheckBox allowCommentCheckBox = (CheckBox) settingsLayout.findViewById(R.id.allowcomment_checkbox);
-        CheckBox anonymousCheckBox = (CheckBox) settingsLayout.findViewById(R.id.anonymous_checkbox);
-        CheckBox publicCheckBox = (CheckBox) settingsLayout.findViewById(R.id.public_checkbox);
-        CheckBox acceptCompleteOnlyCheckBox = (CheckBox) settingsLayout.findViewById(R.id.acceptcompleteonly_checkbox);
+        allowCommentCheckBox = (CheckBox) settingsLayout.findViewById(R.id.allowcomment_checkbox);
+        anonymousCheckBox = (CheckBox) settingsLayout.findViewById(R.id.anonymous_checkbox);
+        publicCheckBox = (CheckBox) settingsLayout.findViewById(R.id.public_checkbox);
+        acceptCompleteOnlyCheckBox = (CheckBox) settingsLayout.findViewById(R.id.acceptcompleteonly_checkbox);
 
         allowCommentCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -118,5 +122,12 @@ public class PollSettingsView {
     private boolean isSettingsVisible() {
         return settingsLayout.getVisibility() == View.VISIBLE
                 && listSizeHelper.getVisibility() == View.VISIBLE;
+    }
+
+    public void refreshView() {
+        allowCommentCheckBox.setChecked(pollSettings.isAllowedToComment());
+        anonymousCheckBox.setChecked(pollSettings.isAnonymous());
+        publicCheckBox .setChecked(pollSettings.isPublic());
+        acceptCompleteOnlyCheckBox .setChecked(pollSettings.isAcceptCompleteOnly());
     }
 }

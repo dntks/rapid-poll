@@ -142,6 +142,9 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
         service.pollResult(pollResultRequest, new ResponseContainerCallback<PollResultResponse>() {
             @Override
             public void onSuccess(PollResultResponse response) {
+                if(PollResultFragment.this.isDetached()){
+                    return;
+                }
                 PollResult pollResult = resultTransformer.transformPollResult(response);
                 getRapidPollActivity().setHomeTitle("Results " + pollResult.pollName);
                 isMyPoll = pollResult.ownerId.equals(Hawk.<String>get(USER_ID_KEY));
@@ -234,7 +237,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
     }
 
     private void tryToEditPoll() {
-
+        getFragmentSwitcher().toManagePoll(pollIdentifierData.pollId);
     }
 
     @Override

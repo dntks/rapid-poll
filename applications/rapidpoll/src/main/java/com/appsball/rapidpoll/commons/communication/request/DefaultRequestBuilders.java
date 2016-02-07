@@ -9,6 +9,7 @@ import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePol
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestion;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative;
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollRequest;
+import com.appsball.rapidpoll.commons.model.ManagePollActionType;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.google.common.base.Optional;
 
@@ -25,7 +26,7 @@ public class DefaultRequestBuilders {
 
     public static ManagePollRequest createManagePollRequest() {
         ManagePollRequest.Builder managePollRequestBuilder = ManagePollRequest.builder();
-        managePollRequestBuilder.withAction("CREATE");
+        managePollRequestBuilder.withAction(ManagePollActionType.CREATE);
         managePollRequestBuilder.withUserId(USER_ID);
         managePollRequestBuilder.withPoll(createPollRequestObject());
         return managePollRequestBuilder.build();

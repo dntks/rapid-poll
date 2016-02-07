@@ -178,6 +178,7 @@ public class DialogsBuilder {
         hideLoadingDialog();
         loadingDialog = new android.support.v7.app.AlertDialog.Builder(context)
                 .setIcon(0)
+                .setCancelable(false)
                 .setMessage(message)
                 .setView(R.layout.loading_view).create();
         loadingDialog.show();

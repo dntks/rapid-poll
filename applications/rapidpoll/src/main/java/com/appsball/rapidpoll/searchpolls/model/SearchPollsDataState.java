@@ -4,7 +4,7 @@ import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
 import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 
 public class SearchPollsDataState {
-    public static int numberOfRequestedPolls = 10;
+    public static int numberOfRequestedPolls = 25;
     public OrderType chosenOrderType = OrderType.DESC;
     public OrderKey chosenOrderKey = OrderKey.DATE;
     public int actualPage = 1;
