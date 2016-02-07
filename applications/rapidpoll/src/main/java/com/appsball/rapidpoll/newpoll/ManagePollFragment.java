@@ -217,7 +217,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
 
     private void showNameDialog(final boolean isDraft) {
-        DialogsBuilder.showEditTextDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
+        DialogsBuilder.showEnterPollTitleDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
             @Override
             public void textEntered(String text) {
                 publishPoll(text, isDraft);

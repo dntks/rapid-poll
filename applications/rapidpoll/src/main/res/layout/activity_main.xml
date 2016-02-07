@@ -5,39 +5,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background_dark_purple"
+    android:orientation="vertical"
     tools:context="com.appsball.selfiemeter.SelfieMeterMainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
-        app:navigationIcon="?homeAsUpIndicator"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/actionbar_gradient"
         android:elevation="4dp"
         android:logo="@drawable/logo_s"
         android:theme="@style/AppTheme"
+        app:navigationIcon="?homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <EditText
             android:id="@+id/titleEditText"
+            style="@style/RapidPollEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:maxLength="25"
+            android:singleLine="true"
             android:textCursorDrawable="@null"
-            android:visibility="gone"
-            style="@style/RapidPollEditText"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone"/>
     </android.support.v7.widget.Toolbar>
 
-    <TextView android:text="@string/registering_message" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView
         android:id="@+id/informationTextView"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/registrationProgressBar" />
+        android:text="@string/registering_message"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <ProgressBar
+        android:id="@+id/registrationProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:id="@+id/container"

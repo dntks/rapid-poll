@@ -7,6 +7,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
@@ -112,19 +114,43 @@ public class DialogsBuilder {
         });
     }
 
-    public static void showEditTextDialog(final Activity activity,
+    public static void showEnterPollTitleDialog(final Activity activity,
                                           String errorMessage,
                                           String editTextHint,
                                           final TextEnteredListener textEnteredListener) {
-        final EditText inputView = new EditText(activity);
-        inputView.setHint(editTextHint);
+        final EditText editText = new EditText(activity);
+        InputFilter[] FilterArray = new InputFilter[1];
+        FilterArray[0] = new InputFilter.LengthFilter(25);
+        editText.setFilters(FilterArray);
+        showEditTextDialog(activity, errorMessage, editTextHint, editText, textEnteredListener);
+    }
+
+    public static void showEnterCodeDialog(final Activity activity,
+                                          String errorMessage,
+                                          String editTextHint,
+                                          final TextEnteredListener textEnteredListener) {
+        final EditText editText = new EditText(activity);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        InputFilter[] FilterArray = new InputFilter[1];
+        FilterArray[0] = new InputFilter.LengthFilter(10);
+        editText.setFilters(FilterArray);
+        showEditTextDialog(activity, errorMessage, editTextHint, editText, textEnteredListener);
+    }
+
+    public static void showEditTextDialog(final Activity activity,
+                                          String errorMessage,
+                                          String editTextHint,
+                                          final EditText editText,
+                                          final TextEnteredListener textEnteredListener) {
+        editText.setSingleLine(true);
+        editText.setHint(editTextHint);
         new android.support.v7.app.AlertDialog.Builder(activity)
                 .setIcon(0)
                 .setMessage(errorMessage)
-                .setView(inputView)
+                .setView(editText)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String editTextContent = inputView.getText().toString();
+                        String editTextContent = editText.getText().toString();
                         if (!"".equals(editTextContent)) {
                             textEnteredListener.textEntered(editTextContent);
                             dialog.dismiss();

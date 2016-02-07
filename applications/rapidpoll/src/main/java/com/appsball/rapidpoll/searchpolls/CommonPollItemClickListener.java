@@ -13,7 +13,7 @@ import com.orhanobut.hawk.Hawk;
 
 import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
 import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID_KEY;
-import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
+import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEnterCodeDialog;
 
 public abstract class CommonPollItemClickListener implements PollItemClickListener {
     protected final RapidPollActivity rapidPollActivity;
@@ -52,7 +52,7 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
     }
 
     private void showEnterPollCodeDialog(final String id) {
-        showEditTextDialog(rapidPollActivity, "This is a restricted poll, please enter poll code to open", "Poll code", new TextEnteredListener() {
+        showEnterCodeDialog(rapidPollActivity, "This is a restricted poll, please enter poll code to open", "Poll code", new TextEnteredListener() {
             @Override
             public void textEntered(String text) {
                 callGetDetails(id, text);
