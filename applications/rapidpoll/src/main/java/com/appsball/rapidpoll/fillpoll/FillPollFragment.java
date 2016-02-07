@@ -33,9 +33,9 @@ import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransforme
 import com.google.common.base.Optional;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_TITLE;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showErrorDialog;
 
 public class FillPollFragment extends RapidPollFragment {

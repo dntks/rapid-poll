@@ -14,10 +14,10 @@ import com.google.common.base.Optional;
 
 import java.util.List;
 
-import static com.appsball.rapidpoll.RapidPollActivity.USER_ID;
 import static com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollAnswer.doPollAnswer;
 import static com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollQuestion.doPollQuestion;
 import static com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative.managePollQuestionAlternative;
+import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class DefaultRequestBuilders {

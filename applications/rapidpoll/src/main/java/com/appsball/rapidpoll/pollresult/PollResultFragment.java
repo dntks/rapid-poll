@@ -42,11 +42,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
-import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
-import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_TITLE;
+import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID_KEY;
 import static com.appsball.rapidpoll.commons.utils.Utils.ON_SLASH_JOINER;
 
 public class PollResultFragment extends RapidPollFragment implements PollResultQuestionItemClickListener {

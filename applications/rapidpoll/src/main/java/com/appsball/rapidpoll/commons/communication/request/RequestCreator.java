@@ -6,7 +6,7 @@ import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.orhanobut.hawk.Hawk;
 
-import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
+import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID_KEY;
 
 public class RequestCreator {
 

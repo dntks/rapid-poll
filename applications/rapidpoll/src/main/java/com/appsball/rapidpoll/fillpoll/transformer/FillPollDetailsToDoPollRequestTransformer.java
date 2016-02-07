@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll.fillpoll.transformer;
 
-import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.fillpoll.model.FillPollComment;
 import com.appsball.rapidpoll.fillpoll.model.FillPollDetails;
 import com.google.common.base.Optional;
@@ -22,7 +22,7 @@ public class FillPollDetailsToDoPollRequestTransformer {
     public DoPollRequest transform(FillPollDetails fillPollDetails, String code, Optional<String> email) {
         DoPollRequest.Builder builder = DoPollRequest.builder();
         builder.withPollId(fillPollDetails.pollId);
-        builder.withUserId(Hawk.<String>get(RapidPollActivity.USER_ID_KEY));
+        builder.withUserId(Hawk.<String>get(Constants.USER_ID_KEY));
         Optional<FillPollComment> comment = fillPollDetails.comment;
         if (comment.isPresent()) {
             builder.withComment(comment.get().getComment());

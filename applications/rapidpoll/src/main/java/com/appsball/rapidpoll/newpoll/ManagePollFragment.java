@@ -37,9 +37,9 @@ import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
-import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
-import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
+import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID_KEY;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 

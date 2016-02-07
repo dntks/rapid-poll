@@ -1,9 +1,9 @@
 package com.appsball.rapidpoll.register;
 
-import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.communication.response.RegisterResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.orhanobut.hawk.Hawk;
 
 import static com.appsball.rapidpoll.commons.communication.request.RegisterRequest.registerRequest;
@@ -22,7 +22,7 @@ public class UserRegister {
         rapidPollRestService.registerUser(registerRequest(gcmToken), new ResponseContainerCallback<RegisterResponse>() {
             @Override
             public void onSuccess(RegisterResponse response) {
-                Hawk.put(RapidPollActivity.USER_ID_KEY, response.user_id);
+                Hawk.put(Constants.USER_ID_KEY, response.user_id);
                 onRegisterListener.succesfulRegister();
             }
 

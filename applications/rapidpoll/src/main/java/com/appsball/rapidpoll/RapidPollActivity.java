@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.pushnotification.RegistrationAsyncTask;
 import com.appsball.rapidpoll.pushnotification.RegistrationIntentService;
 import com.appsball.rapidpoll.register.UserRegister;
@@ -33,16 +34,6 @@ import static com.appsball.rapidpoll.commons.communication.service.RapidPollRest
 public class RapidPollActivity extends AppCompatActivity {
     public static final String ServerAPIKey = "AIzaSyAkliInYloQCi9nUVFZzL-N73dO32p-h9c";
     public static final String SenderID = "73756231339";
-    public static final String FRAGMENT_NAME = "fragmentName";
-    public static final String USER_ID = "31000000000000000000000000000000";
-    public static final String POLL_CODE = "poll_code";
-    public static final String POLL_ID = "poll_id";
-    public static final String USER_ID_KEY = "userId";
-    public static final String POLL_TITLE = "poll_title";
-    public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
-    public static final String REGISTRATION_COMPLETE = "registrationComplete";
-    public static final String NO_ID = "no id";
-    public static final String PUBLIC_POLL_CODE = "NONE";
     private RapidPollRestService rapidPollRestService;
     private EditText editableTitle;
     private FragmentSwitcher fragmentSwitcher;
@@ -116,7 +107,7 @@ public class RapidPollActivity extends AppCompatActivity {
     }
 
     private boolean isRegistered() {
-        return !NO_ID.equals(Hawk.get(USER_ID_KEY, NO_ID));
+        return !Constants.NO_ID.equals(Hawk.get(Constants.USER_ID_KEY, Constants.NO_ID));
     }
 
     public void registerGCM() {
@@ -148,7 +139,7 @@ public class RapidPollActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(REGISTRATION_COMPLETE));
+                new IntentFilter(Constants.REGISTRATION_COMPLETE));
     }
 
     @Override

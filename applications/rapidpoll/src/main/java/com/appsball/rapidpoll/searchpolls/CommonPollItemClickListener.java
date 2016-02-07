@@ -11,8 +11,8 @@ import com.appsball.rapidpoll.commons.view.TextEnteredListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.orhanobut.hawk.Hawk;
 
-import static com.appsball.rapidpoll.RapidPollActivity.PUBLIC_POLL_CODE;
-import static com.appsball.rapidpoll.RapidPollActivity.USER_ID_KEY;
+import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.USER_ID_KEY;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showEditTextDialog;
 
 public abstract class CommonPollItemClickListener implements PollItemClickListener {

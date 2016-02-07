@@ -11,10 +11,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 
-import static com.appsball.rapidpoll.RapidPollActivity.FRAGMENT_NAME;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_CODE;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_ID;
-import static com.appsball.rapidpoll.RapidPollActivity.POLL_TITLE;
+import static com.appsball.rapidpoll.commons.utils.Constants.FRAGMENT_NAME;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_TITLE;
 
 public class DeepLinkActivity extends AppCompatActivity {
 
@@ -49,5 +49,6 @@ public class DeepLinkActivity extends AppCompatActivity {
             rapidPollIntent.putExtra(POLL_CODE, pollCode);
         }
         startActivity(rapidPollIntent);
+        finish();
     }
 }
