@@ -34,12 +34,12 @@ public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
     public void bindView(NewPollListItem newPollListItem) {
         final NewPollAnswer newPollAnswer = (NewPollAnswer) newPollListItem;
         editText.setTextChangedListener(new TextChangedListener(newPollListItem));
-        editText.setText(newPollAnswer.getText());
+        editText.setText(newPollAnswer.getAnswer());
         final NewPollQuestion question = newPollAnswer.question;
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapterItemViewRemover.removeView(newPollAnswer, v);
+                adapterItemViewRemover.removeView(newPollAnswer);
                 question.removeAnswer(newPollAnswer);
                 checkForSiblingAnswerViews(question);
             }

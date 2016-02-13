@@ -20,6 +20,6 @@ public class ManagePollQuestionAlternativeTransformer {
     }
 
     private ManagePollQuestionAlternative transformAlternative(NewPollAnswer input) {
-        return managePollQuestionAlternative(input.getText());
+        return managePollQuestionAlternative(input.getAnswer());
     }
 }

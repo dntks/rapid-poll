@@ -33,6 +33,13 @@ import java.io.File;
  * This class contains static utility methods.
  */
 public class Utils {
+    public static String ALPHABET="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    public static String getLetterOfAlphabet(int order){
+        int alphabetSize= ALPHABET.length();
+        int realOrder= order%alphabetSize;
+        return ALPHABET.substring(realOrder, realOrder+1);
+    }
 
     // Prevents instantiation.
     private Utils() {

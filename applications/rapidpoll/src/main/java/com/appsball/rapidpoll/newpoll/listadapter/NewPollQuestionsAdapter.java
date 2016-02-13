@@ -11,6 +11,7 @@ import com.appsball.rapidpoll.newpoll.AdapterItemViewRemover;
 import com.appsball.rapidpoll.newpoll.NewQuestionCreator;
 import com.appsball.rapidpoll.newpoll.PollAnswerToAdapterAdder;
 import com.appsball.rapidpoll.newpoll.PollQuestionToAdapterAdder;
+import com.appsball.rapidpoll.newpoll.QuestionItemRemover;
 import com.appsball.rapidpoll.newpoll.listviewholder.AddAnswerNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AddQuestionNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AnswerNewPollViewHolder;
@@ -26,8 +27,9 @@ import com.google.common.base.Optional;
 import java.util.List;
 
 import static com.appsball.rapidpoll.newpoll.model.ViewType.fromValue;
+import static com.google.common.collect.Lists.newArrayList;
 
-public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHolderParent> implements PollQuestionToAdapterAdder, AdapterAnswerViewsUpdater, AdapterItemViewRemover, PollAnswerToAdapterAdder {
+public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHolderParent> implements PollQuestionToAdapterAdder, AdapterAnswerViewsUpdater, AdapterItemViewRemover, PollAnswerToAdapterAdder, QuestionItemRemover {
 
     private List<NewPollListItem> pollListItems;
     private List<NewPollQuestion> questions;
@@ -52,18 +54,26 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
         List<NewPollListItem> pollListItems = newQuestionCreator.createItemsFromQuestion(question);
         int position = NewPollQuestionsAdapter.this.pollListItems.size() - 1;
         insertLastItems(pollListItems, position);
+        if(questions.size()==2){
+            notifyNewPollItemChanged(questions.get(0));
+            notifyNewPollItemChanged(questions.get(1));
+        }
     }
 
     @Override
     public void updateAnswerViews(List<NewPollAnswer> answers) {
         for (NewPollAnswer answer : answers) {
-            int location = getLocationOfItem(answer);
-            notifyItemChanged(location);
+            notifyNewPollItemChanged(answer);
         }
     }
 
+    private void notifyNewPollItemChanged(NewPollListItem newPollListItem) {
+        int location = getLocationOfItem(newPollListItem);
+        notifyItemChanged(location);
+    }
+
     @Override
-    public void removeView(NewPollListItem newPollListItem, View v) {
+    public void removeView(NewPollListItem newPollListItem) {
         int location = getLocationOfItem(newPollListItem);
         pollListItems.remove(location);
         this.notifyItemRemoved(location);
@@ -88,6 +98,16 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
         return 0;
     }
 
+    private List<Integer> getLocationsOfItems(List<? extends NewPollListItem> newPollListItems) {
+        List<Integer> locations = newArrayList();
+        for (int i = 0; i < pollListItems.size(); i++) {
+            if (newPollListItems.contains(pollListItems.get(i))) {
+                locations.add(i);
+            }
+        }
+        return locations;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return pollListItems.get(position).getViewType().value;
@@ -105,7 +125,7 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
         switch (type) {
             case QUESTION:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_question, parent, false);
-                return new QuestionNewPollViewHolder(view);
+                return new QuestionNewPollViewHolder(view, this);
             case ANSWER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_answer, parent, false);
                 return new AnswerNewPollViewHolder(view, this, this);
@@ -116,7 +136,7 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_poll_add_answer, parent, false);
                 return new AddAnswerNewPollViewHolder(view, this, this);
         }
-        return new QuestionNewPollViewHolder(parent);
+        return new QuestionNewPollViewHolder(parent, this);
     }
 
     @Override
@@ -134,4 +154,28 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
         this.notifyItemRangeInserted(position, items.size());
     }
 
+    @Override
+    public void removeQuestion(NewPollQuestion newPollQuestion) {
+        List<NewPollAnswer> answers = newPollQuestion.getAnswers();
+        int location = getLocationOfItem(newPollQuestion);
+        List<Integer> locationsOfItems = getLocationsOfItems(answers);
+        pollListItems.remove(location + answers.size() + 1);
+        pollListItems.remove(location);
+        pollListItems.removeAll(answers);
+        this.notifyItemRangeRemoved(location, answers.size() + 2);
+        newPollQuestion.getAnswers().clear();
+        questions.remove(newPollQuestion);
+        notifyIfLastQuestion();
+    }
+
+    @Override
+    public boolean isOnlyQuestionRemaining(NewPollQuestion newPollQuestion) {
+        return questions.size() == 1 && questions.get(0).equals(newPollQuestion);
+    }
+
+    private void notifyIfLastQuestion() {
+        if (questions.size() == 1) {
+            notifyNewPollItemChanged(questions.get(0));
+        }
+    }
 }

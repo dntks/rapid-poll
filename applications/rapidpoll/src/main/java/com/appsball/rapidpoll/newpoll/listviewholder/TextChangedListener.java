@@ -22,7 +22,7 @@ public class TextChangedListener implements TextWatcher{
 
     @Override
     public void afterTextChanged(Editable s) {
-        newPollListItem.setText(s.toString());
+        newPollListItem.textChanged(s.toString());
     }
 
 }

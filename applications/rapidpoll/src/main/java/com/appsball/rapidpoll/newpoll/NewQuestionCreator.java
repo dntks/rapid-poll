@@ -12,10 +12,10 @@ import java.util.List;
 public class NewQuestionCreator {
 
     public NewPollQuestion createNewQuestion(int questionNumber){
-        NewPollQuestion question = new NewPollQuestion("Question "+questionNumber);
+        NewPollQuestion question = new NewPollQuestion("");
         List<NewPollAnswer> answers = question.getAnswers();
-        answers.add(new NewPollAnswer("Alternative 1", question));
-        answers.add(new NewPollAnswer("Alternative 2", question));
+        answers.add(new NewPollAnswer("", question));
+        answers.add(new NewPollAnswer("", question));
         return question;
     }
 
@@ -24,7 +24,7 @@ public class NewQuestionCreator {
         for(NewPollQuestion question : questions){
             listItems.addAll(createItemsFromQuestion(question));
         }
-        listItems.add(new NewPollAddQuestion(""));
+        listItems.add(new NewPollAddQuestion());
         return listItems;
     }
 
@@ -33,7 +33,7 @@ public class NewQuestionCreator {
         List<NewPollAnswer> answers = question.getAnswers();
         listItems.add(question);
         listItems.addAll(answers);
-        listItems.add(new NewPollAddAnswer("", question));
+        listItems.add(new NewPollAddAnswer(question));
         return listItems;
     }
 }

@@ -7,12 +7,32 @@
     android:paddingLeft="@dimen/general_left_padding"
     android:paddingRight="@dimen/general_right_padding">
 
-    <com.appsball.rapidpoll.newpoll.listviewholder.TextChangeAwareEditText
-        android:id="@+id/question_edit_text"
-        style="@style/NewPollListQuestionEditText"
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/newpoll_listitem_height" />
+        android:layout_height="@dimen/newpoll_listitem_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.appsball.rapidpoll.newpoll.listviewholder.TextChangeAwareEditText
+            android:id="@+id/question_edit_text"
+            style="@style/NewPollListQuestionEditText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:maxLength="150"
+            android:hint="@string/question"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/newpoll_listitem_height" />
+
+        <ImageView
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/torles" />
+
+    </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

@@ -7,6 +7,8 @@ import com.appsball.rapidpoll.fillpoll.model.FillPollDetails;
 import com.google.common.base.Optional;
 import com.orhanobut.hawk.Hawk;
 
+import static com.appsball.rapidpoll.commons.utils.Constants.PUBLIC_POLL_CODE;
+
 public class FillPollDetailsToDoPollRequestTransformer {
 
     public final FillPollQuestionsToDoPollQuestionsTransformer questionsTransformer;
@@ -15,11 +17,11 @@ public class FillPollDetailsToDoPollRequestTransformer {
         this.questionsTransformer = questionsTransformer;
     }
 
-    public DoPollRequest transformAnonymPoll(FillPollDetails fillPollDetails, String code) {
+    public DoPollRequest transformAnonymPoll(FillPollDetails fillPollDetails, Optional<String> code) {
         return transform(fillPollDetails, code, Optional.<String>absent());
     }
 
-    public DoPollRequest transform(FillPollDetails fillPollDetails, String code, Optional<String> email) {
+    public DoPollRequest transform(FillPollDetails fillPollDetails, Optional<String> code, Optional<String> email) {
         DoPollRequest.Builder builder = DoPollRequest.builder();
         builder.withPollId(fillPollDetails.pollId);
         builder.withUserId(Hawk.<String>get(Constants.USER_ID_KEY));
@@ -29,7 +31,7 @@ public class FillPollDetailsToDoPollRequestTransformer {
         }
         builder.withQuestions(questionsTransformer.transformQuestions(fillPollDetails.questions));
         builder.withEmail(email);
-        builder.withCode(code);
+        builder.withCode(code.or(PUBLIC_POLL_CODE));
         return builder.build();
     }
 

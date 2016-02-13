@@ -6,11 +6,20 @@ import java.util.List;
 public class NewPollQuestion extends NewPollListItem{
 
     private boolean isMultichoice;
+    private String question;
     private List<NewPollAnswer> answers;
 
-    public NewPollQuestion(String text) {
-        super(text);
+    public NewPollQuestion(String question) {
+        this.question = question;
         answers= new ArrayList<>();
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void textChanged(String text) {
+        this.question = text;
     }
 
     @Override

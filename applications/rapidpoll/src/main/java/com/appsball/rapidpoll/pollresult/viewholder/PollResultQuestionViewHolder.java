@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.utils.Utils;
 import com.appsball.rapidpoll.pollresult.PollResultQuestionItemClickListener;
 import com.appsball.rapidpoll.pollresult.model.PollResultAnswer;
 import com.appsball.rapidpoll.pollresult.model.PollResultListItem;
@@ -96,7 +97,7 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
             Integer color = answerColors.get(i);
             setColorView(colorView, color);
             i++;
-            nameTextView.setText(i + ".) " + alternativeName);
+            nameTextView.setText(Utils.getLetterOfAlphabet(i) + ") " + alternativeName);
         }
     }
 

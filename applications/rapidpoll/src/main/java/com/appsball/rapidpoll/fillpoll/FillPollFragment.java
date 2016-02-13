@@ -133,7 +133,7 @@ public class FillPollFragment extends RapidPollFragment {
         } else if (!fillPollDetails.isAnonymous) {
             showEmailDialog();
         } else {
-            submitPoll(requestTransformer.transformAnonymPoll(fillPollDetails, pollCode));
+            submitPoll(requestTransformer.transformAnonymPoll(fillPollDetails, Optional.fromNullable(pollCode)));
         }
     }
 
@@ -178,7 +178,7 @@ public class FillPollFragment extends RapidPollFragment {
 
 
     private void submitPoll(String emailAddress) {
-        submitPoll(requestTransformer.transform(fillPollDetails, pollCode, Optional.of(emailAddress)));
+        submitPoll(requestTransformer.transform(fillPollDetails, Optional.fromNullable(pollCode), Optional.of(emailAddress)));
     }
 
     private void showEmailDialog() {

@@ -74,6 +74,7 @@ public class PollSettingsView {
                 pollSettings.setAcceptCompleteOnly(isChecked);
             }
         });
+        refreshView();
     }
 
     private void hideSettingsLayout() {

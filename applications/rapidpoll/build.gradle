@@ -49,7 +49,6 @@ dependencies {
     compile 'com.orhanobut:dialogplus:1.10@aar'
     compile 'com.github.orhanobut:logger:1.12'
     compile 'com.github.nicolasjafelle:paginglistview:1.2'
-    compile 'com.malinskiy:superrecyclerview:1.1.1'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'
     compile 'net.danlew:android.joda:2.9.1'
 

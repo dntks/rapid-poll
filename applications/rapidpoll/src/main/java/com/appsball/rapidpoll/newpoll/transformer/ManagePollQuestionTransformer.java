@@ -1,7 +1,6 @@
 package com.appsball.rapidpoll.newpoll.transformer;
 
 import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestion;
-import com.appsball.rapidpoll.commons.communication.request.managepoll.ManagePollQuestionAlternative;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -27,7 +26,7 @@ public class ManagePollQuestionTransformer {
 
     private ManagePollQuestion transformPollQuestion(NewPollQuestion input) {
         ManagePollQuestion.Builder builder = ManagePollQuestion.builder();
-        builder.withName(input.getText());
+        builder.withName(input.getQuestion());
         builder.withMultichoice(input.isMultichoice()?"1":"0");
         builder.withAlternatives(alternativeTransformer.transformAlternatives(input.getAnswers()));
         return builder.build();

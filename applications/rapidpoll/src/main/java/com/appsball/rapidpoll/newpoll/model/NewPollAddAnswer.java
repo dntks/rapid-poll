@@ -2,8 +2,8 @@ package com.appsball.rapidpoll.newpoll.model;
 
 public class NewPollAddAnswer extends NewPollAnswer {
 
-    public NewPollAddAnswer(String text, NewPollQuestion question) {
-        super(text, question);
+    public NewPollAddAnswer(NewPollQuestion question) {
+        super("", question);
     }
 
     @Override

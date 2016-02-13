@@ -6,10 +6,10 @@ import com.appsball.rapidpoll.commons.model.PollState;
 public class PollSettings {
 
     private String id = "";
-    private boolean isPublic;
-    private boolean isAnonymous;
-    private boolean isAllowedToComment;
-    private boolean acceptCompleteOnly;
+    private boolean isPublic = true;
+    private boolean isAnonymous = true;
+    private boolean isAllowedToComment = true;
+    private boolean acceptCompleteOnly = true;
     private PollState pollState = PollState.DRAFT;
     private ManagePollActionType managePollActionType = ManagePollActionType.CREATE;
 

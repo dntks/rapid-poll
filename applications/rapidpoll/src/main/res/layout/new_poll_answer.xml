@@ -29,10 +29,10 @@
         style="@style/NewPollListAnswerEditText"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:maxLength="150"
         android:layout_centerVertical="true"
-        android:hint="Alternative"
+        android:hint="@string/alternative"
         android:layout_toLeftOf="@id/delete_button"
-        android:layout_weight="1"
-        android:text="Alternative A" />
+        android:layout_weight="1" />
 
 </RelativeLayout>
