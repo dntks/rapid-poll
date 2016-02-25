@@ -54,28 +54,28 @@ public class ManagePoll {
             return this;
         }
 
-        public Builder withIsPublic(String isPublic) {
-            this.isPublic = isPublic;
+        public Builder withIsPublic(boolean isPublic) {
+            this.isPublic = isPublic ? "1" : "0";
             return this;
         }
 
-        public Builder withAnonymous(String anonymous) {
-            this.anonymous = anonymous;
+        public Builder withAnonymous(boolean anonymous) {
+            this.anonymous = anonymous ? "1" : "0";
             return this;
         }
 
-        public Builder withAllowComment(String allowComment) {
-            this.allow_comment = allowComment;
+        public Builder withAllowComment(boolean allowComment) {
+            this.allow_comment = allowComment ? "1" : "0";
             return this;
         }
 
-        public Builder withAllowUncompleteAnswer(String allow_uncomplete_answer) {
-            this.allow_uncomplete_answer = allow_uncomplete_answer;
+        public Builder withAllowUncompleteAnswer(boolean allow_uncomplete_answer) {
+            this.allow_uncomplete_answer = allow_uncomplete_answer ? "1" : "0";
             return this;
         }
 
-        public Builder withDraft(String draft) {
-            this.draft = draft;
+        public Builder withDraft(boolean draft) {
+            this.draft = draft ? "1" : "0";
             return this;
         }
 

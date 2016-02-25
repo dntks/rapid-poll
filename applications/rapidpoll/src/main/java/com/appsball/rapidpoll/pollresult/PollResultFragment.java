@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.ScreenFragment;
 import com.appsball.rapidpoll.commons.communication.request.ExportPollResultRequest;
 import com.appsball.rapidpoll.commons.communication.request.ExportType;
 import com.appsball.rapidpoll.commons.communication.request.PollResultRequest;
@@ -102,11 +103,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
         service.exportPollResult(exportPollResultRequest, new ResponseContainerCallback<File>() {
             @Override
             public void onSuccess(File file) {
-                try {
-                    shareFileInIntent(file, pollIdentifierData);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                shareFileInIntent(file, pollIdentifierData);
             }
 
             @Override
@@ -121,7 +118,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
         });
     }
 
-    private void shareFileInIntent(File file, PollIdentifierData pollIdentifierData) throws UnsupportedEncodingException {
+    private void shareFileInIntent(File file, PollIdentifierData pollIdentifierData) {
         Context context = getRapidPollActivity();
         Uri contentUri = FileProvider.getUriForFile(context, "com.appsball.rapidpoll.fileprovider", file);
         Intent shareIntent = new Intent();
@@ -129,20 +126,31 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
         shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
         shareIntent.setType(Utils.getMimeTypeOfFile(file, context));
         String shareString = String.format(getString(R.string.shareStatisticsText), pollIdentifierData.pollTitle);
-        String pollResultLink = ON_SLASH_JOINER.join(" rapidpoll.appsball.com/pollresult",
-                URLEncoder.encode(pollIdentifierData.pollTitle, "utf-8"),
-                pollIdentifierData.pollId,
-                pollIdentifierData.pollCode);
+        String pollResultLink = createLinkForScreen(ScreenFragment.POLL_RESULT, pollIdentifierData);
         String shareText = shareString + pollResultLink;
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
         startActivity(Intent.createChooser(shareIntent, "Share poll result"));
+    }
+
+    private String createLinkForScreen(ScreenFragment screenFragment, PollIdentifierData pollIdentifierData) {
+        String encodedTitle = pollIdentifierData.pollTitle;
+        try {
+            encodedTitle = URLEncoder.encode(pollIdentifierData.pollTitle, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return ON_SLASH_JOINER.join(" rapidpoll.appsball.com",
+                screenFragment.apiName,
+                encodedTitle,
+                pollIdentifierData.pollId,
+                pollIdentifierData.pollCode);
     }
 
     private void callPollResult(PollResultRequest pollResultRequest) {
         service.pollResult(pollResultRequest, new ResponseContainerCallback<PollResultResponse>() {
             @Override
             public void onSuccess(PollResultResponse response) {
-                if(PollResultFragment.this.isDetached()){
+                if (PollResultFragment.this.isDetached()) {
                     return;
                 }
                 PollResult pollResult = resultTransformer.transformPollResult(response);
@@ -233,7 +241,14 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
     }
 
     private void sharePoll() {
-
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        String shareString = String.format(getString(R.string.poll_invite), pollIdentifierData.pollTitle, pollIdentifierData.pollCode);
+        String pollResultLink = createLinkForScreen(ScreenFragment.FILL_POLL, pollIdentifierData);
+        String shareText = shareString + pollResultLink;
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, "Share poll"));
     }
 
     private void tryToEditPoll() {

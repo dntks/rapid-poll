@@ -174,10 +174,10 @@ public class ManagePollFragment extends RapidPollFragment {
                 return true;
 
             case android.R.id.home:
-                if(pollState == PollState.DRAFT){
+                if (pollState == PollState.DRAFT) {
                     showSaveModificationsCheckerDialog();
                     return true;
-                }else{
+                } else {
                     return super.onOptionsItemSelected(item);
                 }
             default:
@@ -191,9 +191,20 @@ public class ManagePollFragment extends RapidPollFragment {
         String pollName = editableTitle.getText().toString();
         if (!isEmpty(pollName)) {
             publishPoll(pollName, isDraft);
+        } else if (isAnyQuestionEmpty()) {
+            showQuestionEmptyDialog();
         } else {
             showNameDialog(isDraft);
         }
+    }
+
+    private boolean isAnyQuestionEmpty() {
+        for (NewPollQuestion newPollQuestion : pollQuestions) {
+            if (isEmpty(newPollQuestion.getQuestion())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void showSaveModificationsCheckerDialog() {
@@ -215,6 +226,9 @@ public class ManagePollFragment extends RapidPollFragment {
         imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
 
+    private void showQuestionEmptyDialog() {
+        DialogsBuilder.showErrorDialog(getActivity(), "Empty question not allowed", "Please set question text for all questions!");
+    }
 
     private void showNameDialog(final boolean isDraft) {
         DialogsBuilder.showEnterPollTitleDialog(getActivity(), "You must set Poll title!", "Poll title", new TextEnteredListener() {
@@ -279,14 +293,14 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private ManagePoll buildPoll(String name, boolean draft) {
         ManagePoll.Builder builder = ManagePoll.builder();
-        builder.withAllowComment(pollSettings.isAllowedToComment() ? "1" : "0");
-        builder.withAnonymous(pollSettings.isAnonymous() ? "1" : "0");
-        builder.withIsPublic(pollSettings.isPublic() ? "1" : "0");
-        builder.withAllowUncompleteAnswer(pollSettings.isAcceptCompleteOnly() ? "0" : "1");
+        builder.withAllowComment(pollSettings.isAllowedToComment());
+        builder.withAnonymous(pollSettings.isAnonymous());
+        builder.withIsPublic(pollSettings.isPublic());
+        builder.withAllowUncompleteAnswer(!pollSettings.isAcceptCompleteOnly());
         builder.withQuestions(managePollQuestionTransformer.transformPollQuestions(pollQuestions));
         builder.withName(name);
         builder.withId(pollSettings.getId());
-        builder.withDraft(draft ? "1" : "0");
+        builder.withDraft(draft);
         return builder.build();
     }
 }

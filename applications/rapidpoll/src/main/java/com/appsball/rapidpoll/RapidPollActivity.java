@@ -201,10 +201,31 @@ public class RapidPollActivity extends AppCompatActivity {
         return rapidPollRestService;
     }
 
+    @Override
+    public void onBackPressed(){
+        navigateBack();
+    }
+
+    private void navigateBack() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            if(findViewById(R.id.paging_list_view)!=null) {
+                finish();
+            }else{
+                fragmentSwitcher.toAllPolls();
+            }
+        }
+        else {
+            if(findViewById(R.id.paging_list_view)!=null) {
+                finish();
+            }else{
+                super.onBackPressed();
+            }
+        }
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
-        getSupportFragmentManager().popBackStack();
+        navigateBack();
         return true;
     }
 

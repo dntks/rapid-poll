@@ -96,8 +96,8 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
             percentageTextView.setText(percentageString);
             Integer color = answerColors.get(i);
             setColorView(colorView, color);
-            i++;
             nameTextView.setText(Utils.getLetterOfAlphabet(i) + ") " + alternativeName);
+            i++;
         }
     }
 

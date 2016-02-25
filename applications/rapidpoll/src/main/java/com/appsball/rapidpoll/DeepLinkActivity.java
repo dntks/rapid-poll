@@ -34,7 +34,7 @@ public class DeepLinkActivity extends AppCompatActivity {
         String screenName = urlParts.get(1);
         Intent rapidPollIntent = new Intent(this, RapidPollActivity.class);
 
-        if ("pollresult".equals(screenName)) {
+        if (ScreenFragment.POLL_RESULT.apiName.equals(screenName) || ScreenFragment.FILL_POLL.apiName.equals(screenName)) {
             String pollTitle = "";
             try {
                 pollTitle = URLDecoder.decode(urlParts.get(2), "utf-8");

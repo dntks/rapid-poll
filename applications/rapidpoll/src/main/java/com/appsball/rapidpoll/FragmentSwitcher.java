@@ -90,6 +90,10 @@ public class FragmentSwitcher {
         if (ScreenFragment.POLL_RESULT.apiName.equals(fragmentName)) {
             PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollCode(pollCode).withPollId(pollId).withPollTitle(pollTitle).build();
             toPollResult(pollIdentifierData);
+        }
+       else if (ScreenFragment.FILL_POLL.apiName.equals(fragmentName)) {
+            PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollCode(pollCode).withPollId(pollId).withPollTitle(pollTitle).build();
+            toFillPoll(pollIdentifierData);
         }else{
             toAllPolls();
         }

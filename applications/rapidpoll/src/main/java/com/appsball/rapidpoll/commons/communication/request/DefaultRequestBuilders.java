@@ -34,13 +34,13 @@ public class DefaultRequestBuilders {
 
     private static ManagePoll createPollRequestObject() {
         ManagePoll.Builder managePollBuilder = ManagePoll.builder();
-        managePollBuilder.withAllowUncompleteAnswer("1");
-        managePollBuilder.withAnonymous("0");
-        managePollBuilder.withIsPublic("1");
+        managePollBuilder.withAllowUncompleteAnswer(true);
+        managePollBuilder.withAnonymous(false);
+        managePollBuilder.withIsPublic(true);
         managePollBuilder.withName("kerdes");
         managePollBuilder.withQuestions(createManagePollQuestions());
-        managePollBuilder.withAllowComment("1");
-        managePollBuilder.withDraft("0");
+        managePollBuilder.withAllowComment(true);
+        managePollBuilder.withDraft(false);
         return managePollBuilder.build();
     }
 

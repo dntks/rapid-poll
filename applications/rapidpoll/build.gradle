@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,23 +34,23 @@ dependencies {
 
     androidTestCompile 'junit:junit:4.12'
 
-
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
     testCompile "org.robolectric:robolectric:3.0"
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'com.squareup.okhttp:mockwebserver:2.5.0'
+
     compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.github.orhanobut:wasp:1.15'
     compile 'com.google.android.gms:play-services-gcm:8.3.0'
     compile 'org.apache.commons:commons-lang3:3.0'
 
+    compile 'com.github.orhanobut:wasp:1.15'
     compile 'com.github.orhanobut:hawk:1.20'
-    compile 'com.orhanobut:dialogplus:1.10@aar'
     compile 'com.github.orhanobut:logger:1.12'
-    compile 'com.github.nicolasjafelle:paginglistview:1.2'
-    compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'
+
     compile 'net.danlew:android.joda:2.9.1'
 
+    compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'
+    compile 'com.github.nicolasjafelle:paginglistview:1.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
 }

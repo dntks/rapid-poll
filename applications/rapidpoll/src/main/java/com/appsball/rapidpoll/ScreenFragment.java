@@ -4,6 +4,7 @@ public enum ScreenFragment {
     MANAGE_POLL("managepoll"),
     ALL_POLLS("polls"),
     MY_POLLS("mypolls"),
+    FILL_POLL ("fillpoll"),
     POLL_RESULT("pollresult"),
     POLL_RESULT_VOTES("pollresultvotes"),
     RESULTS("results"),

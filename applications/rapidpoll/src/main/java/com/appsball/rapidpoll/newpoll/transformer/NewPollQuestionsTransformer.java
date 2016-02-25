@@ -26,7 +26,7 @@ public class NewPollQuestionsTransformer {
         NewPollQuestion newPollQuestion = new NewPollQuestion(input.question);
         newPollQuestion.setMultichoice(input.multichoice==1);
         for(PollDetailsAlternative alternative : input.alternatives){
-            NewPollAnswer newPollAnswer = new NewPollAnswer(alternative.alternative_name, newPollQuestion);
+            NewPollAnswer newPollAnswer = NewPollAnswer.newPollAnswer(alternative.alternative_name, newPollQuestion);
             newPollQuestion.addAnswer(newPollQuestion.getAnswers().size(), newPollAnswer);
         }
         return newPollQuestion;
