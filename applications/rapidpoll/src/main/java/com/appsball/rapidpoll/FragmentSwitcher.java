@@ -87,14 +87,16 @@ public class FragmentSwitcher {
         String pollTitle = extras.getString(Constants.POLL_TITLE);
         String pollCode = extras.getString(Constants.POLL_CODE);
         String pollId = extras.getString(Constants.POLL_ID);
-        if (ScreenFragment.POLL_RESULT.apiName.equals(fragmentName)) {
+        if(ScreenFragment.MY_POLLS.apiName.equals(fragmentName)){
+            toMyPolls();
+        }
+        else if (ScreenFragment.POLL_RESULT.apiName.equals(fragmentName)) {
             PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollCode(pollCode).withPollId(pollId).withPollTitle(pollTitle).build();
             toPollResult(pollIdentifierData);
-        }
-       else if (ScreenFragment.FILL_POLL.apiName.equals(fragmentName)) {
+        } else if (ScreenFragment.FILL_POLL.apiName.equals(fragmentName)) {
             PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollCode(pollCode).withPollId(pollId).withPollTitle(pollTitle).build();
             toFillPoll(pollIdentifierData);
-        }else{
+        } else {
             toAllPolls();
         }
     }
