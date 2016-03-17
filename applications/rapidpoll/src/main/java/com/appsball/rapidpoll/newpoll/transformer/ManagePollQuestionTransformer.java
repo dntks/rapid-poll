@@ -27,6 +27,7 @@ public class ManagePollQuestionTransformer {
     private ManagePollQuestion transformPollQuestion(NewPollQuestion input) {
         ManagePollQuestion.Builder builder = ManagePollQuestion.builder();
         builder.withName(input.getQuestion());
+        builder.withId(input.getId());
         builder.withMultichoice(input.isMultichoice()?"1":"0");
         builder.withAlternatives(alternativeTransformer.transformAlternatives(input.getAnswers()));
         return builder.build();

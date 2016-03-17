@@ -1,5 +1,7 @@
 package com.appsball.rapidpoll.newpoll.model;
 
+import com.google.common.base.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ public class NewPollQuestion extends NewPollListItem{
 
     private boolean isMultichoice;
     private String question;
+    private Optional<String> id = Optional.absent();
     private List<NewPollAnswer> answers;
 
     public NewPollQuestion(String question) {
@@ -47,4 +50,11 @@ public class NewPollQuestion extends NewPollListItem{
         answers.remove(answer);
     }
 
+    public void setId(String id) {
+        this.id = Optional.fromNullable(id);
+    }
+
+    public Optional<String> getId() {
+        return id;
+    }
 }
