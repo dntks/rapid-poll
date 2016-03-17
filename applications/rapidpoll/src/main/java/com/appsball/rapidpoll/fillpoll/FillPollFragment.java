@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll.fillpoll;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -10,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.ScreenFragment;
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
@@ -33,9 +36,13 @@ import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransforme
 import com.google.common.base.Optional;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_TITLE;
+import static com.appsball.rapidpoll.commons.utils.Utils.ON_SLASH_JOINER;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showErrorDialog;
 
 public class FillPollFragment extends RapidPollFragment {
@@ -173,9 +180,30 @@ public class FillPollFragment extends RapidPollFragment {
     }
 
     private void inviteFriendsForPoll() {
-
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollTitle(fillPollDetails.name).withPollId(fillPollDetails.pollId).withPollCode(fillPollDetails.code.or("NONE")).build();
+        String pollResultLink = createLinkForScreen(ScreenFragment.FILL_POLL, pollIdentifierData);
+        String shareString = String.format(getString(R.string.poll_voted_invite), fillPollDetails.name, pollResultLink);
+        String shareText = shareString + pollResultLink;
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, "Invite to poll"));
     }
 
+    private String createLinkForScreen(ScreenFragment screenFragment, PollIdentifierData pollIdentifierData) {
+        String encodedTitle = pollIdentifierData.pollTitle;
+        try {
+            encodedTitle = URLEncoder.encode(pollIdentifierData.pollTitle, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return ON_SLASH_JOINER.join(" rapidpoll.appsball.com",
+                screenFragment.apiName,
+                encodedTitle,
+                pollIdentifierData.pollId,
+                pollIdentifierData.pollCode);
+    }
 
     private void submitPoll(String emailAddress) {
         submitPoll(requestTransformer.transform(fillPollDetails, Optional.fromNullable(pollCode), Optional.of(emailAddress)));
