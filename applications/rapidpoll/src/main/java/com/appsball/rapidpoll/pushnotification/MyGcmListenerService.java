@@ -65,6 +65,6 @@ public class MyGcmListenerService extends GcmListenerService {
     }
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.iconpush : R.drawable.iconpush_color;
+        return useWhiteIcon ? R.drawable.iconpush_bw : R.drawable.iconpush_color;
     }
 }
