@@ -27,11 +27,11 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
     }
 
     public void pollItemClicked(final SearchPollsItemData searchPollsItemData) {
-        if (searchPollsItemData.isPublic || isOwnPoll(searchPollsItemData)) {
-            PollIdentifierData pollIdentifierData = createPollIdentifierDataForCode(searchPollsItemData, PUBLIC_POLL_CODE);
-            onItemSuccessfullyChosen(pollIdentifierData);
-        } else if(Hawk.contains(searchPollsItemData.id)){
+        if (Hawk.contains(searchPollsItemData.id)) {
             PollIdentifierData pollIdentifierData = createPollIdentifierDataForCode(searchPollsItemData, Hawk.<String>get(searchPollsItemData.id));
+            onItemSuccessfullyChosen(pollIdentifierData);
+        } else if (searchPollsItemData.isPublic || isOwnPoll(searchPollsItemData)) {
+            PollIdentifierData pollIdentifierData = createPollIdentifierDataForCode(searchPollsItemData, PUBLIC_POLL_CODE);
             onItemSuccessfullyChosen(pollIdentifierData);
         } else {
             showEnterPollCodeDialog(searchPollsItemData.id);
@@ -40,9 +40,9 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
 
     private PollIdentifierData createPollIdentifierDataForCode(SearchPollsItemData searchPollsItemData, String code) {
         return PollIdentifierData.builder()
-                        .withPollId(searchPollsItemData.id)
-                        .withPollCode(code)
-                        .withPollTitle(searchPollsItemData.name).build();
+                .withPollId(searchPollsItemData.id)
+                .withPollCode(code)
+                .withPollTitle(searchPollsItemData.name).build();
     }
 
     protected abstract void onItemSuccessfullyChosen(PollIdentifierData pollIdentifierData);
@@ -61,9 +61,9 @@ public abstract class CommonPollItemClickListener implements PollItemClickListen
     }
 
     private void callGetDetails(final String id, final String code) {
-        service.pollDetails(requestCreator.createPollDetailsRequest(id, code), new ResponseContainerCallback<PollDetailsResponse>(){
+        service.pollDetails(requestCreator.createPollDetailsRequest(id, code), new ResponseContainerCallback<PollDetailsResponse>() {
             @Override
-            public void onFailure(){
+            public void onFailure() {
                 showEnterPollCodeDialog(id);
             }
 

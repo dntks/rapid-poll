@@ -35,6 +35,7 @@ import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionAlternativeT
 import com.appsball.rapidpoll.newpoll.transformer.ManagePollQuestionTransformer;
 import com.appsball.rapidpoll.newpoll.transformer.NewPollQuestionsTransformer;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
-                pollCode = pollDetailsResponse.code;
+                pollCode = pollDetailsResponse.code==null?PUBLIC_POLL_CODE:pollDetailsResponse.code;
                 pollSettings.setManagePollActionType(ManagePollActionType.MODIFY);
                 pollSettings.setId(String.valueOf(pollDetailsResponse.id));
                 pollQuestions = newArrayList(newPollQuestionsTransformer.transformQuestions(pollDetailsResponse));
@@ -266,6 +267,7 @@ public class ManagePollFragment extends RapidPollFragment {
     private void showSuccessDialogWithCode(int code) {
         String successWithCode = getString(R.string.successful_poll_submit);
         if (code != 0) {
+            Hawk.put(pollSettings.getId(), code);
             successWithCode = String.format(getString(R.string.successful_poll_submit_with_code), code);
         }
         DialogsBuilder.showErrorDialog(getActivity(), successWithCode,
@@ -302,7 +304,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void showCloseDialog() {
         String closeMessage = getString(R.string.successful_close);
-        if (!"NONE".equals(pollCode)) {
+        if (!PUBLIC_POLL_CODE.equals(pollCode)) {
             closeMessage = String.format(getString(R.string.successful_close_with_code), pollCode);
         }
         DialogsBuilder.showErrorDialog(getActivity(), closeMessage, getString(R.string.share),
@@ -322,7 +324,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void showReopenDialog() {
         String reopenMessage = getString(R.string.successful_reopen);
-        if (!"NONE".equals(pollCode)) {
+        if (!PUBLIC_POLL_CODE.equals(pollCode)) {
             reopenMessage = String.format(getString(R.string.successful_reopen_with_code), pollCode);
         }
         DialogsBuilder.showErrorDialog(getActivity(), reopenMessage, getString(R.string.share),
