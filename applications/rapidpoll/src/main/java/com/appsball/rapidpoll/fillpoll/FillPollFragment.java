@@ -185,8 +185,7 @@ public class FillPollFragment extends RapidPollFragment {
         PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollTitle(fillPollDetails.name).withPollId(fillPollDetails.pollId).withPollCode(fillPollDetails.code.or("NONE")).build();
         String pollResultLink = createLinkForScreen(ScreenFragment.FILL_POLL, pollIdentifierData);
         String shareString = String.format(getString(R.string.poll_voted_invite), fillPollDetails.name, pollResultLink);
-        String shareText = shareString + pollResultLink;
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareString);
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, "Invite to poll"));
     }

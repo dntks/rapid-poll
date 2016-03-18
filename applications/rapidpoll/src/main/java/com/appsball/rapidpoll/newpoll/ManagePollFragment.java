@@ -58,7 +58,7 @@ public class ManagePollFragment extends RapidPollFragment {
     private NewPollQuestionsTransformer newPollQuestionsTransformer;
     private PollSettingsView pollSettingsView;
     private RequestCreator requestCreator;
-    private String pollId;
+    private String pollCode;
 
 
     @Override
@@ -82,8 +82,7 @@ public class ManagePollFragment extends RapidPollFragment {
         initializeList(savedInstanceState);
 
         Bundle arguments = getArguments();
-        pollId = arguments.getString(Constants.POLL_ID);
-        if (arguments != null && pollId != null) {
+        if (arguments != null && arguments.getString(Constants.POLL_ID) != null) {
             loadExistingPoll(requestCreator.createPollDetailsRequest(arguments.getString(Constants.POLL_ID), PUBLIC_POLL_CODE));
         } else {
             initializeListWithNewPoll();
@@ -101,6 +100,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                pollCode = pollDetailsResponse.code;
                 pollSettings.setManagePollActionType(ManagePollActionType.MODIFY);
                 pollSettings.setId(String.valueOf(pollDetailsResponse.id));
                 pollQuestions = newArrayList(newPollQuestionsTransformer.transformQuestions(pollDetailsResponse));
@@ -246,13 +246,7 @@ public class ManagePollFragment extends RapidPollFragment {
         service.managePoll(requestCreator.createManagePollRequest(managePoll, pollSettings.getManagePollActionType()), new ResponseContainerCallback<ManagePollResponse>() {
             @Override
             public void onSuccess(ManagePollResponse managePollResponse) {
-                final int code = managePollResponse.code;
-                if (code != 0) {
-                    showSuccessDialogWithCode(code);
-                } else {
-                    showSuccessDialog();
-                }
-
+                showSuccessDialogWithCode(managePollResponse.code);
             }
 
             @Override
@@ -268,18 +262,12 @@ public class ManagePollFragment extends RapidPollFragment {
         });
     }
 
-    private void showSuccessDialog() {
-        DialogsBuilder.showErrorDialog(getActivity(), getString(R.string.successful_poll_submit),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ManagePollFragment.this.getFragmentManager().popBackStack();
-                    }
-                });
-    }
 
     private void showSuccessDialogWithCode(int code) {
-        String successWithCode = String.format(getString(R.string.successful_poll_submit_with_code), code);
+        String successWithCode = getString(R.string.successful_poll_submit);
+        if (code != 0) {
+            successWithCode = String.format(getString(R.string.successful_poll_submit_with_code), code);
+        }
         DialogsBuilder.showErrorDialog(getActivity(), successWithCode,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -314,10 +302,16 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void showCloseDialog() {
         String closeMessage = getString(R.string.successful_close);
-        if(!"NONE".equals(pollId)){
-            closeMessage= String.format(getString(R.string.successful_close_with_code), pollId);
+        if (!"NONE".equals(pollCode)) {
+            closeMessage = String.format(getString(R.string.successful_close_with_code), pollCode);
         }
-        DialogsBuilder.showErrorDialog(getActivity(), closeMessage,
+        DialogsBuilder.showErrorDialog(getActivity(), closeMessage, getString(R.string.share),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ManagePollFragment.this.getFragmentManager().popBackStack();
+                    }
+                },
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -328,10 +322,16 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void showReopenDialog() {
         String reopenMessage = getString(R.string.successful_reopen);
-        if(!"NONE".equals(pollId)){
-            reopenMessage= String.format(getString(R.string.successful_reopen_with_code), pollId);
+        if (!"NONE".equals(pollCode)) {
+            reopenMessage = String.format(getString(R.string.successful_reopen_with_code), pollCode);
         }
-        DialogsBuilder.showErrorDialog(getActivity(), reopenMessage,
+        DialogsBuilder.showErrorDialog(getActivity(), reopenMessage, getString(R.string.share),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ManagePollFragment.this.getFragmentManager().popBackStack();
+                    }
+                },
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
