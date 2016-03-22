@@ -50,11 +50,14 @@
     <string name="question">Question</string>
     <string name="alternative">Alternative</string>
     <string name="poll_invite">Vote to the %1$s Poll in Rapid Poll application with this code: %2$s</string>
-    <string name="poll_voted_invite">I have just voted %1$s Poll in Rapid Poll application, check it here! %2$s</string>
+    <string name="poll_voted_invite">I have just voted %1$s poll in Rapid Poll application, check it here!</string>
     <string name="successful_poll_submit">You successfully published your Poll!</string>
     <string name="successful_poll_submit_with_code">You successfully published your Poll! Your poll is restricted and can be open by Poll code which is: %1$d</string>
     <string name="successful_reopen">You successfully reopened your Poll!</string>
     <string name="successful_reopen_with_code">You successfully reopened your Poll! Your poll is restricted and can be open by Poll code which is: %1$s</string>
     <string name="successful_close">You successfully closed your Poll!</string>
     <string name="successful_close_with_code">You successfully closed your Poll! Your poll is restricted and result can be checked by Poll code which is: %1$s</string>
+    <string name="poll_created_invite">You can open my Restricted Poll with this poll code %1$s or link:</string>
+    <string name="poll_created_invite_without_code">Check my Poll:</string>
+    <string name="poll_invite_without_code">Vote to the %1$s Poll in Rapid Poll application</string>
 </resources>

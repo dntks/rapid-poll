@@ -1,7 +1,6 @@
 package com.appsball.rapidpoll.fillpoll;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.ScreenFragment;
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.dopoll.DoPollRequest;
@@ -21,6 +19,7 @@ import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDet
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
+import com.appsball.rapidpoll.commons.utils.PollSharer;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
@@ -36,13 +35,11 @@ import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransforme
 import com.google.common.base.Optional;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import org.apache.commons.lang3.StringUtils;
 
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_TITLE;
-import static com.appsball.rapidpoll.commons.utils.Utils.ON_SLASH_JOINER;
 import static com.appsball.rapidpoll.commons.view.DialogsBuilder.showErrorDialog;
 
 public class FillPollFragment extends RapidPollFragment {
@@ -57,6 +54,7 @@ public class FillPollFragment extends RapidPollFragment {
     private RequestCreator requestCreator;
     private FillPollDetailsToDoPollRequestTransformer requestTransformer;
     private String pollCode;
+    private PollSharer pollSharer;
 
 
     @Override
@@ -68,7 +66,10 @@ public class FillPollFragment extends RapidPollFragment {
         pollCode = getArguments().getString(POLL_CODE);
         String pollId = getArguments().getString(POLL_ID);
         String pollTitle = getArguments().getString(POLL_TITLE);
-        getRapidPollActivity().setHomeTitle(pollTitle);
+        if (!StringUtils.isEmpty(pollTitle)) {
+            getRapidPollActivity().setHomeTitle(pollTitle);
+        }
+        pollSharer = new PollSharer(getRapidPollActivity());
         pollDetailsResponseTransformer = new PollDetailsResponseTransformer(new PollDetailsQuestionsTransformer(new PollDetailsAnswersTransformer()));
         requestCreator = new RequestCreator();
         requestTransformer = createDoPollRequestTransformer();
@@ -90,6 +91,7 @@ public class FillPollFragment extends RapidPollFragment {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
+                getRapidPollActivity().setHomeTitle(pollDetailsResponse.name);
                 pollCode = pollDetailsResponse.code;
                 fillPollDetails = pollDetailsResponseTransformer.transform(pollDetailsResponse);
                 initializeListWithDetails(fillPollDetails);
@@ -173,35 +175,20 @@ public class FillPollFragment extends RapidPollFragment {
         }, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                inviteFriendsForPoll();
+
+                PollIdentifierData.Builder builder = PollIdentifierData.builder();
+                builder.withPollTitle(fillPollDetails.name);
+                builder.withPollId(fillPollDetails.pollId);
+                builder.withPollCode(fillPollDetails.code.or("NONE"));
+                inviteFriendsForPoll(builder.build());
                 getFragmentSwitcher().toAllPolls();
             }
         });
     }
 
-    private void inviteFriendsForPoll() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        PollIdentifierData pollIdentifierData = PollIdentifierData.builder().withPollTitle(fillPollDetails.name).withPollId(fillPollDetails.pollId).withPollCode(fillPollDetails.code.or("NONE")).build();
-        String pollResultLink = createLinkForScreen(ScreenFragment.FILL_POLL, pollIdentifierData);
-        String shareString = String.format(getString(R.string.poll_voted_invite), fillPollDetails.name, pollResultLink);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareString);
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, "Invite to poll"));
-    }
-
-    private String createLinkForScreen(ScreenFragment screenFragment, PollIdentifierData pollIdentifierData) {
-        String encodedTitle = pollIdentifierData.pollTitle;
-        try {
-            encodedTitle = URLEncoder.encode(pollIdentifierData.pollTitle, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return ON_SLASH_JOINER.join(" rapidpoll.appsball.com",
-                screenFragment.apiName,
-                encodedTitle,
-                pollIdentifierData.pollId,
-                pollIdentifierData.pollCode);
+    private void inviteFriendsForPoll(PollIdentifierData pollIdentifierData) {
+        String shareString = String.format(getString(R.string.poll_voted_invite), pollIdentifierData.pollTitle);
+        pollSharer.inviteFriendsForPoll(pollIdentifierData, shareString);
     }
 
     private void submitPoll(String emailAddress) {

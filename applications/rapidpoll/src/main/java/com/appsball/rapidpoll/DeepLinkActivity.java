@@ -7,14 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.appsball.rapidpoll.commons.utils.Utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.List;
 
 import static com.appsball.rapidpoll.commons.utils.Constants.FRAGMENT_NAME;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
-import static com.appsball.rapidpoll.commons.utils.Constants.POLL_TITLE;
 
 public class DeepLinkActivity extends AppCompatActivity {
 
@@ -35,16 +32,9 @@ public class DeepLinkActivity extends AppCompatActivity {
         Intent rapidPollIntent = new Intent(this, RapidPollActivity.class);
 
         if (ScreenFragment.POLL_RESULT.apiName.equals(screenName) || ScreenFragment.FILL_POLL.apiName.equals(screenName)) {
-            String pollTitle = "";
-            try {
-                pollTitle = URLDecoder.decode(urlParts.get(2), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String pollId = urlParts.get(3);
-            String pollCode = urlParts.get(4);
+            String pollId = urlParts.get(2);
+            String pollCode = urlParts.get(3);
             rapidPollIntent.putExtra(FRAGMENT_NAME, screenName);
-            rapidPollIntent.putExtra(POLL_TITLE, pollTitle);
             rapidPollIntent.putExtra(POLL_ID, pollId);
             rapidPollIntent.putExtra(POLL_CODE, pollCode);
         }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.PollDetailsRequest;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
@@ -25,6 +26,7 @@ import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCal
 import com.appsball.rapidpoll.commons.model.ManagePollActionType;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.utils.Constants;
+import com.appsball.rapidpoll.commons.utils.PollSharer;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.commons.view.TextEnteredListener;
@@ -59,8 +61,7 @@ public class ManagePollFragment extends RapidPollFragment {
     private NewPollQuestionsTransformer newPollQuestionsTransformer;
     private PollSettingsView pollSettingsView;
     private RequestCreator requestCreator;
-    private String pollCode;
-
+    private PollSharer pollSharer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class ManagePollFragment extends RapidPollFragment {
         newQuestionCreator = new NewQuestionCreator();
         requestCreator = new RequestCreator();
 
+        pollSharer = new PollSharer(getRapidPollActivity());
         pollSettings = new PollSettings();
         pollSettingsView = new PollSettingsView(pollSettings, rootView);
         pollSettingsView.initSettingsButtonListeners();
@@ -101,9 +103,12 @@ public class ManagePollFragment extends RapidPollFragment {
 
             @Override
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
-                pollCode = pollDetailsResponse.code==null?PUBLIC_POLL_CODE:pollDetailsResponse.code;
+                String pollCode = pollDetailsResponse.code == null ? PUBLIC_POLL_CODE : pollDetailsResponse.code;
                 pollSettings.setManagePollActionType(ManagePollActionType.MODIFY);
-                pollSettings.setId(String.valueOf(pollDetailsResponse.id));
+                pollSettings.setPollIdentifierData(PollIdentifierData.builder()
+                        .withPollTitle(pollDetailsResponse.name)
+                        .withPollId(String.valueOf(pollDetailsResponse.id))
+                        .withPollCode(pollCode).build());
                 pollQuestions = newArrayList(newPollQuestionsTransformer.transformQuestions(pollDetailsResponse));
                 setupAdapterWithQuestions();
                 setHomeTitleName(pollDetailsResponse.name);
@@ -247,7 +252,7 @@ public class ManagePollFragment extends RapidPollFragment {
         service.managePoll(requestCreator.createManagePollRequest(managePoll, pollSettings.getManagePollActionType()), new ResponseContainerCallback<ManagePollResponse>() {
             @Override
             public void onSuccess(ManagePollResponse managePollResponse) {
-                showSuccessDialogWithCode(managePollResponse.code);
+                showSuccessDialogWithCode(managePollResponse);
             }
 
             @Override
@@ -263,24 +268,54 @@ public class ManagePollFragment extends RapidPollFragment {
         });
     }
 
-
-    private void showSuccessDialogWithCode(int code) {
+    private void showSuccessDialogWithCode(final ManagePollResponse managePollResponse) {
         String successWithCode = getString(R.string.successful_poll_submit);
-        if (code != 0) {
-            Hawk.put(pollSettings.getId(), code);
-            successWithCode = String.format(getString(R.string.successful_poll_submit_with_code), code);
+        if (managePollResponse.code != 0) {
+            Hawk.put(String.valueOf(managePollResponse.poll_id), String.valueOf(managePollResponse.code));
+            successWithCode = String.format(getString(R.string.successful_poll_submit_with_code), managePollResponse.code);
         }
         DialogsBuilder.showErrorDialog(getActivity(), successWithCode,
+                getString(R.string.share),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ManagePollFragment.this.getFragmentManager().popBackStack();
                     }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sharePollWithResponse(managePollResponse);
+                        ManagePollFragment.this.getFragmentManager().popBackStack();
+                    }
                 });
     }
 
+    private void sharePollWithResponse(ManagePollResponse managePollResponse) {
+        PollIdentifierData.Builder builder = PollIdentifierData.builder();
+        String pollCode = "NONE";
+        String shareString = String.format(getString(R.string.poll_created_invite_without_code), pollCode);
+        if (managePollResponse.code != 0) {
+            pollCode = String.valueOf(managePollResponse.code);
+            shareString = String.format(getString(R.string.poll_created_invite), pollCode);
+        }
+        builder.withPollCode(pollCode);
+        builder.withPollTitle("");
+        builder.withPollId(String.valueOf(managePollResponse.poll_id));
+        pollSharer.inviteFriendsForPoll(builder.build(), shareString);
+    }
+
+    private void sharePollWithResponse() {
+        String pollCode = pollSettings.getPollIdentifierData().pollCode;
+        String shareString = String.format(getString(R.string.poll_created_invite_without_code), pollCode);
+        if (!PUBLIC_POLL_CODE.equals(pollCode)) {
+            shareString = String.format(getString(R.string.poll_created_invite), pollCode);
+        }
+        pollSharer.inviteFriendsForPoll(pollSettings.getPollIdentifierData(), shareString);
+    }
+
     private void updatePollState(final PollState toPollState) {
-        service.updatePollState(requestCreator.createUpdatePollStateRequest(toPollState, pollSettings.getId()), new ResponseCallback() {
+        service.updatePollState(requestCreator.createUpdatePollStateRequest(toPollState, pollSettings.getPollIdentifierData().pollId), new ResponseCallback() {
             @Override
             public void onSuccess() {
                 if (toPollState == PollState.PUBLISHED) {
@@ -304,6 +339,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void showCloseDialog() {
         String closeMessage = getString(R.string.successful_close);
+        String pollCode = pollSettings.getPollIdentifierData().pollCode;
         if (!PUBLIC_POLL_CODE.equals(pollCode)) {
             closeMessage = String.format(getString(R.string.successful_close_with_code), pollCode);
         }
@@ -317,6 +353,7 @@ public class ManagePollFragment extends RapidPollFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        sharePollWithResponse();
                         ManagePollFragment.this.getFragmentManager().popBackStack();
                     }
                 });
@@ -324,6 +361,7 @@ public class ManagePollFragment extends RapidPollFragment {
 
     private void showReopenDialog() {
         String reopenMessage = getString(R.string.successful_reopen);
+        String pollCode = pollSettings.getPollIdentifierData().pollCode;
         if (!PUBLIC_POLL_CODE.equals(pollCode)) {
             reopenMessage = String.format(getString(R.string.successful_reopen_with_code), pollCode);
         }
@@ -337,6 +375,7 @@ public class ManagePollFragment extends RapidPollFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        sharePollWithResponse();
                         ManagePollFragment.this.getFragmentManager().popBackStack();
                     }
                 });
@@ -350,7 +389,8 @@ public class ManagePollFragment extends RapidPollFragment {
         builder.withAllowUncompleteAnswer(!pollSettings.isAcceptCompleteOnly());
         builder.withQuestions(managePollQuestionTransformer.transformPollQuestions(pollQuestions));
         builder.withName(name);
-        builder.withId(pollSettings.getId());
+        PollIdentifierData pollIdentifierData = pollSettings.getPollIdentifierData();
+        builder.withId(pollIdentifierData == null ? "" : pollIdentifierData.pollId);
         builder.withDraft(draft);
         return builder.build();
     }

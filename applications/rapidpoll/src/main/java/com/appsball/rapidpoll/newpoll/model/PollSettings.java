@@ -1,11 +1,12 @@
 package com.appsball.rapidpoll.newpoll.model;
 
+import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.commons.model.ManagePollActionType;
 import com.appsball.rapidpoll.commons.model.PollState;
 
 public class PollSettings {
 
-    private String id = "";
+    private PollIdentifierData pollIdentifierData;
     private boolean isPublic = true;
     private boolean isAnonymous = true;
     private boolean isAllowedToComment = true;
@@ -13,13 +14,13 @@ public class PollSettings {
     private PollState pollState = PollState.DRAFT;
     private ManagePollActionType managePollActionType = ManagePollActionType.CREATE;
 
-    public String getId() {
-        return id;
+
+    public PollIdentifierData getPollIdentifierData() {
+        return pollIdentifierData;
     }
 
-    public PollSettings setId(String id) {
-        this.id = id;
-        return this;
+    public void setPollIdentifierData(PollIdentifierData pollIdentifierData) {
+        this.pollIdentifierData = pollIdentifierData;
     }
 
     public ManagePollActionType getManagePollActionType() {
