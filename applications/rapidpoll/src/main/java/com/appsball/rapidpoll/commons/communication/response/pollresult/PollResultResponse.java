@@ -12,6 +12,6 @@ public class PollResultResponse extends ResponseBase {
     public int anonymous;
     public String closed_date;
     public List<PollResultQuestion> questions;
-    public List<String> emails;
+    public List<PollResultEmail> emails;
     public List<String> comments;
 }

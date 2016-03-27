@@ -1,7 +1,14 @@
 package com.appsball.rapidpoll.pollresult.transformer;
 
+import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultAlternative;
+import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultQuestion;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
+import com.appsball.rapidpoll.pollresult.model.CommentItem;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import java.util.List;
 
 public class PollResultTransformer {
     private final PollResultQuestionTransformer pollResultQuestionTransformer;
@@ -19,7 +26,13 @@ public class PollResultTransformer {
         builder.withOwnerId(pollResultResponse.owner_id);
         builder.withPollName(pollResultResponse.poll_name);
         builder.withQuestions(pollResultQuestionTransformer.transformQuestions(pollResultResponse.questions));
-        builder.withComments(pollResultCommentTransformer.transformComments(pollResultResponse.comments));
+        List<CommentItem> comments = pollResultCommentTransformer.transformComments(pollResultResponse.emails);
+        for (PollResultQuestion pollResultQuestion : pollResultResponse.questions) {
+            for (PollResultAlternative pollResultAlternative : pollResultQuestion.alternatives) {
+                comments.addAll(pollResultCommentTransformer.transformComments(pollResultAlternative.emails));
+            }
+        }
+        builder.withComments(Lists.newArrayList(Sets.newHashSet(comments)));
         return builder.build();
     }
 }

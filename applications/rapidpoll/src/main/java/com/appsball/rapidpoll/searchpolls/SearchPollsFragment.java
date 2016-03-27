@@ -45,6 +45,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     private SearchPollsCallback searchPollsCallback;
     protected RequestCreator requestCreator;
     private View moreLoadView;
+    private SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -145,7 +146,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
         pollsListWrapper.disableLoadMoreIfNoMoreItems(items);
         if (items.size() == 0 && searchPollsDataState.actualPage == 2) {
             pollsListWrapper.hideList();
-        }else{
+        } else {
             pollsListWrapper.showList();
         }
     }
@@ -178,7 +179,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.all_polls_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -196,6 +197,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
             @Override
             public boolean onClose() {
                 resetAdapterAndGetPolls();
+                getRapidPollActivity().hideBackButton();
                 return false;
             }
         });
@@ -205,13 +207,25 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
                 if (sortingView != null) {
                     sortingView.hideSortByLayout();
                 }
+                replaceLogoByBackButton();
             }
         });
+    }
+
+    private void replaceLogoByBackButton() {
+        getRapidPollActivity().showBackButton();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!searchView.isIconified()) {
+                    searchView.setIconified(true);
+                    return true;
+                } else {
+                    return super.onOptionsItemSelected(item);
+                }
             case R.id.search:
                 item.expandActionView();
                 return true;
@@ -222,4 +236,5 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

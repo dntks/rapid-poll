@@ -188,6 +188,17 @@ public class RapidPollActivity extends AppCompatActivity {
         }
     }
 
+    public void showBackButton() {
+        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setHomeButtonEnabled(true);
+        int actionbarInt = ActionBar.DISPLAY_HOME_AS_UP;
+        getSupportActionBar().setIcon(null);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
+    }
+
     private void initHawk() {
         Hawk.init(this)
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.HIGHEST)
@@ -202,22 +213,21 @@ public class RapidPollActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         navigateBack();
     }
 
     private void navigateBack() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
-            if(findViewById(R.id.paging_list_view)!=null) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            if (findViewById(R.id.paging_list_view) != null) {
                 finish();
-            }else{
+            } else {
                 fragmentSwitcher.toAllPolls();
             }
-        }
-        else {
-            if(findViewById(R.id.paging_list_view)!=null) {
+        } else {
+            if (findViewById(R.id.paging_list_view) != null) {
                 finish();
-            }else{
+            } else {
                 super.onBackPressed();
             }
         }
