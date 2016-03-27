@@ -106,7 +106,7 @@ public class FillPollFragment extends RapidPollFragment {
 
     private void initializeListWithDetails(FillPollDetails fillPollDetails) {
         FillPollListItemCreator listItemCreator = new FillPollListItemCreator();
-        FillPollAdapter fillPollAdapter = new FillPollAdapter(fillPollDetails, listItemCreator.createItemsFromDetails(fillPollDetails));
+        FillPollAdapter fillPollAdapter = new FillPollAdapter(listItemCreator.createItemsFromDetails(fillPollDetails));
         questionsList.setAdapter(fillPollAdapter);
     }
 

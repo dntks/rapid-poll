@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:background="@color/resultvote_email_bg"
+              android:layout_height="match_parent"
+              android:minHeight="@dimen/newpoll_listitem_height"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/general_left_padding"
+              android:paddingRight="@dimen/general_right_padding">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/email_textview"
+        android:layout_gravity="center_vertical"
+        />
+</LinearLayout>

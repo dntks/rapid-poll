@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:background="@android:color/black"
+              android:layout_height="match_parent"
+              android:minHeight="@dimen/newpoll_listitem_height"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/general_left_padding"
+              android:paddingRight="@dimen/general_right_padding">
+
+    <View
+        android:id="@+id/color_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/result_color_square"
+        android:layout_gravity="center"
+        android:layout_weight="0"
+        android:layout_margin="5dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:id="@+id/answer_textview"
+        android:text="abcd"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0"
+        android:id="@+id/percentage_textview"
+        android:text="22%"
+        />
+</LinearLayout>

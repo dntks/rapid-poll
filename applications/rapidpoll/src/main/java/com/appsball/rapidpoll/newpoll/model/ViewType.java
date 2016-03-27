@@ -5,7 +5,8 @@ public enum ViewType {
     ANSWER(1),
     ADD_QUESTION(2),
     ADD_ANSWER(3),
-    COMMENT(4);
+    COMMENT(4),
+    USER(5);
 
     public int value;
 
@@ -23,6 +24,8 @@ public enum ViewType {
                 return ADD_ANSWER;
             case 4:
                 return COMMENT;
+            case 5:
+                return USER;
             case 0:
             default:
                 return QUESTION;

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.fillpoll.model.FillPollAlternative;
-import com.appsball.rapidpoll.fillpoll.model.FillPollDetails;
 import com.appsball.rapidpoll.fillpoll.model.FillPollListItem;
 import com.appsball.rapidpoll.fillpoll.viewholder.AlternativeCheckUpdater;
 import com.appsball.rapidpoll.fillpoll.viewholder.FillPollAlternativeViewHolder;
@@ -23,11 +22,9 @@ import static com.appsball.rapidpoll.newpoll.model.ViewType.fromValue;
 
 public class FillPollAdapter  extends RecyclerView.Adapter<FillPollViewHolderParent> implements AlternativeCheckUpdater{
 
-    public final FillPollDetails fillPollDetails;
     private List<FillPollListItem> fillPollListItems;
 
-    public FillPollAdapter(FillPollDetails fillPollDetails, List<FillPollListItem> fillPollListItems) {
-        this.fillPollDetails = fillPollDetails;
+    public FillPollAdapter(List<FillPollListItem> fillPollListItems) {
         this.fillPollListItems = fillPollListItems;
     }
 
