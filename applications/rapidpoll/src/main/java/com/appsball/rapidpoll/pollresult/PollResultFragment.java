@@ -20,11 +20,11 @@ import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
+import com.appsball.rapidpoll.commons.model.ResultAlternativeDetails;
 import com.appsball.rapidpoll.commons.utils.PollSharer;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
 import com.appsball.rapidpoll.pollresult.model.PollResult;
-import com.appsball.rapidpoll.pollresult.model.PollResultQuestionItem;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultAnswerTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultCommentTransformer;
 import com.appsball.rapidpoll.pollresult.transformer.PollResultQuestionTransformer;
@@ -52,7 +52,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
     private RapidPollRestService service;
     private RequestCreator requestCreator;
     private PollResultTransformer resultTransformer;
-    private boolean isAnonymousPoll;
+    private boolean isAnonymousPoll = true;
     private boolean isMyPoll = false;
     private PollIdentifierData pollIdentifierData;
     private PollSharer pollSharer;
@@ -73,7 +73,6 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
         getRapidPollActivity().setHomeTitle("Results " + pollIdentifierData.pollTitle);
         requestCreator = new RequestCreator();
         resultTransformer = createPollResultTransformer();
-        isAnonymousPoll = pollIdentifierData.pollCode.equals(PUBLIC_POLL_CODE);
         callPollResult(requestCreator.createPollResultRequest(pollIdentifierData));
 
         return rootView;
@@ -119,6 +118,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
                 if (PollResultFragment.this.isDetached()) {
                     return;
                 }
+                isAnonymousPoll = response.anonymous == 1;
                 PollResult pollResult = resultTransformer.transformPollResult(response);
                 getRapidPollActivity().setHomeTitle("Results " + pollResult.pollName);
                 pollIdentifierData = PollIdentifierData.builder()
@@ -224,6 +224,9 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
     }
 
     @Override
-    public void onPollResultQuestionItemClicked(PollResultQuestionItem pollResultQuestionItem) {
+    public void onPollResultQuestionItemClicked(List<ResultAlternativeDetails> alternatives) {
+        if (!isAnonymousPoll) {
+            getFragmentSwitcher().toResultVotes(pollIdentifierData, alternatives);
+        }
     }
 }

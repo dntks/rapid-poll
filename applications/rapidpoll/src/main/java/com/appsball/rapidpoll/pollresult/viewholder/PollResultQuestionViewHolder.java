@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.model.ResultAlternativeDetails;
 import com.appsball.rapidpoll.commons.utils.Utils;
 import com.appsball.rapidpoll.pollresult.PollResultQuestionItemClickListener;
 import com.appsball.rapidpoll.pollresult.model.PollResultAnswer;
@@ -56,25 +57,27 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
         answersLayout.removeAllViews();
         final PollResultQuestionItem pollResultQuestionItem = (PollResultQuestionItem) pollResultListItem;
         questionTextView.setText(pollResultQuestionItem.questionName);
+        final List<ResultAlternativeDetails> resultAlternativeDetailsList = setupResultAnswerView(pollResultQuestionItem.alternatives);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pollResultQuestionItemClickListener.onPollResultQuestionItemClicked(pollResultQuestionItem);
+                pollResultQuestionItemClickListener.onPollResultQuestionItemClicked(resultAlternativeDetailsList);
             }
         });
         peopleImg.setVisibility(isAnonymous ? View.GONE : View.VISIBLE);
 
-        setupResultAnswerView(pollResultQuestionItem.alternatives);
     }
 
-    private void setupResultAnswerView(List<PollResultAnswer> resultAnswers) {
+    private List<ResultAlternativeDetails> setupResultAnswerView(List<PollResultAnswer> resultAnswers) {
+        List<ResultAlternativeDetails> resultAlternativeDetailsList = Lists.newArrayList();
         if (resultAnswers.size() > 0) {
-            setupAnswerViews(resultAnswers);
+            resultAlternativeDetailsList.addAll(setupAnswerViews(resultAnswers));
             setupPieChart(resultAnswers);
             hideViewRelatingToHavingAnswers(true);
         } else {
             hideViewRelatingToHavingAnswers(false);
         }
+        return resultAlternativeDetailsList;
     }
 
     private void hideViewRelatingToHavingAnswers(boolean questionHasAnswers) {
@@ -83,22 +86,33 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
         pieChart.setVisibility(questionHasAnswers ? View.VISIBLE : View.GONE);
     }
 
-    private void setupAnswerViews(List<PollResultAnswer> resultAnswers) {
+    private List<ResultAlternativeDetails> setupAnswerViews(List<PollResultAnswer> resultAnswers) {
+        List<ResultAlternativeDetails> resultAlternativeDetailsList = Lists.newArrayList();
         int i = 0;
         for (PollResultAnswer resultAnswer : resultAnswers) {
-            String alternativeName = resultAnswer.name;
-            String percentageString = resultAnswer.getPercentageString();
-            View answerRow = layoutInflater.inflate(R.layout.poll_result_answer, null);
-            answersLayout.addView(answerRow);
-            TextView nameTextView = (TextView) answerRow.findViewById(R.id.answer_textview);
-            TextView percentageTextView = (TextView) answerRow.findViewById(R.id.percentage_textview);
-            View colorView = answerRow.findViewById(R.id.color_view);
-            percentageTextView.setText(percentageString);
-            Integer color = answerColors.get(i);
-            setColorView(colorView, color);
-            nameTextView.setText(Utils.getLetterOfAlphabet(i) + ") " + alternativeName);
+            ResultAlternativeDetails.Builder builder = ResultAlternativeDetails.builder();
+            builder.withNameWithOrder(Utils.getLetterOfAlphabet(i) + ".) " + resultAnswer.name);
+            builder.withPercentage(resultAnswer.getPercentageString());
+            builder.withAnswerColor(answerColors.get(i));
+            builder.addEmails(resultAnswer.pollResultEmailList);
+            ResultAlternativeDetails resultAlternativeDetails = builder.build();
+            setupResultAlternativeView(resultAlternativeDetails);
+            resultAlternativeDetailsList.add(resultAlternativeDetails);
             i++;
         }
+        return resultAlternativeDetailsList;
+    }
+
+    private void setupResultAlternativeView(ResultAlternativeDetails resultAlternativeDetails) {
+
+        View answerRow = layoutInflater.inflate(R.layout.poll_result_answer, null);
+        answersLayout.addView(answerRow);
+        TextView nameTextView = (TextView) answerRow.findViewById(R.id.answer_textview);
+        TextView percentageTextView = (TextView) answerRow.findViewById(R.id.percentage_textview);
+        View colorView = answerRow.findViewById(R.id.color_view);
+        setColorView(colorView, resultAlternativeDetails.answerColor);
+        percentageTextView.setText(resultAlternativeDetails.percentage);
+        nameTextView.setText(resultAlternativeDetails.nameWithOrder);
     }
 
     private void setColorView(View colorView, Integer color) {

@@ -8,15 +8,15 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.model.ResultAlternativeDetails;
 import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
-import com.appsball.rapidpoll.pollresult.model.PollResultAnswer;
 import com.appsball.rapidpoll.pollresultvotes.model.ResultVotesListItem;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import java.util.List;
 
-public class PollresultVotesFragment extends RapidPollFragment {
+public class ResultVotesFragment extends RapidPollFragment {
     public static final int POLLRESULT_LAYOUT = R.layout.result_votes_layout;
 
     private View rootView;
@@ -25,7 +25,7 @@ public class PollresultVotesFragment extends RapidPollFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         rootView = inflater.inflate(POLLRESULT_LAYOUT, container, false);
-        List<PollResultAnswer> resultAnswerList = getArguments().getParcelableArrayList(Constants.RESULT_ANSWERS);
+        List<ResultAlternativeDetails> resultAnswerList = getArguments().getParcelableArrayList(Constants.RESULT_ANSWERS);
         PollIdentifierData pollIdentifierData = getArguments().getParcelable(Constants.POLL_ID_DATA);
         getRapidPollActivity().setHomeTitle(pollIdentifierData.pollTitle);
         ResultVoteListItemCreator resultVoteListItemCreator = new ResultVoteListItemCreator();

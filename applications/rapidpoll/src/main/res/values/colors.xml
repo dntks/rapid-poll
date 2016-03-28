@@ -44,6 +44,7 @@
     <color name="pollresult_answers">#2B2C5B</color>
 
     <color name="resultvote_email_bg">#414464</color>
+    <color name="resultvote_black_bg">#111432</color>
 
 
 </resources>

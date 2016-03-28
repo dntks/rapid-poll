@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll.pollresultvotes;
 
 import com.appsball.rapidpoll.commons.communication.response.pollresult.PollResultEmail;
-import com.appsball.rapidpoll.pollresult.model.PollResultAnswer;
+import com.appsball.rapidpoll.commons.model.ResultAlternativeDetails;
 import com.appsball.rapidpoll.pollresultvotes.model.AnswerListItem;
 import com.appsball.rapidpoll.pollresultvotes.model.ResultVotesListItem;
 import com.appsball.rapidpoll.pollresultvotes.model.UserListItem;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class ResultVoteListItemCreator {
 
-    public ImmutableList<ResultVotesListItem> createResultVoteListItems(List<PollResultAnswer> pollResultAnswers) {
+    public ImmutableList<ResultVotesListItem> createResultVoteListItems(List<ResultAlternativeDetails> pollResultAnswers) {
         ImmutableList.Builder<ResultVotesListItem> resultVotesListItems = ImmutableList.builder();
-        for (PollResultAnswer resultAnswer : pollResultAnswers) {
-            resultVotesListItems.add(new AnswerListItem(resultAnswer.name, resultAnswer.getPercentageString()));
+        for (ResultAlternativeDetails resultAnswer : pollResultAnswers) {
+            resultVotesListItems.add(new AnswerListItem(resultAnswer.nameWithOrder, resultAnswer.percentage, resultAnswer.answerColor));
             resultVotesListItems.addAll(createUserElementList(resultAnswer.pollResultEmailList));
         }
         return resultVotesListItems.build();

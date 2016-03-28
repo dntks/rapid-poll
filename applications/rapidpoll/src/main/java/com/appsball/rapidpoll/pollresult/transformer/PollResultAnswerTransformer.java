@@ -32,6 +32,7 @@ public class PollResultAnswerTransformer {
         builder.withAlternativeId(pollResultAlternative.alternative_id);
         builder.withAlternativeName(pollResultAlternative.alternative_name);
         builder.withPercentageValue(calculatePercentage(countOfAllVotes, pollResultAlternative.count));
+        builder.addEmails(pollResultAlternative.emails);
         return builder.build();
     }
 
@@ -42,6 +43,4 @@ public class PollResultAnswerTransformer {
             return (float) count / (float) countOfAllVotes;
         }
     }
-
-
 }

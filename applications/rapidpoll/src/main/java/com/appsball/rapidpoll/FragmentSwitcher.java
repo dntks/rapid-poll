@@ -6,12 +6,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.appsball.rapidpoll.allpolls.AllPollsFragment;
+import com.appsball.rapidpoll.commons.model.ResultAlternativeDetails;
 import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.fillpoll.FillPollFragment;
 import com.appsball.rapidpoll.mypolls.MyPollsFragment;
 import com.appsball.rapidpoll.newpoll.ManagePollFragment;
 import com.appsball.rapidpoll.pollresult.PollResultFragment;
+import com.appsball.rapidpoll.pollresultvotes.ResultVotesFragment;
 import com.appsball.rapidpoll.results.ResultsFragment;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
@@ -61,6 +66,15 @@ public class FragmentSwitcher {
     public void toFillPoll(PollIdentifierData pollIdentifierData) {
         final Fragment fragment = new FillPollFragment();
         fragment.setArguments(createPollIdentifierBundle(pollIdentifierData));
+        switchToFragment(fragment, true);
+    }
+
+    public void toResultVotes(PollIdentifierData pollIdentifierData, List<ResultAlternativeDetails> resultAlternativeDetailsList) {
+        final Fragment fragment = new ResultVotesFragment();
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(Constants.POLL_ID_DATA, pollIdentifierData);
+        arguments.putParcelableArrayList(Constants.RESULT_ANSWERS, Lists.newArrayList(resultAlternativeDetailsList));
+        fragment.setArguments(arguments);
         switchToFragment(fragment, true);
     }
 
