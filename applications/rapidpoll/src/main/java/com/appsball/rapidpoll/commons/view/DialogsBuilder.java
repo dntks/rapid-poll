@@ -181,8 +181,9 @@ public class DialogsBuilder {
         if(StringUtils.isEmpty(editTextMessage)){
             String savedEmail = Hawk.get(Constants.EMAIL_KEY, "");
             inputView.setText(savedEmail);
+        }else{
+            inputView.setText(editTextMessage);
         }
-        inputView.setText(editTextMessage);
         new android.support.v7.app.AlertDialog.Builder(activity)
                 .setIcon(0)
                 .setMessage(errorMessage)
