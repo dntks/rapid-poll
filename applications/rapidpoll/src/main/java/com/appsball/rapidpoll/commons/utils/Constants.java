@@ -13,4 +13,5 @@ public class Constants {
     public static final String PUBLIC_POLL_CODE = "NONE";
     public static final String RESULT_ANSWERS = "resulAnswers";
     public static final String POLL_ID_DATA = "poll_id_data";
+    public static final java.lang.String EMAIL_KEY = "eMail";
 }

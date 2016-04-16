@@ -60,4 +60,5 @@
     <string name="poll_created_invite">You can open my Restricted Poll with this poll code %1$s or link:</string>
     <string name="poll_created_invite_without_code">Check my Poll:</string>
     <string name="poll_invite_without_code">Vote to the %1$s Poll in Rapid Poll application</string>
+    <string name="tryagain">Try again</string>
 </resources>

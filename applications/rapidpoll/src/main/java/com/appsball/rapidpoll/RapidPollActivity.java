@@ -1,7 +1,7 @@
 package com.appsball.rapidpoll;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.utils.Constants;
+import com.appsball.rapidpoll.commons.utils.Utils;
+import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.pushnotification.RegistrationAsyncTask;
 import com.appsball.rapidpoll.pushnotification.RegistrationIntentService;
 import com.appsball.rapidpoll.register.UserRegister;
@@ -43,11 +45,6 @@ public class RapidPollActivity extends AppCompatActivity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ProgressBar mRegistrationProgressBar;
     private TextView mInformationTextView;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +52,7 @@ public class RapidPollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
         editableTitle = (EditText) findViewById(R.id.titleEditText);
-/*        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-*/
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mInformationTextView = (TextView) findViewById(R.id.informationTextView);
 
@@ -78,6 +65,11 @@ public class RapidPollActivity extends AppCompatActivity {
 //        registerGCM();
         Bundle extras = getIntent().getExtras();
 
+        checkIsOnlineAndShowSimpleDialog(extras);
+
+    }
+
+    private void registerGcmOrLoadFragment(Bundle extras) {
         if (!isRegistered()) {
             registerGCM();
         } else if (extras != null) {
@@ -87,16 +79,20 @@ public class RapidPollActivity extends AppCompatActivity {
             hideRegisterViews();
             fragmentSwitcher.toAllPolls();
         }
+    }
 
-
-//        RestCaller restCaller  =  new RestCaller(this);
-//        restCaller.doPoll();
-//        restCaller.createPoll();
-//        restCaller.getPollDetails();
-//        restCaller.getPollResult();
-//        restCaller.getPolls();
-//        restCaller.searchPoll();
-//        restCaller.updatePollState();
+    public void checkIsOnlineAndShowSimpleDialog(final Bundle extras) {
+        if (!Utils.isOnline(getApplicationContext())) {
+            DialogsBuilder.showNoNetConnectionDialog(this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    checkIsOnlineAndShowSimpleDialog(extras);
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            registerGcmOrLoadFragment(extras);
+        }
     }
 
     private void hideRegisterViews() {

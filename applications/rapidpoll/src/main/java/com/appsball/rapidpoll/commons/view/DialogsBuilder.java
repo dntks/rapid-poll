@@ -9,10 +9,15 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.TypedValue;
 import android.widget.EditText;
 
 import com.appsball.rapidpoll.R;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.utils.Utils;
+import com.orhanobut.hawk.Hawk;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 public class DialogsBuilder {
@@ -27,7 +32,7 @@ public class DialogsBuilder {
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton(R.string.ok, okButtonListener);
+        builder.setNegativeButton(R.string.tryagain, okButtonListener);
         builder.setCancelable(false);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         activity.runOnUiThread(new Runnable() {
@@ -115,9 +120,9 @@ public class DialogsBuilder {
     }
 
     public static void showEnterPollTitleDialog(final Activity activity,
-                                          String errorMessage,
-                                          String editTextHint,
-                                          final TextEnteredListener textEnteredListener) {
+                                                String errorMessage,
+                                                String editTextHint,
+                                                final TextEnteredListener textEnteredListener) {
         final EditText editText = new EditText(activity);
         InputFilter[] FilterArray = new InputFilter[1];
         FilterArray[0] = new InputFilter.LengthFilter(25);
@@ -126,9 +131,9 @@ public class DialogsBuilder {
     }
 
     public static void showEnterCodeDialog(final Activity activity,
-                                          String errorMessage,
-                                          String editTextHint,
-                                          final TextEnteredListener textEnteredListener) {
+                                           String errorMessage,
+                                           String editTextHint,
+                                           final TextEnteredListener textEnteredListener) {
         final EditText editText = new EditText(activity);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         InputFilter[] FilterArray = new InputFilter[1];
@@ -144,10 +149,11 @@ public class DialogsBuilder {
                                           final TextEnteredListener textEnteredListener) {
         editText.setSingleLine(true);
         editText.setHint(editTextHint);
+        int fifteenDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, activity.getResources().getDisplayMetrics());
         new android.support.v7.app.AlertDialog.Builder(activity)
                 .setIcon(0)
                 .setMessage(errorMessage)
-                .setView(editText)
+                .setView(editText, fifteenDp, 0, fifteenDp, 0)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String editTextContent = editText.getText().toString();
@@ -172,6 +178,10 @@ public class DialogsBuilder {
                                             final TextEnteredListener textEnteredListener) {
         final EditText inputView = new EditText(activity);
         inputView.setHint(activity.getString(R.string.email_hint));
+        if(StringUtils.isEmpty(editTextMessage)){
+            String savedEmail = Hawk.get(Constants.EMAIL_KEY, "");
+            inputView.setText(savedEmail);
+        }
         inputView.setText(editTextMessage);
         new android.support.v7.app.AlertDialog.Builder(activity)
                 .setIcon(0)

@@ -15,6 +15,7 @@ import com.appsball.rapidpoll.pollresult.PollResultFragment;
 import com.appsball.rapidpoll.pollresultvotes.ResultVotesFragment;
 import com.appsball.rapidpoll.results.ResultsFragment;
 import com.google.common.collect.Lists;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -101,6 +102,7 @@ public class FragmentSwitcher {
         String pollTitle = extras.getString(Constants.POLL_TITLE);
         String pollCode = extras.getString(Constants.POLL_CODE);
         String pollId = extras.getString(Constants.POLL_ID);
+        Hawk.get(pollId);
         if(ScreenFragment.MY_POLLS.apiName.equals(fragmentName)){
             toMyPolls();
         }

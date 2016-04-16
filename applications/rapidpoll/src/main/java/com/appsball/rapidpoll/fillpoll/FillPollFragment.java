@@ -19,6 +19,7 @@ import com.appsball.rapidpoll.commons.communication.response.polldetails.PollDet
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.communication.service.ResponseContainerCallback;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.utils.PollSharer;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.commons.view.RapidPollFragment;
@@ -34,6 +35,7 @@ import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsQuestionsTransform
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransformer;
 import com.google.common.base.Optional;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.orhanobut.hawk.Hawk;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -202,6 +204,7 @@ public class FillPollFragment extends RapidPollFragment {
                 new TextEnteredListener() {
                     @Override
                     public void textEntered(String text) {
+                        Hawk.put(Constants.EMAIL_KEY, text);
                         submitPoll(text);
                     }
                 });
