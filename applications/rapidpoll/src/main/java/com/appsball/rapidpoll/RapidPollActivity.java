@@ -1,6 +1,7 @@
 package com.appsball.rapidpoll;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import com.orhanobut.hawk.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import static com.appsball.rapidpoll.commons.communication.service.RapidPollRestService.createRapidPollRestService;
+import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
 import static com.appsball.rapidpoll.commons.utils.Utils.isRegistered;
 
 public class RapidPollActivity extends AppCompatActivity {
@@ -56,8 +60,8 @@ public class RapidPollActivity extends AppCompatActivity {
         fragmentSwitcher = new FragmentSwitcher(getSupportFragmentManager());
 
         rapidPollRestService = createRapidPollRestService(this);
-//        Hawk.put(USER_ID_KEY, USER_ID);
-//        registerGCM();
+//        Hawk.put(USER_ID_KEY, "123456");
+
         Bundle extras = getIntent().getExtras();
 
         checkIsOnlineAndShowSimpleDialog(extras);
@@ -67,7 +71,7 @@ public class RapidPollActivity extends AppCompatActivity {
     private void registerGcmOrLoadFragment(Bundle extras) {
         if (!isRegistered()) {
             registerUser();
-        } else if (extras != null) {
+        } else if (extras != null && extras.getString(POLL_ID) != null) {
             hideRegisterViews();
             fragmentSwitcher.toFragmentScreenByBundle(extras);
         } else {
@@ -211,5 +215,27 @@ public class RapidPollActivity extends AppCompatActivity {
 
     public FragmentSwitcher getFragmentSwitcher() {
         return fragmentSwitcher;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        View view = getCurrentFocus();
+        boolean ret = super.dispatchTouchEvent(event);
+
+        if (view instanceof EditText) {
+            View w = getCurrentFocus();
+            int scrcoords[] = new int[2];
+            w.getLocationOnScreen(scrcoords);
+            float x = event.getRawX() + w.getLeft() - scrcoords[0];
+            float y = event.getRawY() + w.getTop() - scrcoords[1];
+
+            if (event.getAction() == MotionEvent.ACTION_UP
+                    && (x < w.getLeft() || x >= w.getRight()
+                    || y < w.getTop() || y > w.getBottom()) ) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+        return ret;
     }
 }

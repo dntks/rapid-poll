@@ -15,4 +15,7 @@ public class Constants {
     public static final String POLL_ID_DATA = "poll_id_data";
     public static final java.lang.String EMAIL_KEY = "eMail";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    public static final String INVALID_USERID = "INVALID_USERID";
+    public static final String INVALID_USERID2 = "USERID_NOT_EXISTS";
+    public static final String INVALID_USERID3 = "INVALID_USER";
 }
