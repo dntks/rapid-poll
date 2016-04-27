@@ -95,6 +95,7 @@ public class FillPollFragment extends RapidPollFragment {
             public void onSuccess(PollDetailsResponse pollDetailsResponse) {
                 getRapidPollActivity().setHomeTitle(pollDetailsResponse.name);
                 pollCode = pollDetailsResponse.code;
+                Hawk.put(String.valueOf(pollDetailsResponse.id), pollCode);
                 fillPollDetails = pollDetailsResponseTransformer.transform(pollDetailsResponse);
                 initializeListWithDetails(fillPollDetails);
             }

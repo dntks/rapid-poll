@@ -2,7 +2,7 @@ package com.appsball.rapidpoll;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -14,4 +14,17 @@ public class ExampleUnitTest {
 
 
     }
+    @Test
+    public void maximumSubArrayTest() throws Exception {
+
+
+
+    }
+    public void maximumSubArray(int[] numbers) throws Exception {
+        int currentMax =numbers[0];
+
+
+
+    }
+
 }

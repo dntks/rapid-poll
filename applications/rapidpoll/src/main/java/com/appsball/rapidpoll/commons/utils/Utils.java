@@ -26,6 +26,7 @@ import android.webkit.MimeTypeMap;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
 
@@ -77,4 +78,9 @@ public class Utils {
         }
         return mimeType;
     }
+
+    public static boolean isRegistered() {
+        return !Constants.NO_ID.equals(Hawk.get(Constants.USER_ID_KEY, Constants.NO_ID));
+    }
+
 }

@@ -125,6 +125,7 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
                         .withPollCode(pollIdentifierData.pollCode)
                         .withPollId(pollIdentifierData.pollId)
                         .withPollTitle(pollResult.pollName).build();
+                Hawk.put(String.valueOf(response.id), pollIdentifierData.pollCode);
                 isMyPoll = pollResult.ownerId.equals(Hawk.<String>get(USER_ID_KEY));
                 initializeListWithQuestions(pollResult);
                 getRapidPollActivity().invalidateOptionsMenu();

@@ -2,14 +2,13 @@ package com.appsball.rapidpoll;
 
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -19,17 +18,15 @@ import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService
 import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.utils.Utils;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
-import com.appsball.rapidpoll.pushnotification.RegistrationAsyncTask;
-import com.appsball.rapidpoll.pushnotification.RegistrationIntentService;
+import com.appsball.rapidpoll.register.GCMRegister;
 import com.appsball.rapidpoll.register.UserRegister;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import static com.appsball.rapidpoll.commons.communication.service.RapidPollRestService.createRapidPollRestService;
+import static com.appsball.rapidpoll.commons.utils.Utils.isRegistered;
 
 public class RapidPollActivity extends AppCompatActivity {
     public static final String ServerAPIKey = "AIzaSyAkliInYloQCi9nUVFZzL-N73dO32p-h9c";
@@ -38,8 +35,6 @@ public class RapidPollActivity extends AppCompatActivity {
     private EditText editableTitle;
     private FragmentSwitcher fragmentSwitcher;
 
-
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -71,7 +66,7 @@ public class RapidPollActivity extends AppCompatActivity {
 
     private void registerGcmOrLoadFragment(Bundle extras) {
         if (!isRegistered()) {
-            registerGCM();
+            registerUser();
         } else if (extras != null) {
             hideRegisterViews();
             fragmentSwitcher.toFragmentScreenByBundle(extras);
@@ -79,6 +74,30 @@ public class RapidPollActivity extends AppCompatActivity {
             hideRegisterViews();
             fragmentSwitcher.toAllPolls();
         }
+    }
+
+    public void registerUser() {
+        UserRegister userRegister = new UserRegister(rapidPollRestService, createOnRegisterListener());
+        GCMRegister gcmRegister = new GCMRegister(this, userRegister);
+        gcmRegister.registerGCM();
+    }
+
+    @NonNull
+    private UserRegister.OnRegisterListener createOnRegisterListener() {
+        return new UserRegister.OnRegisterListener() {
+            @Override
+            public void succesfulRegister() {
+                mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
+                hideRegisterViews();
+                fragmentSwitcher.toAllPolls();
+            }
+
+            @Override
+            public void failedRegister() {
+                mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
+                mInformationTextView.setText(getString(R.string.token_error_message));
+            }
+        };
     }
 
     public void checkIsOnlineAndShowSimpleDialog(final Bundle extras) {
@@ -100,35 +119,6 @@ public class RapidPollActivity extends AppCompatActivity {
         mInformationTextView.setVisibility(View.GONE);
     }
 
-    private boolean isRegistered() {
-        return !Constants.NO_ID.equals(Hawk.get(Constants.USER_ID_KEY, Constants.NO_ID));
-    }
-
-    public void registerGCM() {
-        if (checkPlayServices()) {
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-            UserRegister.OnRegisterListener registerListener = new UserRegister.OnRegisterListener() {
-                @Override
-                public void succesfulRegister() {
-                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
-                    hideRegisterViews();
-                    fragmentSwitcher.toAllPolls();
-                }
-
-                @Override
-                public void failedRegister() {
-                    mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
-                    mInformationTextView.setText(getString(R.string.token_error_message));
-
-                }
-            };
-            UserRegister userRegister = new UserRegister(rapidPollRestService, registerListener);
-            RegistrationAsyncTask registrationAsyncTask = new RegistrationAsyncTask(userRegister, this);
-            registrationAsyncTask.execute();
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -140,22 +130,6 @@ public class RapidPollActivity extends AppCompatActivity {
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
     }
 
     public void setHomeTitle(String title) {

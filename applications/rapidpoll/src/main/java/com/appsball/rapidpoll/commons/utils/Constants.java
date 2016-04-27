@@ -14,4 +14,5 @@ public class Constants {
     public static final String RESULT_ANSWERS = "resulAnswers";
     public static final String POLL_ID_DATA = "poll_id_data";
     public static final java.lang.String EMAIL_KEY = "eMail";
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 }
