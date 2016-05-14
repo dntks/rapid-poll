@@ -10,4 +10,5 @@ public class RapidPollApplication extends Application {
         super.onCreate();
         JodaTimeAndroid.init(this);
     }
+
 }

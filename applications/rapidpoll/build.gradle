@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.neenbedankt.android-apt'
 android {
     signingConfigs {
         config {
@@ -57,4 +58,7 @@ dependencies {
     compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'
     compile 'com.github.nicolasjafelle:paginglistview:1.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    apt 'com.google.dagger:dagger-compiler:2.2'
+    compile 'com.google.dagger:dagger:2.2'
+    provided 'javax.annotation:jsr250-api:1.0'
 }

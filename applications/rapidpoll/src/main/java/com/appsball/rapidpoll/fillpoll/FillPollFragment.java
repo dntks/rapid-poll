@@ -2,6 +2,7 @@ package com.appsball.rapidpoll.fillpoll;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,17 +28,15 @@ import com.appsball.rapidpoll.commons.view.TextEnteredListener;
 import com.appsball.rapidpoll.fillpoll.adapter.FillPollAdapter;
 import com.appsball.rapidpoll.fillpoll.model.FillPollDetails;
 import com.appsball.rapidpoll.fillpoll.model.FillPollQuestion;
-import com.appsball.rapidpoll.fillpoll.transformer.FillPollAlternativesToDoPollAnswersTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.FillPollDetailsToDoPollRequestTransformer;
-import com.appsball.rapidpoll.fillpoll.transformer.FillPollQuestionsToDoPollQuestionsTransformer;
-import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsAnswersTransformer;
-import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsQuestionsTransformer;
 import com.appsball.rapidpoll.fillpoll.transformer.PollDetailsResponseTransformer;
 import com.google.common.base.Optional;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.orhanobut.hawk.Hawk;
 
 import org.apache.commons.lang3.StringUtils;
+
+import javax.inject.Inject;
 
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_CODE;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
@@ -51,10 +50,13 @@ public class FillPollFragment extends RapidPollFragment {
 
     private View rootView;
     private RapidPollRestService service;
-    private PollDetailsResponseTransformer pollDetailsResponseTransformer;
+    @Inject
+    PollDetailsResponseTransformer pollDetailsResponseTransformer;
     private FillPollDetails fillPollDetails;
-    private RequestCreator requestCreator;
-    private FillPollDetailsToDoPollRequestTransformer requestTransformer;
+    @Inject
+    RequestCreator requestCreator;
+    @Inject
+    FillPollDetailsToDoPollRequestTransformer requestTransformer;
     private String pollCode;
     private PollSharer pollSharer;
 
@@ -65,6 +67,17 @@ public class FillPollFragment extends RapidPollFragment {
         service = getRapidPollActivity().getRestService();
         rootView = inflater.inflate(FILLPOLL_LAYOUT, container, false);
         initializeList(savedInstanceState);
+
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        FillPollComponent component = DaggerFillPollComponent.builder()
+                .fillPollModule(new FillPollModule())
+                .build();
+        component.inject(this);
         pollCode = getArguments().getString(POLL_CODE);
         String pollId = getArguments().getString(POLL_ID);
         String pollTitle = getArguments().getString(POLL_TITLE);
@@ -72,16 +85,7 @@ public class FillPollFragment extends RapidPollFragment {
             getRapidPollActivity().setHomeTitle(pollTitle);
         }
         pollSharer = new PollSharer(getRapidPollActivity());
-        pollDetailsResponseTransformer = new PollDetailsResponseTransformer(new PollDetailsQuestionsTransformer(new PollDetailsAnswersTransformer()));
-        requestCreator = new RequestCreator();
-        requestTransformer = createDoPollRequestTransformer();
         callPollDetails(requestCreator.createPollDetailsRequest(pollId, pollCode));
-
-        return rootView;
-    }
-
-    private FillPollDetailsToDoPollRequestTransformer createDoPollRequestTransformer() {
-        return new FillPollDetailsToDoPollRequestTransformer(new FillPollQuestionsToDoPollQuestionsTransformer(new FillPollAlternativesToDoPollAnswersTransformer()));
     }
 
     private void callPollDetails(PollDetailsRequest pollDetailsRequest) {
@@ -200,15 +204,15 @@ public class FillPollFragment extends RapidPollFragment {
 
     private void showEmailDialog() {
         DialogsBuilder.showEmailInputDialog(getActivity(),
-                getString(R.string.enter_email),
-                fillPollDetails.email.or(""),
-                new TextEnteredListener() {
-                    @Override
-                    public void textEntered(String text) {
-                        Hawk.put(Constants.EMAIL_KEY, text);
-                        submitPoll(text);
-                    }
-                });
+                                            getString(R.string.enter_email),
+                                            fillPollDetails.email.or(""),
+                                            new TextEnteredListener() {
+                                                @Override
+                                                public void textEntered(String text) {
+                                                    Hawk.put(Constants.EMAIL_KEY, text);
+                                                    submitPoll(text);
+                                                }
+                                            });
     }
 
     private void showNotCompletePollDialog() {
