@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.newpoll.AdapterAnswerViewsUpdater;
-import com.appsball.rapidpoll.newpoll.AdapterItemViewRemover;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterAnswerViewsUpdater;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterItemViewRemover;
 import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;

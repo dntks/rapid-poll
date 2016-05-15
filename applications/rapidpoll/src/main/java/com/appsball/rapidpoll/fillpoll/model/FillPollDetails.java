@@ -39,6 +39,13 @@ public class FillPollDetails {
         this.questions = notNull(questions, "questions must not be null!");
     }
 
+    public boolean areAllQuestionsAnswered() {
+        boolean anyQuestionUnanswered = false;
+        for (FillPollQuestion question : questions) {
+            anyQuestionUnanswered = !question.getCheckedAnswers().isEmpty();
+        }
+        return anyQuestionUnanswered;
+    }
 
     public static Builder builder() {
         return new Builder();

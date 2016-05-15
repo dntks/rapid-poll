@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.newpoll.AdapterAnswerViewsUpdater;
-import com.appsball.rapidpoll.newpoll.AdapterItemViewRemover;
 import com.appsball.rapidpoll.newpoll.NewQuestionCreator;
-import com.appsball.rapidpoll.newpoll.PollAnswerToAdapterAdder;
-import com.appsball.rapidpoll.newpoll.PollQuestionToAdapterAdder;
-import com.appsball.rapidpoll.newpoll.QuestionItemRemover;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterAnswerViewsUpdater;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterItemViewRemover;
+import com.appsball.rapidpoll.newpoll.adapterhelper.PollAnswerToAdapterAdder;
+import com.appsball.rapidpoll.newpoll.adapterhelper.PollQuestionToAdapterAdder;
+import com.appsball.rapidpoll.newpoll.adapterhelper.QuestionItemRemover;
 import com.appsball.rapidpoll.newpoll.listviewholder.AddAnswerNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AddQuestionNewPollViewHolder;
 import com.appsball.rapidpoll.newpoll.listviewholder.AnswerNewPollViewHolder;
@@ -49,7 +49,7 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
 
     @Override
     public void addNewQuestion() {
-        NewPollQuestion question = newQuestionCreator.createNewQuestion(questions.size() + 1);
+        NewPollQuestion question = newQuestionCreator.createNewQuestion();
         questions.add(question);
         List<NewPollListItem> pollListItems = newQuestionCreator.createItemsFromQuestion(question);
         int position = NewPollQuestionsAdapter.this.pollListItems.size() - 1;

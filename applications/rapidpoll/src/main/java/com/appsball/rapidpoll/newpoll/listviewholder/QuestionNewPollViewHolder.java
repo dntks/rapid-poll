@@ -6,7 +6,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.newpoll.QuestionItemRemover;
+import com.appsball.rapidpoll.newpoll.adapterhelper.QuestionItemRemover;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 
