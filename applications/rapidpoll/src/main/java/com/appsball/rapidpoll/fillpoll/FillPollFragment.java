@@ -65,6 +65,7 @@ public class FillPollFragment extends RapidPollFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         service = getRapidPollActivity().getRestService();
+
         rootView = inflater.inflate(FILLPOLL_LAYOUT, container, false);
         initializeList(savedInstanceState);
 

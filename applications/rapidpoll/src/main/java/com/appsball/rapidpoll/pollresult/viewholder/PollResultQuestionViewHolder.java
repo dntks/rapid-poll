@@ -93,7 +93,7 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
             ResultAlternativeDetails.Builder builder = ResultAlternativeDetails.builder();
             builder.withNameWithOrder(Utils.getLetterOfAlphabet(i) + ".) " + resultAnswer.name);
             builder.withPercentage(resultAnswer.getPercentageString());
-            builder.withAnswerColor(answerColors.get(i));
+            builder.withAnswerColor(answerColors.get(i%answerColors.size()));
             builder.addEmails(resultAnswer.pollResultEmailList);
             ResultAlternativeDetails resultAlternativeDetails = builder.build();
             setupResultAlternativeView(resultAlternativeDetails);

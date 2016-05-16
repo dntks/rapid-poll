@@ -7,16 +7,18 @@ import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.fillpoll.model.FillPollListItem;
 import com.appsball.rapidpoll.fillpoll.model.FillPollQuestion;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FillPollQuestionViewHolder extends FillPollViewHolderParent {
     private final String singleText;
     private final String multiText;
-    private TextView questionText;
-    private TextView multichoiceText;
+    @BindView(R.id.question_textview) TextView questionText;
+    @BindView(R.id.multichoice_textview) TextView multichoiceText;
 
     public FillPollQuestionViewHolder(View parent) {
         super(parent);
-        questionText = (TextView) itemView.findViewById(R.id.question_textview);
-        multichoiceText = (TextView) itemView.findViewById(R.id.multichoice_textview);
+        ButterKnife.bind(this, itemView);
         singleText = parent.getResources().getString(R.string.single);
         multiText = parent.getResources().getString(R.string.multi);
     }
