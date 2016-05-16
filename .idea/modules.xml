@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/applications/applications.iml" filepath="$PROJECT_DIR$/applications/applications.iml" />
       <module fileurl="file://$PROJECT_DIR$/rapid-poll.iml" filepath="$PROJECT_DIR$/rapid-poll.iml" />
       <module fileurl="file://$PROJECT_DIR$/applications/rapidpoll/rapidpoll.iml" filepath="$PROJECT_DIR$/applications/rapidpoll/rapidpoll.iml" />
-      <module fileurl="file://$PROJECT_DIR$/applications/votenow/votenow.iml" filepath="$PROJECT_DIR$/applications/votenow/votenow.iml" />
     </modules>
   </component>
 </project>
