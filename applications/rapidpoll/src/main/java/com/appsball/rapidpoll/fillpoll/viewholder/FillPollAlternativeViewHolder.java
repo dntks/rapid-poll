@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 public class FillPollAlternativeViewHolder extends FillPollViewHolderParent {
     private AlternativeCheckUpdater alternativeCheckUpdater;
     @BindView(R.id.answer_textview) TextView alternativeText;
+    @BindView(R.id.letter_textview) TextView letterText;
     @BindView(R.id.answer_checkbox) CheckBox checkBox;
 
     public FillPollAlternativeViewHolder(View parent, AlternativeCheckUpdater alternativeCheckUpdater) {
@@ -43,6 +44,7 @@ public class FillPollAlternativeViewHolder extends FillPollViewHolderParent {
                 checkBox.setChecked(!checkBox.isChecked());
             }
         });
+        letterText.setText(fillPollAlternative.letter);
     }
 
     private boolean checkAnyOtherIsSet(FillPollAlternative fillPollAlternative) {

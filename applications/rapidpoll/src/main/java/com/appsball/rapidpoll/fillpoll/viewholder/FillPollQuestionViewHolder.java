@@ -15,6 +15,7 @@ public class FillPollQuestionViewHolder extends FillPollViewHolderParent {
     private final String multiText;
     @BindView(R.id.question_textview) TextView questionText;
     @BindView(R.id.multichoice_textview) TextView multichoiceText;
+    @BindView(R.id.number_textview) TextView numberText;
 
     public FillPollQuestionViewHolder(View parent) {
         super(parent);
@@ -27,6 +28,7 @@ public class FillPollQuestionViewHolder extends FillPollViewHolderParent {
     public void bindView(FillPollListItem fillPollListItem) {
         final FillPollQuestion fillPollQuestion = (FillPollQuestion) fillPollListItem;
         questionText.setText(fillPollQuestion.question);
+        numberText.setText(fillPollQuestion.orderNumber);
         multichoiceText.setText(fillPollQuestion.isMultiChoice ? multiText : singleText);
     }
 }

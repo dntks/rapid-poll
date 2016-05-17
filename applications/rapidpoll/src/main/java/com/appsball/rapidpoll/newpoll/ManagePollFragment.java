@@ -115,7 +115,7 @@ public class ManagePollFragment extends RapidPollFragment {
                                                            .withPollId(String.valueOf(pollDetailsResponse.id))
                                                            .withPollCode(pollCode).build());
                 pollQuestions = newArrayList(newPollQuestionsTransformer.transformQuestions(pollDetailsResponse));
-                setupAdapterWithQuestions();
+                setupAdapterWithQuestions(pollQuestions);
                 setHomeTitleName(pollDetailsResponse.name);
                 pollSettings.setIsAllowedToComment(pollDetailsResponse.allow_comment == 1);
                 pollSettings.setIsPublic(pollDetailsResponse.isPublic == 1);
@@ -158,10 +158,10 @@ public class ManagePollFragment extends RapidPollFragment {
     private void initializeListWithNewPoll() {
         NewPollQuestion question = newQuestionCreator.createNewQuestion();
         pollQuestions = newArrayList(question);
-        setupAdapterWithQuestions();
+        setupAdapterWithQuestions(pollQuestions);
     }
 
-    private void setupAdapterWithQuestions() {
+    private void setupAdapterWithQuestions(List<NewPollQuestion> pollQuestions) {
         NewPollQuestionsAdapter newPollAdapter = new NewPollQuestionsAdapter(pollQuestions, newQuestionCreator);
         ultimateRecyclerView.setAdapter(newPollAdapter);
     }

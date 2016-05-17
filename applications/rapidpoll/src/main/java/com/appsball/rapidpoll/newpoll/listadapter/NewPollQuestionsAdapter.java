@@ -147,6 +147,7 @@ public class NewPollQuestionsAdapter extends RecyclerView.Adapter<NewPollViewHol
     public void insertItem(NewPollListItem item, int position) {
         pollListItems.add(position, item);
         this.notifyItemInserted(position);
+
     }
 
     public void insertLastItems(List<NewPollListItem> items, int position) {

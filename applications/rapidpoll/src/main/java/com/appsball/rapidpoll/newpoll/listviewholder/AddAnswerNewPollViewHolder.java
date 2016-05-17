@@ -26,7 +26,7 @@ public class AddAnswerNewPollViewHolder extends NewPollViewHolderParent {
             @Override
             public void onClick(View v) {
                 NewPollQuestion question = newPollAddAnswer.question;
-                NewPollAnswer newAnswer = NewPollAnswer.newPollAnswer("", question);
+                NewPollAnswer newAnswer = NewPollAnswer.newPollAnswerFromUI(question);
                 question.getAnswers().add(newAnswer);
                 pollAnswerToAdapterAdder.addAnswerToAdapter(newAnswer, newPollAddAnswer);
                 checkForSiblingAnswerViews(question);

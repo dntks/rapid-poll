@@ -22,23 +22,23 @@ public class PollDetailsQuestionsTransformer {
     }
 
     public List<FillPollQuestion> transformQuestions(List<PollDetailsQuestion> questions) {
-        return Lists.transform(questions, new Function<PollDetailsQuestion, FillPollQuestion>() {
-            @Override
-            public FillPollQuestion apply(PollDetailsQuestion input) {
-                return transformQuestion(input);
-            }
-        });
+        List<FillPollQuestion> fillPollQuestions = Lists.newArrayList();
+        for (int i = 0; i < questions.size(); i++) {
+            fillPollQuestions.add(transformQuestion(questions.get(i), String.valueOf(i+1)));
+        }
+        return fillPollQuestions;
     }
 
-    private FillPollQuestion transformQuestion(PollDetailsQuestion input) {
+    private FillPollQuestion transformQuestion(PollDetailsQuestion input, String orderNumber) {
         FillPollQuestion.Builder builder = FillPollQuestion.builder();
         List<FillPollAlternative> allAnswers = answersTransformer.transformAnswers(input.alternatives);
         builder.addAllAnswers(allAnswers);
         builder.withId(String.valueOf(input.question_id));
         builder.withQuestion(input.question);
         builder.withMultiChoice(input.multichoice == 1);
+        builder.withOrderNumber(orderNumber);
         FillPollQuestion fillPollQuestion = builder.build();
-        for(FillPollAlternative alternative : fillPollQuestion.allAnswers){
+        for (FillPollAlternative alternative : fillPollQuestion.allAnswers) {
             alternative.setQuestion(fillPollQuestion);
         }
         List<FillPollAlternative> checkedAnswers = getCheckedAlternatives(input.alternatives, fillPollQuestion.allAnswers);
