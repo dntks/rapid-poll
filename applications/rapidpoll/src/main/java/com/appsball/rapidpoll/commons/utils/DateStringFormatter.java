@@ -11,6 +11,8 @@ import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.TimeZone;
+
 public class DateStringFormatter {
 
     private Resources resources;
@@ -37,7 +39,8 @@ public class DateStringFormatter {
             return 0;
         }
         //2015-11-06 13:27:00
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(DateTimeZone.forOffsetHours(0));
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+1")));
         DateTime date = formatter.parseDateTime(publishDate);
         Period diff = new Period(date, toCompare);
         int hour = diff.getHours();
