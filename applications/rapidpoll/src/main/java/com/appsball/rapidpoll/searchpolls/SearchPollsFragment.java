@@ -81,7 +81,7 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     }
 
     protected SearchPollsDataState createSearchPollsDataState() {
-        return new SearchPollsDataState(OrderType.DESC, OrderKey.DATE);
+        return new SearchPollsDataState(OrderType.DESC, OrderKey.VOTES);
     }
 
     protected abstract PollItemClickListener createPollItemClickListener();
