@@ -11,7 +11,6 @@ import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
-import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -41,12 +40,7 @@ public class AllPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPo
             holder.startedTextView.setText(publicatedDaysAgoText);
             holder.votesTextView.setText(searchPollsItemData.votesText);
             holder.answeredQuestionsBar.setProgress(searchPollsItemData.answeredQuestionsRatioFor100);
-            if (!searchPollsItemData.isPublic) {
-                int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-                holder.itemRightImage.setImageResource(locketImageId);
-            } else {
-                holder.itemRightImage.setImageResource(RIGHT_ARROW);
-            }
+            setLocketImage(holder, searchPollsItemData);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

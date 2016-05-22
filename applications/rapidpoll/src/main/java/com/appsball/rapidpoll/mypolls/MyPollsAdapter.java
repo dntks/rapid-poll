@@ -15,7 +15,6 @@ import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
-import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -63,15 +62,6 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
 
             setSwipeViewProperties(holder, searchPollsItemData);
 
-        }
-    }
-
-    private void setLocketImage(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
-        if (!searchPollsItemData.isPublic) {
-            int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-            holder.itemRightImage.setImageResource(locketImageId);
-        } else {
-            holder.itemRightImage.setImageResource(RIGHT_ARROW);
         }
     }
 

@@ -35,15 +35,14 @@
             android:paddingRight="@dimen/general_right_padding"
             android:paddingTop="10dp">
 
-            <ImageView
+            <include layout="@layout/item_right_images"
                 android:id="@+id/item_right_image"
+                android:layout_marginLeft="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:src="@drawable/jobbranyil" />
-
+                />
 
             <TextView
                 android:id="@+id/started_text"

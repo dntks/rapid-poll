@@ -45,6 +45,10 @@ public class DateStringFormatter {
         Period diff = new Period(date, toCompare);
         int hour = diff.getHours();
         Days daysDiff = Days.daysBetween(date, toCompare);
-        return daysDiff.getDays();
+        int days = daysDiff.getDays();
+        if(days<0){
+            days=0;
+        }
+        return days;
     }
 }
