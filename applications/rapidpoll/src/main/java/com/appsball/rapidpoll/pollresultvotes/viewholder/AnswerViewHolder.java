@@ -9,16 +9,17 @@ import android.widget.TextView;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.pollresultvotes.model.AnswerListItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AnswerViewHolder extends ResultVotesViewHolderParent<AnswerListItem>{
-    private View colorView;
-    private TextView nameTextView;
-    private TextView percentageTextView;
+    @BindView(R.id.color_view) View colorView;
+    @BindView(R.id.answer_textview) TextView nameTextView;
+    @BindView(R.id.percentage_textview) TextView percentageTextView;
 
     public AnswerViewHolder(View parent) {
         super(parent);
-        colorView = itemView.findViewById(R.id.color_view);
-        nameTextView = (TextView) itemView.findViewById(R.id.answer_textview);
-        percentageTextView = (TextView) itemView.findViewById(R.id.percentage_textview);
+        ButterKnife.bind(this, itemView);
     }
 
     @Override

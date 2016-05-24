@@ -11,32 +11,28 @@ import com.appsball.rapidpoll.searchpolls.PollsListInitializer;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.orhanobut.logger.Logger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SortingView {
 
     private SearchPollsDataState searchPollsDataState;
     private PollsListInitializer pollsListInitializer;
     private boolean isAnimating = false;
 
-    private View dateSortButton;
-    private View titleSortButton;
-    private View voteSortButton;
-    private View publicitySortButton;
-    private View statusSortButton;
-    private View sortByLayout;
-    private View listSizeHelper;
-    private View pagingView;
+    @BindView(R.id.sort_by_date_button) View dateSortButton;
+    @BindView(R.id.sort_by_title_button) View titleSortButton;
+    @BindView(R.id.sort_by_vote_button) View voteSortButton;
+    @BindView(R.id.sort_by_publicity_button) View publicitySortButton;
+    @BindView(R.id.sort_by_status_button) View statusSortButton;
+    @BindView(R.id.sort_horizontal_scrollview) View sortByLayout;
+    @BindView(R.id.list_size_helper) View listSizeHelper;
+    @BindView(R.id.paging_list_view) View pagingView;
 
     public SortingView(View rootView, SearchPollsDataState searchPollsDataState, PollsListInitializer pollsListInitializer) {
         this.searchPollsDataState = searchPollsDataState;
         this.pollsListInitializer = pollsListInitializer;
-        sortByLayout = rootView.findViewById(R.id.sort_horizontal_scrollview);
-        pagingView = rootView.findViewById(R.id.paging_list_view);
-        dateSortButton = rootView.findViewById(R.id.sort_by_date_button);
-        titleSortButton = rootView.findViewById(R.id.sort_by_title_button);
-        voteSortButton = rootView.findViewById(R.id.sort_by_vote_button);
-        publicitySortButton = rootView.findViewById(R.id.sort_by_publicity_button);
-        statusSortButton = rootView.findViewById(R.id.sort_by_status_button);
-        listSizeHelper = rootView.findViewById(R.id.list_size_helper);
+        ButterKnife.bind(this, rootView);
     }
 
     public void init() {

@@ -24,14 +24,18 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
 
     private PollResultQuestionItemClickListener pollResultQuestionItemClickListener;
-    private TextView questionTextView;
-    private TextView noAnswersTextView;
-    private ImageView peopleImg;
-    private LinearLayout answersLayout;
-    private PieChart pieChart;
+    @BindView(R.id.question_textview)  TextView questionTextView;
+    @BindView(R.id.no_answers_textview)  TextView noAnswersTextView;
+    @BindView(R.id.people_img)  ImageView peopleImg;
+    @BindView(R.id.answers_container)  LinearLayout answersLayout;
+    @BindView(R.id.pie_chart)  PieChart pieChart;
+
     private LayoutInflater layoutInflater;
     private List<Integer> answerColors;
     private boolean isAnonymous;
@@ -45,11 +49,7 @@ public class PollResultQuestionViewHolder extends PollResultViewHolderParent {
         this.answerColors = answerColors;
         this.isAnonymous = isAnonymous;
         layoutInflater = LayoutInflater.from(parent.getContext());
-        questionTextView = (TextView) itemView.findViewById(R.id.question_textview);
-        peopleImg = (ImageView) itemView.findViewById(R.id.people_img);
-        pieChart = (PieChart) itemView.findViewById(R.id.pie_chart);
-        answersLayout = (LinearLayout) itemView.findViewById(R.id.answers_container);
-        noAnswersTextView = (TextView) itemView.findViewById(R.id.no_answers_textview);
+        ButterKnife.bind(this, itemView);
     }
 
     @Override
