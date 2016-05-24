@@ -23,9 +23,6 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     public static final int LISTITEM_BACKGROUND_COLOR = R.color.listitem_purple;
     public static final int SWIPE_CLOSE_TEXT_ID = R.string.close;
     public static final int SWIPE_REOPEN_TEXT_ID = R.string.reopen;
-    public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
-    public static final int CLOSED_LOCKET = R.drawable.lakat;
-    public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
     private final PollItemClickListener pollItemClickListener;
     private final DateStringFormatter dateStringFormatter;

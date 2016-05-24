@@ -13,13 +13,16 @@ import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
 
     private AdapterItemViewRemover adapterItemViewRemover;
     private AdapterAnswerViewsUpdater adapterAnswerViewsUpdater;
-    private TextChangeAwareEditText editText;
-    private ImageView deleteButton;
-    private View listitemAnswerSeparator;
+    @BindView(R.id.answer_edit_text) TextChangeAwareEditText editText;
+    @BindView(R.id.delete_button)  ImageView deleteButton;
+    @BindView(R.id.listitem_answer_separator)  View listitemAnswerSeparator;
 
     public AnswerNewPollViewHolder(View parent,
                                    AdapterItemViewRemover adapterItemViewRemover,
@@ -27,9 +30,8 @@ public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
         super(parent);
         this.adapterItemViewRemover = adapterItemViewRemover;
         this.adapterAnswerViewsUpdater = adapterAnswerViewsUpdater;
-        editText = (TextChangeAwareEditText) itemView.findViewById(R.id.answer_edit_text);
-        deleteButton = (ImageView) parent.findViewById(R.id.delete_button);
-        listitemAnswerSeparator = parent.findViewById(R.id.listitem_answer_separator);
+        ButterKnife.bind(this, itemView);
+        ButterKnife.bind(this, parent);
     }
 
 

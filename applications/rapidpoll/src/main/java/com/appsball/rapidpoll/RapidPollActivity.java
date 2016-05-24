@@ -1,12 +1,9 @@
 package com.appsball.rapidpoll;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
-import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.utils.Utils;
 import com.appsball.rapidpoll.commons.view.DialogsBuilder;
 import com.appsball.rapidpoll.register.GCMRegister;
@@ -28,6 +24,9 @@ import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
 import com.orhanobut.logger.Logger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.appsball.rapidpoll.commons.communication.service.RapidPollRestService.createRapidPollRestService;
 import static com.appsball.rapidpoll.commons.utils.Constants.POLL_ID;
 import static com.appsball.rapidpoll.commons.utils.Utils.isRegistered;
@@ -36,25 +35,21 @@ public class RapidPollActivity extends AppCompatActivity {
     public static final String ServerAPIKey = "AIzaSyAkliInYloQCi9nUVFZzL-N73dO32p-h9c";
     public static final String SenderID = "73756231339";
     private RapidPollRestService rapidPollRestService;
-    private EditText editableTitle;
     private FragmentSwitcher fragmentSwitcher;
 
     private static final String TAG = "MainActivity";
 
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private ProgressBar mRegistrationProgressBar;
-    private TextView mInformationTextView;
+    @BindView(R.id.titleEditText)  EditText editableTitle;
+    @BindView(R.id.registrationProgressBar) ProgressBar mRegistrationProgressBar;
+    @BindView(R.id.informationTextView) TextView mInformationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.my_toolbar));
-        editableTitle = (EditText) findViewById(R.id.titleEditText);
 
-        mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
-        mInformationTextView = (TextView) findViewById(R.id.informationTextView);
-
+        ButterKnife.bind(this);
         Logger.init();
         initHawk();
         fragmentSwitcher = new FragmentSwitcher(getSupportFragmentManager());
@@ -121,19 +116,6 @@ public class RapidPollActivity extends AppCompatActivity {
     private void hideRegisterViews() {
         mRegistrationProgressBar.setVisibility(View.GONE);
         mInformationTextView.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Constants.REGISTRATION_COMPLETE));
-    }
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        super.onPause();
     }
 
     public void setHomeTitle(String title) {

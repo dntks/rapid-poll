@@ -19,6 +19,9 @@ import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.google.common.collect.Lists;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MyPollsFragment extends SearchPollsFragment implements PollCloser, PollReopener {
 
     private static final int MY_POLLS_LAYOUT = R.layout.mypolls_layout;
@@ -26,12 +29,12 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
     @Override
     protected void additionalPageSetup(View rootView) {
-        rootView.findViewById(R.id.create_new_poll_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentSwitcher().toManagePoll();
-            }
-        });
+        ButterKnife.bind(this, rootView);
+    }
+
+    @OnClick(R.id.create_new_poll_layout)
+    public void toManagePoll(){
+        getFragmentSwitcher().toManagePoll();
     }
 
     @Override

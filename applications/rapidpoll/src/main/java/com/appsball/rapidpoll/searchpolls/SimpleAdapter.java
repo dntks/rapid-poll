@@ -122,7 +122,6 @@ public abstract class SimpleAdapter<T, IH extends UltimateRecyclerviewViewHolder
     }
 
     public void removeAllItems() {
-        int size = items.size();
         items.clear();
         notifyDataSetChanged();
     }

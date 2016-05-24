@@ -10,28 +10,37 @@ import android.widget.ImageView;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.newpoll.model.PollSettings;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PollSettingsView {
 
-    private final PollSettings pollSettings;
-    private View listSizeHelper;
-    private View settingsLayout;
-
     private boolean isAnimating = false;
-    private final View pagingView;
-    private final ImageView settingsButton;
-    private final View settingsButtonRow;
-    private CheckBox allowCommentCheckBox;
-    private CheckBox anonymousCheckBox;
-    private CheckBox publicCheckBox;
-    private CheckBox acceptCompleteOnlyCheckBox;
+    private final PollSettings pollSettings;
+
+    @BindView(R.id.list_size_helper)
+    View listSizeHelper;
+    @BindView(R.id.new_poll_settings_layout)
+    View settingsLayout;
+    @BindView(R.id.questions_list_view)
+    View pagingView;
+    @BindView(R.id.settings_button)
+    ImageView settingsButton;
+    @BindView(R.id.poll_settings_button_row)
+    View settingsButtonRow;
+
+    @BindView(R.id.allowcomment_checkbox)
+    CheckBox allowCommentCheckBox;
+    @BindView(R.id.anonymous_checkbox)
+    CheckBox anonymousCheckBox;
+    @BindView(R.id.public_checkbox)
+    CheckBox publicCheckBox;
+    @BindView(R.id.acceptcompleteonly_checkbox)
+    CheckBox acceptCompleteOnlyCheckBox;
 
     public PollSettingsView(PollSettings pollSettings, View rootView) {
         this.pollSettings = pollSettings;
-        pagingView = rootView.findViewById(R.id.questions_list_view);
-        settingsButton = (ImageView) rootView.findViewById(R.id.settings_button);
-        settingsLayout = rootView.findViewById(R.id.new_poll_settings_layout);
-        listSizeHelper = rootView.findViewById(R.id.list_size_helper);
-        settingsButtonRow = rootView.findViewById(R.id.poll_settings_button_row);
+        ButterKnife.bind(this, rootView);
     }
 
     public void initSettingsButtonListeners() {
@@ -128,7 +137,7 @@ public class PollSettingsView {
     public void refreshView() {
         allowCommentCheckBox.setChecked(pollSettings.isAllowedToComment());
         anonymousCheckBox.setChecked(pollSettings.isAnonymous());
-        publicCheckBox .setChecked(pollSettings.isPublic());
-        acceptCompleteOnlyCheckBox .setChecked(pollSettings.isAcceptCompleteOnly());
+        publicCheckBox.setChecked(pollSettings.isPublic());
+        acceptCompleteOnlyCheckBox.setChecked(pollSettings.isAcceptCompleteOnly());
     }
 }
