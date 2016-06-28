@@ -129,9 +129,9 @@ public abstract class SimpleAdapter<T, IH extends UltimateRecyclerviewViewHolder
     public abstract T getItem(int position);
 
     protected void setLocketImage(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
-        boolean bothLocketAndAnonymImageNeeded = !searchPollsItemData.isPublic && searchPollsItemData.anonymous;
-        boolean onlyLocketImageNeeded = !searchPollsItemData.isPublic && !searchPollsItemData.anonymous;
-        boolean onlyAnonymImageNeeded = searchPollsItemData.isPublic && searchPollsItemData.anonymous;
+        boolean bothLocketAndAnonymImageNeeded = !searchPollsItemData.isPublic && !searchPollsItemData.anonymous;
+        boolean onlyLocketImageNeeded = !searchPollsItemData.isPublic && searchPollsItemData.anonymous;
+        boolean onlyAnonymImageNeeded = searchPollsItemData.isPublic && !searchPollsItemData.anonymous;
         int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
 
         if (bothLocketAndAnonymImageNeeded) {
