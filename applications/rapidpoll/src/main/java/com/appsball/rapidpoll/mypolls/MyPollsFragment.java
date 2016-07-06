@@ -5,19 +5,20 @@ import android.view.View;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.model.PollState;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
-import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.PollsListWrapper;
 import com.appsball.rapidpoll.searchpolls.SearchPollsFragment;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
+import com.appsball.rapidpoll.searchpolls.model.SortType;
 import com.google.common.collect.Lists;
+import com.orhanobut.hawk.Hawk;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -68,7 +69,8 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
 
     protected SearchPollsDataState createSearchPollsDataState() {
-        return new SearchPollsDataState(OrderType.ASC, OrderKey.STATUS);
+        SortType sortType = SortType.valueOf(Hawk.get(Constants.LAST_SORTING, SortType.VOTES.name()));
+        return new SearchPollsDataState(sortType);
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.appsball.rapidpoll.mypolls;
 import com.appsball.rapidpoll.FragmentSwitcher;
 import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.commons.model.PollState;
-import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.orhanobut.hawk.Hawk;
 

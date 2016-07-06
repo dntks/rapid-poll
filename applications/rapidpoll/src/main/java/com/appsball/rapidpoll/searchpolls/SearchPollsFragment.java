@@ -16,19 +16,21 @@ import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.request.SearchPollRequest;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.view.BottomBarNavigationFragment;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
+import com.appsball.rapidpoll.searchpolls.model.SortType;
 import com.appsball.rapidpoll.searchpolls.service.OnPollsReceivedListener;
 import com.appsball.rapidpoll.searchpolls.service.SearchPollsCallback;
 import com.appsball.rapidpoll.searchpolls.view.SortingView;
 import com.appsball.rapidpoll.searchpolls.view.ToolbarTouchListener;
 import com.google.common.collect.Lists;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -81,7 +83,8 @@ public abstract class SearchPollsFragment extends BottomBarNavigationFragment im
     }
 
     protected SearchPollsDataState createSearchPollsDataState() {
-        return new SearchPollsDataState(OrderType.DESC, OrderKey.VOTES);
+        SortType sortType = SortType.valueOf(Hawk.get(Constants.LAST_SORTING, SortType.VOTES.name()));
+        return new SearchPollsDataState(sortType);
     }
 
     protected abstract PollItemClickListener createPollItemClickListener();

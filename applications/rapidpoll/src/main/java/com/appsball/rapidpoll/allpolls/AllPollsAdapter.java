@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
-import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;

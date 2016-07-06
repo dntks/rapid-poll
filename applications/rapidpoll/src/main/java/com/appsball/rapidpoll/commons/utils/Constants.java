@@ -18,4 +18,5 @@ public class Constants {
     public static final String INVALID_USERID = "INVALID_USERID";
     public static final String INVALID_USERID2 = "USERID_NOT_EXISTS";
     public static final String INVALID_USERID3 = "INVALID_USER";
+    public static final String LAST_SORTING = "LAST_SORTING";
 }

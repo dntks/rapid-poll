@@ -16,8 +16,8 @@ public class RequestCreator {
     public PollsRequest createAllPollsRequest(SearchPollsDataState searchPollsDataState, ListType listType) {
         PollsRequest.Builder builder = PollsRequest.builder();
         builder.withPage(String.valueOf(searchPollsDataState.actualPage));
-        builder.withOrderType(searchPollsDataState.chosenOrderType);
-        builder.withOrderKey(searchPollsDataState.chosenOrderKey);
+        builder.withOrderType(searchPollsDataState.chosenSortType.orderType);
+        builder.withOrderKey(searchPollsDataState.chosenSortType.orderKey);
         builder.withListType(listType);
         builder.withUserId(Hawk.<String>get(USER_ID_KEY));
         builder.withPageSize(String.valueOf(searchPollsDataState.numberOfRequestedPolls));
@@ -27,8 +27,8 @@ public class RequestCreator {
     public SearchPollRequest createSearchPollRequest(String searchPhrase, SearchPollsDataState searchPollsDataState, ListType listType) {
         SearchPollRequest.Builder builder = SearchPollRequest.builder();
         builder.withPage(String.valueOf(searchPollsDataState.actualPage));
-        builder.withOrderType(searchPollsDataState.chosenOrderType);
-        builder.withOrderKey(searchPollsDataState.chosenOrderKey);
+        builder.withOrderType(searchPollsDataState.chosenSortType.orderType);
+        builder.withOrderKey(searchPollsDataState.chosenSortType.orderKey);
         builder.withListType(listType);
         builder.withUserId(Hawk.<String>get(USER_ID_KEY));
         builder.withPageSize(String.valueOf(searchPollsDataState.numberOfRequestedPolls));
