@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NewQuestionCreator {
 
-    public NewPollQuestion createNewQuestion(int questionNumber){
+    public NewPollQuestion createNewQuestion(){
         NewPollQuestion question = new NewPollQuestion("");
         List<NewPollAnswer> answers = question.getAnswers();
         answers.add(NewPollAnswer.newPollAnswer("", question));

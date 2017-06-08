@@ -6,21 +6,22 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.newpoll.QuestionItemRemover;
+import com.appsball.rapidpoll.newpoll.adapterhelper.QuestionItemRemover;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class QuestionNewPollViewHolder extends NewPollViewHolderParent {
-    private TextChangeAwareEditText editText;
-    private CheckBox checkBox;
-    private ImageView deleteButton;
+    @BindView(R.id.question_edit_text) TextChangeAwareEditText editText;
+    @BindView(R.id.multichoice_checkbox) CheckBox checkBox;
+    @BindView(R.id.delete_button) ImageView deleteButton;
     private QuestionItemRemover questionItemRemover;
 
     public QuestionNewPollViewHolder(View parent, QuestionItemRemover questionItemRemover) {
         super(parent);
-        editText = (TextChangeAwareEditText) parent.findViewById(R.id.question_edit_text);
-        checkBox = (CheckBox) parent.findViewById(R.id.multichoice_checkbox);
-        deleteButton = (ImageView) parent.findViewById(R.id.delete_button);
+        ButterKnife.bind(this, parent);
         this.questionItemRemover = questionItemRemover;
     }
 

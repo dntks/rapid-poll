@@ -11,18 +11,18 @@ public class PollDetailsResponseTransformer {
         this.pollDetailsQuestionsTransformer = pollDetailsQuestionsTransformer;
     }
 
-    public FillPollDetails transform(PollDetailsResponse pollDetailsResponse){
+    public FillPollDetails transform(PollDetailsResponse pollDetailsResponse) {
         FillPollDetails.Builder builder = FillPollDetails.builder();
         builder.withPollId(String.valueOf(pollDetailsResponse.id));
         builder.withQuestions(pollDetailsQuestionsTransformer.transformQuestions(pollDetailsResponse.questions));
         builder.withName(pollDetailsResponse.name);
         builder.withAllowComment(pollDetailsResponse.allow_comment == 1);
-        builder.withAllowUncompleteResult(true);
+        builder.withAllowUncompleteResult(pollDetailsResponse.allow_uncomplete_answer == 1);
         builder.withCommentOptional(pollDetailsResponse.comment);
         builder.withCode(pollDetailsResponse.code);
         builder.withEmail(pollDetailsResponse.email);
-        builder.withIsAnonymous(pollDetailsResponse.anonymous==1);
-        builder.withIsPublic(pollDetailsResponse.isPublic==1);
+        builder.withIsAnonymous(pollDetailsResponse.anonymous == 1);
+        builder.withIsPublic(pollDetailsResponse.isPublic == 1);
         return builder.build();
     }
 }

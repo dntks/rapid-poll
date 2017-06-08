@@ -4,7 +4,7 @@ import com.appsball.rapidpoll.PollIdentifierData;
 import com.appsball.rapidpoll.RapidPollActivity;
 import com.appsball.rapidpoll.commons.communication.request.RequestCreator;
 import com.appsball.rapidpoll.commons.communication.service.RapidPollRestService;
-import com.appsball.rapidpoll.searchpolls.CommonPollItemClickListener;
+import com.appsball.rapidpoll.searchpolls.listeners.CommonPollItemClickListener;
 
 public class AllPollsItemClickListener extends CommonPollItemClickListener {
 

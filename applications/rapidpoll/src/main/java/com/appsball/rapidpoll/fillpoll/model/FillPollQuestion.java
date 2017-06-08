@@ -13,6 +13,7 @@ public class FillPollQuestion extends FillPollListItem {
     public final String id;
     public final String question;
     public final boolean isMultiChoice;
+    public final String orderNumber;
     public final ImmutableList<FillPollAlternative> allAnswers;
     private Set<FillPollAlternative> checkedAnswers;
 
@@ -20,12 +21,14 @@ public class FillPollQuestion extends FillPollListItem {
                              String question,
                              boolean isMultiChoice,
                              ImmutableList<FillPollAlternative> allAnswers,
-                             Set<FillPollAlternative> checkedAnswers) {
+                             Set<FillPollAlternative> checkedAnswers,
+                             String orderNumber) {
         this.isMultiChoice = isMultiChoice;
         this.id = Validate.notNull(id, "id must not be null!");
         this.question = Validate.notNull(question,"question must not be null!");
         this.allAnswers = allAnswers;
         this.checkedAnswers = checkedAnswers;
+        this.orderNumber =  Validate.notNull(orderNumber, "orderNumber must not be null!");
     }
 
     public Set<FillPollAlternative> getCheckedAnswers() {
@@ -48,6 +51,7 @@ public class FillPollQuestion extends FillPollListItem {
         private boolean isMultiChoice;
         private ImmutableList.Builder<FillPollAlternative> allAnswersBuilder = ImmutableList.builder();
         private Set<FillPollAlternative> checkedAnswers = Sets.newHashSet();
+        private String orderNumber;
 
         public Builder withId(String id) {
             this.id = id;
@@ -80,8 +84,13 @@ public class FillPollQuestion extends FillPollListItem {
             return this;
         }
 
+        public Builder withOrderNumber(String orderNumber) {
+            this.orderNumber = orderNumber;
+            return this;
+        }
+
         public FillPollQuestion build() {
-            return new FillPollQuestion(id, question, isMultiChoice, allAnswersBuilder.build(), checkedAnswers);
+            return new FillPollQuestion(id, question, isMultiChoice, allAnswersBuilder.build(), checkedAnswers, orderNumber);
         }
     }
 }

@@ -15,7 +15,7 @@ public class FillPollListItemCreator {
         for (FillPollQuestion question : fillPollDetails.questions) {
             listItems.addAll(createItemsFromQuestion(question));
         }
-        if (fillPollDetails.comment.isPresent()) {
+        if (fillPollDetails.allowComment && fillPollDetails.comment.isPresent()) {
             listItems.add(fillPollDetails.comment.get());
         }
         return listItems;

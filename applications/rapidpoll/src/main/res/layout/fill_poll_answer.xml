@@ -9,6 +9,15 @@
 
 
     <TextView
+        android:id="@+id/letter_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="A"
+        android:layout_marginRight="7sp"
+        />
+
+    <TextView
         android:id="@+id/answer_textview"
         android:layout_width="0dp"
         android:layout_height="match_parent"

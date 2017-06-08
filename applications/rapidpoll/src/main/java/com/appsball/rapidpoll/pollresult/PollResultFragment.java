@@ -2,6 +2,7 @@ package com.appsball.rapidpoll.pollresult;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -101,12 +102,12 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
 
             @Override
             public void onFailure() {
-
+                showErrorForDetails();
             }
 
             @Override
             public void onError(String errorMessage) {
-
+                showErrorForDetails();
             }
         });
     }
@@ -135,14 +136,24 @@ public class PollResultFragment extends RapidPollFragment implements PollResultQ
 
             @Override
             public void onFailure() {
-
+                showErrorForDetails();
             }
 
             @Override
             public void onError(String errorMessage) {
-
+                showErrorForDetails();
             }
 
+        });
+    }
+
+    private void showErrorForDetails() {
+        DialogsBuilder.showErrorDialog(getRapidPollActivity(), getResources().getString(R.string.pollresult_comm_failure), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
+            }
         });
     }
 

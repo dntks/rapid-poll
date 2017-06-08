@@ -8,8 +8,13 @@ import android.view.View;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.searchpolls.PollsListInitializer;
+import com.appsball.rapidpoll.searchpolls.listeners.SortClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
+import com.appsball.rapidpoll.searchpolls.model.SortType;
 import com.orhanobut.logger.Logger;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SortingView {
 
@@ -17,31 +22,26 @@ public class SortingView {
     private PollsListInitializer pollsListInitializer;
     private boolean isAnimating = false;
 
-    private View dateSortButton;
-    private View titleSortButton;
-    private View voteSortButton;
-    private View publicitySortButton;
-    private View statusSortButton;
-    private View sortByLayout;
-    private View listSizeHelper;
-    private View pagingView;
+    @BindView(R.id.sort_by_date_button) View dateSortButton;
+    @BindView(R.id.sort_by_title_button) View titleSortButton;
+    @BindView(R.id.sort_by_vote_button) View voteSortButton;
+    @BindView(R.id.sort_by_publicity_button) View publicitySortButton;
+    @BindView(R.id.sort_by_status_button) View statusSortButton;
+    @BindView(R.id.sort_horizontal_scrollview) View sortByLayout;
+    @BindView(R.id.list_size_helper) View listSizeHelper;
+    @BindView(R.id.paging_list_view) View pagingView;
 
     public SortingView(View rootView, SearchPollsDataState searchPollsDataState, PollsListInitializer pollsListInitializer) {
         this.searchPollsDataState = searchPollsDataState;
         this.pollsListInitializer = pollsListInitializer;
-        sortByLayout = rootView.findViewById(R.id.sort_horizontal_scrollview);
-        pagingView = rootView.findViewById(R.id.paging_list_view);
-        dateSortButton = rootView.findViewById(R.id.sort_by_date_button);
-        titleSortButton = rootView.findViewById(R.id.sort_by_title_button);
-        voteSortButton = rootView.findViewById(R.id.sort_by_vote_button);
-        publicitySortButton = rootView.findViewById(R.id.sort_by_publicity_button);
-        statusSortButton = rootView.findViewById(R.id.sort_by_status_button);
-        listSizeHelper = rootView.findViewById(R.id.list_size_helper);
+        ButterKnife.bind(this, rootView);
+        enableOtherButtons(rootView.findViewById(searchPollsDataState.chosenSortType.viewId));
     }
 
     public void init() {
         setSortByViewSwipeListener();
         createSortButtonListeners();
+
     }
 
     private void setSortByViewSwipeListener() {
@@ -119,54 +119,14 @@ public class SortingView {
     }
 
     private void createSortButtonListeners() {
-        dateSortButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                searchPollsDataState.setDateSort();
-                enableOtherButtons(v);
-                pollsListInitializer.resetAdapterAndGetPolls();
-            }
-        });
-        titleSortButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                searchPollsDataState.setTitleSort();
-                enableOtherButtons(v);
-                pollsListInitializer.resetAdapterAndGetPolls();
-            }
-        });
-        voteSortButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                searchPollsDataState.setVotesSort();
-                enableOtherButtons(v);
-                pollsListInitializer.resetAdapterAndGetPolls();
-            }
-        });
-        publicitySortButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                searchPollsDataState.setPublicitySort();
-                enableOtherButtons(v);
-                pollsListInitializer.resetAdapterAndGetPolls();
-            }
-        });
-        statusSortButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                searchPollsDataState.setStatusSort();
-                enableOtherButtons(v);
-                pollsListInitializer.resetAdapterAndGetPolls();
-            }
-        });
+        dateSortButton.setOnClickListener(new SortClickListener(SortType.DATE, this, searchPollsDataState, pollsListInitializer));
+        titleSortButton.setOnClickListener(new SortClickListener(SortType.TITLE, this, searchPollsDataState, pollsListInitializer));
+        voteSortButton.setOnClickListener(new SortClickListener(SortType.VOTES, this, searchPollsDataState, pollsListInitializer));
+        publicitySortButton.setOnClickListener(new SortClickListener(SortType.PUBLICITY, this, searchPollsDataState, pollsListInitializer));
+        statusSortButton.setOnClickListener(new SortClickListener(SortType.STATUS, this, searchPollsDataState, pollsListInitializer));
     }
 
-    private void enableOtherButtons(View v) {
+    public void enableOtherButtons(View v) {
         dateSortButton.setEnabled(true);
         titleSortButton.setEnabled(true);
         voteSortButton.setEnabled(true);

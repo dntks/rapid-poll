@@ -1,0 +1,341 @@
+Index: applications/rapidpoll/src/main/java/com/appsball/rapidpoll/searchpolls/view/SortingView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- applications/rapidpoll/src/main/java/com/appsball/rapidpoll/searchpolls/view/SortingView.java	(revision b79ee71e25815078b2a46f1c0554491b73fe7ed4)
++++ applications/rapidpoll/src/main/java/com/appsball/rapidpoll/searchpolls/view/SortingView.java	(revision )
+@@ -41,7 +41,6 @@
+     public void init() {
+         setSortByViewSwipeListener();
+         createSortButtonListeners();
+-
+     }
+ 
+     private void setSortByViewSwipeListener() {
+Index: applications/rapidpoll/src/main/java/com/appsball/rapidpoll/mypolls/MyPollsFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- applications/rapidpoll/src/main/java/com/appsball/rapidpoll/mypolls/MyPollsFragment.java	(revision b79ee71e25815078b2a46f1c0554491b73fe7ed4)
++++ applications/rapidpoll/src/main/java/com/appsball/rapidpoll/mypolls/MyPollsFragment.java	(revision )
+@@ -5,6 +5,7 @@
+ 
+ import com.appsball.rapidpoll.R;
+ import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
++import com.appsball.rapidpoll.commons.communication.response.PollsResponse;
+ import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
+ import com.appsball.rapidpoll.commons.model.NavigationButton;
+ import com.appsball.rapidpoll.commons.model.PollState;
+@@ -20,6 +21,8 @@
+ import com.google.common.collect.Lists;
+ import com.orhanobut.hawk.Hawk;
+ 
++import java.util.List;
++
+ import butterknife.ButterKnife;
+ import butterknife.OnClick;
+ 
+@@ -40,6 +43,8 @@
+ 
+     @Override
+     protected void setupSortingView(View rootView) {
++        super.setupSortingView(rootView);
++        rootView.findViewById(R.id.sort_by_status_button).setVisibility(View.GONE);
+     }
+ 
+     @Override
+@@ -67,12 +72,6 @@
+         return resultsAdapter;
+     }
+ 
+-
+-    protected SearchPollsDataState createSearchPollsDataState() {
+-        SortType sortType = SortType.valueOf(Hawk.get(Constants.LAST_SORTING, SortType.VOTES.name()));
+-        return new SearchPollsDataState(sortType);
+-    }
+-
+     @Override
+     protected ListType getListType() {
+         return ListType.MYPOLL;
+@@ -87,8 +86,20 @@
+         service.updatePollState(requestCreator.createUpdatePollStateRequest(pollId, PollState.CLOSED), createUpdatePollStateCallback());
+     }
+ 
++    protected SearchPollsDataState createSearchPollsDataState() {
++        SortType sortType = SortType.valueOf(Hawk.get(Constants.LAST_SORTING, SortType.VOTES.name()));
++        return new SearchPollsDataState(sortType);
++    }
++
+     public void reopenPoll(String pollId) {
+         service.updatePollState(requestCreator.createUpdatePollStateRequest(pollId, PollState.PUBLISHED), createUpdatePollStateCallback());
++    }
++
++    public void onPollsReceived(List<PollsResponse> pollsResponses) {
++        super.onPollsReceived(pollsResponses);
++        if(pollsResponses.size()>0){
++            getRapidPollActivity().findViewById(R.id.create_new_poll_layout).setVisibility(View.GONE);
++        }
+     }
+ 
+     private ResponseCallback createUpdatePollStateCallback() {
+Index: applications/rapidpoll/src/main/res/layout/mypolls_layout.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- applications/rapidpoll/src/main/res/layout/mypolls_layout.xml	(revision b79ee71e25815078b2a46f1c0554491b73fe7ed4)
++++ applications/rapidpoll/src/main/res/layout/mypolls_layout.xml	(revision )
+@@ -1,120 +1,145 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    android:background="@color/splash_edge">
++    android:orientation="vertical">
+ 
+-    <include
+-        android:id="@+id/navButtonsLayout"
+-        layout="@layout/navbuttons"
++    <FrameLayout
+         android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:layout_weight="1">
++
++        <LinearLayout
++            android:id="@+id/create_new_poll_layout"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:layout_above="@id/navButtonsLayout"
++            android:background="@drawable/blurry_gradient"
++            android:gravity="center_horizontal"
++            android:orientation="vertical">
++
++            <ImageView
++                android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
++                android:layout_height="wrap_content"
+-        android:layout_alignParentBottom="true" />
++                android:layout_marginTop="@dimen/create_new_poll_top_margin"
++                android:src="@drawable/add_new" />
+ 
++            <TextView
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_marginTop="25dp"
++                android:text="@string/create_new_poll" />
++        </LinearLayout>
++
++        <RelativeLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:background="@color/background_dark_purple">
++
++            <TextView
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_centerHorizontal="true"
++                android:layout_marginTop="15dp"
++                android:text="@string/no_search_results" />
++
++            <View
++                android:id="@+id/list_size_helper"
++                android:layout_width="match_parent"
++                android:layout_height="@dimen/search_view_height"
++                android:layout_alignParentTop="true"
++                android:visibility="gone" />
++
+-    <HorizontalScrollView
+-        android:id="@+id/sort_horizontal_scrollview"
+-        android:layout_width="match_parent"
++            <HorizontalScrollView
++                android:id="@+id/sort_horizontal_scrollview"
++                android:layout_width="match_parent"
+-        android:layout_height="65dp"
++                android:layout_height="@dimen/search_view_height"
+-        android:layout_alignParentTop="true"
+-        android:background="@color/sortby_background_purple"
+-        android:scrollbars="none"
++                android:layout_alignParentTop="true"
++                android:background="@color/sortby_background_purple"
++                android:scrollbars="none"
+-        android:visibility="gone">
++                android:visibility="invisible">
+ 
+-        <LinearLayout
+-            android:id="@+id/sortby_layout"
+-            android:layout_width="wrap_content"
+-            android:layout_height="match_parent"
+-            android:gravity="center_vertical">
++                <LinearLayout
++                    android:id="@+id/sortby_layout"
++                    android:layout_width="wrap_content"
++                    android:layout_height="match_parent"
++                    android:gravity="center_vertical">
+ 
+ 
+-            <TextView
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginLeft="25dp"
+-                android:layout_marginRight="14dp"
+-                android:paddingBottom="2dp"
+-                android:text="@string/sort_by"
+-                android:textSize="18sp" />
++                    <TextView
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:layout_marginLeft="25dp"
++                        android:layout_marginRight="14dp"
++                        android:paddingBottom="2dp"
++                        android:text="@string/sort_by"
++                        android:textSize="18sp" />
+ 
+-            <Button
+-                android:id="@+id/sort_by_date_button"
+-                style="@style/SortByTextButton"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
++                    <Button
++                        android:id="@+id/sort_by_date_button"
++                        style="@style/SortByTextButton"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
+-                android:enabled="false"
+-                android:text="@string/date" />
++                        android:text="@string/date" />
+ 
+-            <Button
+-                android:id="@+id/sort_by_title_button"
+-                style="@style/SortByTextButton"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="@string/title" />
++                    <Button
++                        android:id="@+id/sort_by_title_button"
++                        style="@style/SortByTextButton"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:text="@string/title" />
+ 
+-            <Button
+-                android:id="@+id/sort_by_vote_button"
+-                style="@style/SortByTextButton"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
++                    <Button
++                        android:id="@+id/sort_by_vote_button"
++                        style="@style/SortByTextButton"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:enabled="false"
+-                android:text="@string/vote" />
++                        android:text="@string/vote" />
+ 
+-            <Button
+-                android:id="@+id/sort_by_status_button"
+-                style="@style/SortByTextButton"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="@string/status" />
++                    <Button
++                        android:id="@+id/sort_by_status_button"
++                        style="@style/SortByTextButton"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:text="@string/status" />
+ 
+-            <Button
+-                android:id="@+id/sort_by_publicity_button"
+-                style="@style/SortByTextButton"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="@string/publicity" />
+-        </LinearLayout>
+-    </HorizontalScrollView>
++                    <Button
++                        android:id="@+id/sort_by_publicity_button"
++                        style="@style/SortByTextButton"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:text="@string/publicity" />
++                </LinearLayout>
++            </HorizontalScrollView>
+ 
+-    <LinearLayout
+-        android:id="@+id/create_new_poll_layout"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:layout_above="@id/navButtonsLayout"
+-        android:background="@drawable/blurry_gradient"
+-        android:gravity="center_horizontal"
+-        android:orientation="vertical">
+-
+-        <ImageView
+-            android:layout_marginTop="@dimen/create_new_poll_top_margin"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:src="@drawable/add_new" />
+-
+-        <TextView
+-            android:layout_marginTop="25dp"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:text="@string/create_new_poll" />
+-    </LinearLayout>
+-
+-    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+-        android:id="@+id/paging_list_view"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
++            <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
++                android:id="@+id/paging_list_view"
++                android:layout_width="match_parent"
++                android:layout_height="match_parent"
+-        android:layout_above="@id/navButtonsLayout"
+-        android:layout_below="@id/sort_horizontal_scrollview"
++                android:layout_below="@id/list_size_helper"
+-        android:layout_marginTop="2dp"
+-        android:background="@color/background_dark_purple"
+-        android:divider="@android:color/black"
+-        android:listDivider="@drawable/actionbar_gradient"
+-        android:scrollbars="none" />
++                android:layout_marginTop="2dp"
++                android:background="@color/background_dark_purple"
++                android:divider="@android:color/black"
++                android:listDivider="@drawable/actionbar_gradient"
++                android:scrollbars="none" />
+ 
+-    <include
+-        android:id="@+id/centered_loading_view"
+-        layout="@layout/loadingview"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_below="@id/sort_horizontal_scrollview"
+-        android:layout_centerHorizontal="true"
+-        android:layout_marginTop="60dp" />
++            <include
++                android:id="@+id/centered_loading_view"
++                layout="@layout/loadingview"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_below="@id/sort_horizontal_scrollview"
++                android:layout_centerHorizontal="true"
++                android:layout_marginTop="60dp" />
+-
+-</RelativeLayout>
+\ No newline at end of file
++        </RelativeLayout>
++    </FrameLayout>
++
++    <include
++        android:id="@+id/navButtonsLayout"
++        layout="@layout/navbuttons"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_alignParentBottom="true"
++        android:layout_weight="0" />
++</LinearLayout>
+\ No newline at end of file

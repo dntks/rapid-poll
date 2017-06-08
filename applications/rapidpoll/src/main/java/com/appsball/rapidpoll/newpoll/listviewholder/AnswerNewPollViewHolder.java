@@ -4,19 +4,25 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.appsball.rapidpoll.R;
-import com.appsball.rapidpoll.newpoll.AdapterAnswerViewsUpdater;
-import com.appsball.rapidpoll.newpoll.AdapterItemViewRemover;
+import com.appsball.rapidpoll.commons.utils.Utils;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterAnswerViewsUpdater;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterItemViewRemover;
 import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
 import com.appsball.rapidpoll.newpoll.model.NewPollQuestion;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
 
     private AdapterItemViewRemover adapterItemViewRemover;
     private AdapterAnswerViewsUpdater adapterAnswerViewsUpdater;
-    private TextChangeAwareEditText editText;
-    private ImageView deleteButton;
-    private View listitemAnswerSeparator;
+    @BindView(R.id.answer_edit_text) TextChangeAwareEditText editText;
+    @BindView(R.id.delete_button)  ImageView deleteButton;
+    @BindView(R.id.listitem_answer_separator)  View listitemAnswerSeparator;
 
     public AnswerNewPollViewHolder(View parent,
                                    AdapterItemViewRemover adapterItemViewRemover,
@@ -24,9 +30,8 @@ public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
         super(parent);
         this.adapterItemViewRemover = adapterItemViewRemover;
         this.adapterAnswerViewsUpdater = adapterAnswerViewsUpdater;
-        editText = (TextChangeAwareEditText) itemView.findViewById(R.id.answer_edit_text);
-        deleteButton = (ImageView) parent.findViewById(R.id.delete_button);
-        listitemAnswerSeparator = parent.findViewById(R.id.listitem_answer_separator);
+        ButterKnife.bind(this, itemView);
+        ButterKnife.bind(this, parent);
     }
 
 
@@ -35,6 +40,7 @@ public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
         final NewPollAnswer newPollAnswer = (NewPollAnswer) newPollListItem;
         editText.setTextChangedListener(new TextChangedListener(newPollListItem));
         editText.setText(newPollAnswer.getAnswer());
+
         final NewPollQuestion question = newPollAnswer.question;
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +52,19 @@ public class AnswerNewPollViewHolder extends NewPollViewHolderParent {
         });
         setSeparatorVisibility(newPollAnswer);
         setDeleteButtonVisibility(question);
+        requestFocusAndShowKeyBoardIfAddedFromUI(newPollAnswer);
+    }
+
+    private void requestFocusAndShowKeyBoardIfAddedFromUI(NewPollAnswer newPollAnswer) {
+        if (newPollAnswer.isCreatedFromUI && isLastAnswerView(newPollAnswer) && hasMoreThan2Items(newPollAnswer.question)) {
+            editText.requestFocus();
+            Utils.showSoftKeyboard(editText.getContext());
+        }
+    }
+
+    private boolean isLastAnswerView(NewPollAnswer newPollAnswer) {
+        List<NewPollAnswer> answers = newPollAnswer.question.getAnswers();
+        return answers.get(answers.size()-1).equals(newPollAnswer);
     }
 
     private void checkForSiblingAnswerViews(NewPollQuestion newPollQuestion) {

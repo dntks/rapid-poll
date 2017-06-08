@@ -6,21 +6,17 @@ import android.view.ViewGroup;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
-import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
-import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
 public class ResultsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPollsItemViewHolder> {
     private final PollItemClickListener pollItemClickListener;
     private final DateStringFormatter dateStringFormatter;
-    public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
-    public static final int CLOSED_LOCKET = R.drawable.lakat;
-    public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
     public ResultsAdapter(List<SearchPollsItemData> items,
                           PollItemClickListener pollItemClickListener,
@@ -48,15 +44,6 @@ public class ResultsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
                     pollItemClickListener.pollItemClicked(searchPollsItemData);
                 }
             });
-        }
-    }
-
-    private void setLocketImage(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
-        if (!searchPollsItemData.isPublic) {
-            int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-            holder.itemRightImage.setImageResource(locketImageId);
-        } else {
-            holder.itemRightImage.setImageResource(RIGHT_ARROW);
         }
     }
 

@@ -20,6 +20,6 @@ public class PollDetailsAnswersTransformer {
     }
 
     private FillPollAlternative transformAnswer(PollDetailsAlternative input, String letter) {
-        return fillPollAlternative(valueOf(input.alternative_id), letter+" "+input.alternative_name);
+        return fillPollAlternative(valueOf(input.alternative_id), input.alternative_name, letter);
     }
 }

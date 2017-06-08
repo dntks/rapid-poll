@@ -9,13 +9,12 @@ import android.widget.TextView;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.model.PollState;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
-import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
 import com.appsball.rapidpoll.searchpolls.view.SearchPollsItemViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
-import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -24,9 +23,6 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
     public static final int LISTITEM_BACKGROUND_COLOR = R.color.listitem_purple;
     public static final int SWIPE_CLOSE_TEXT_ID = R.string.close;
     public static final int SWIPE_REOPEN_TEXT_ID = R.string.reopen;
-    public static final int OPENED_LOCKET = R.drawable.nyitottlakat;
-    public static final int CLOSED_LOCKET = R.drawable.lakat;
-    public static final int RIGHT_ARROW = R.drawable.jobbranyil;
 
     private final PollItemClickListener pollItemClickListener;
     private final DateStringFormatter dateStringFormatter;
@@ -63,15 +59,6 @@ public class MyPollsAdapter extends SimpleAdapter<SearchPollsItemData, SearchPol
 
             setSwipeViewProperties(holder, searchPollsItemData);
 
-        }
-    }
-
-    private void setLocketImage(SearchPollsItemViewHolder holder, SearchPollsItemData searchPollsItemData) {
-        if (!searchPollsItemData.isPublic) {
-            int locketImageId = Hawk.contains(searchPollsItemData.id) ? OPENED_LOCKET : CLOSED_LOCKET;
-            holder.itemRightImage.setImageResource(locketImageId);
-        } else {
-            holder.itemRightImage.setImageResource(RIGHT_ARROW);
         }
     }
 

@@ -10,6 +10,7 @@ import static com.appsball.rapidpoll.commons.communication.request.RegisterReque
 
 public class UserRegister {
 
+
     private final RapidPollRestService rapidPollRestService;
     private final OnRegisterListener onRegisterListener;
 

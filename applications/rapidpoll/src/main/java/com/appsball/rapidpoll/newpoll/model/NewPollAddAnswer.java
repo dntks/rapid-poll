@@ -3,7 +3,7 @@ package com.appsball.rapidpoll.newpoll.model;
 public class NewPollAddAnswer extends NewPollAnswer {
 
     public NewPollAddAnswer(NewPollQuestion question) {
-        super("", question);
+        super("", question, false);
     }
 
     @Override

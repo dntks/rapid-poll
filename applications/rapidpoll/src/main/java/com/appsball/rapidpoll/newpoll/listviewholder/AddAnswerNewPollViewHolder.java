@@ -2,8 +2,8 @@ package com.appsball.rapidpoll.newpoll.listviewholder;
 
 import android.view.View;
 
-import com.appsball.rapidpoll.newpoll.AdapterAnswerViewsUpdater;
-import com.appsball.rapidpoll.newpoll.PollAnswerToAdapterAdder;
+import com.appsball.rapidpoll.newpoll.adapterhelper.AdapterAnswerViewsUpdater;
+import com.appsball.rapidpoll.newpoll.adapterhelper.PollAnswerToAdapterAdder;
 import com.appsball.rapidpoll.newpoll.model.NewPollAddAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollAnswer;
 import com.appsball.rapidpoll.newpoll.model.NewPollListItem;
@@ -26,7 +26,7 @@ public class AddAnswerNewPollViewHolder extends NewPollViewHolderParent {
             @Override
             public void onClick(View v) {
                 NewPollQuestion question = newPollAddAnswer.question;
-                NewPollAnswer newAnswer = NewPollAnswer.newPollAnswer("", question);
+                NewPollAnswer newAnswer = NewPollAnswer.newPollAnswerFromUI(question);
                 question.getAnswers().add(newAnswer);
                 pollAnswerToAdapterAdder.addAnswerToAdapter(newAnswer, newPollAddAnswer);
                 checkForSiblingAnswerViews(question);

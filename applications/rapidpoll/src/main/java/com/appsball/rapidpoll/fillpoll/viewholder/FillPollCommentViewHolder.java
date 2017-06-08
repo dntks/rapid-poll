@@ -7,13 +7,16 @@ import com.appsball.rapidpoll.fillpoll.model.FillPollComment;
 import com.appsball.rapidpoll.fillpoll.model.FillPollListItem;
 import com.appsball.rapidpoll.newpoll.listviewholder.TextChangeAwareEditText;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FillPollCommentViewHolder extends FillPollViewHolderParent {
 
-    private TextChangeAwareEditText editText;
+    @BindView(R.id.comment_edittext) TextChangeAwareEditText editText;
 
     public FillPollCommentViewHolder(View parent) {
         super(parent);
-        editText = (TextChangeAwareEditText) itemView.findViewById(R.id.comment_edittext);
+        ButterKnife.bind(this, itemView);
     }
 
     @Override

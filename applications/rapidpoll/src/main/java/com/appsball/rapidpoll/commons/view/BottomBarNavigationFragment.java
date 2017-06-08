@@ -5,27 +5,28 @@ import android.view.View;
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class BottomBarNavigationFragment extends RapidPollFragment {
 
     protected void createNavigationButtonListeners(View rootView, NavigationButton disabledButton) {
         rootView.findViewById(disabledButton.buttonId).setEnabled(false);
-        rootView.findViewById(R.id.my_polls_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentSwitcher().toMyPolls();
-            }
-        });
-        rootView.findViewById(R.id.polls_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentSwitcher().toAllPolls();
-            }
-        });
-        rootView.findViewById(R.id.results_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentSwitcher().toResults();
-            }
-        });
+        ButterKnife.bind(this, rootView);
+    }
+
+    @OnClick(R.id.my_polls_button)
+    public void toMyPolls(){
+        getFragmentSwitcher().toMyPolls();
+    }
+
+    @OnClick(R.id.polls_button)
+    public void toAllPolls(){
+        getFragmentSwitcher().toAllPolls();
+    }
+
+    @OnClick(R.id.results_button)
+    public void toResults(){
+        getFragmentSwitcher().toResults();
     }
 }

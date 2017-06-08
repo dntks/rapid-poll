@@ -11,16 +11,19 @@ import com.appsball.rapidpoll.fillpoll.model.FillPollListItem;
 
 import java.util.Set;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FillPollAlternativeViewHolder extends FillPollViewHolderParent {
     private AlternativeCheckUpdater alternativeCheckUpdater;
-    private TextView alternativeText;
-    private CheckBox checkBox;
+    @BindView(R.id.answer_textview) TextView alternativeText;
+    @BindView(R.id.letter_textview) TextView letterText;
+    @BindView(R.id.answer_checkbox) CheckBox checkBox;
 
     public FillPollAlternativeViewHolder(View parent, AlternativeCheckUpdater alternativeCheckUpdater) {
         super(parent);
         this.alternativeCheckUpdater = alternativeCheckUpdater;
-        this.alternativeText = (TextView) itemView.findViewById(R.id.answer_textview);
-        this.checkBox = (CheckBox) itemView.findViewById(R.id.answer_checkbox);
+        ButterKnife.bind(this, itemView);
     }
 
     @Override
@@ -41,6 +44,7 @@ public class FillPollAlternativeViewHolder extends FillPollViewHolderParent {
                 checkBox.setChecked(!checkBox.isChecked());
             }
         });
+        letterText.setText(fillPollAlternative.letter);
     }
 
     private boolean checkAnyOtherIsSet(FillPollAlternative fillPollAlternative) {

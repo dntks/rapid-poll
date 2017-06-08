@@ -5,19 +5,23 @@ import android.view.View;
 
 import com.appsball.rapidpoll.R;
 import com.appsball.rapidpoll.commons.communication.request.enums.ListType;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderKey;
-import com.appsball.rapidpoll.commons.communication.request.enums.OrderType;
 import com.appsball.rapidpoll.commons.communication.service.ResponseCallback;
 import com.appsball.rapidpoll.commons.model.NavigationButton;
 import com.appsball.rapidpoll.commons.model.PollState;
+import com.appsball.rapidpoll.commons.utils.Constants;
 import com.appsball.rapidpoll.commons.utils.DateStringFormatter;
-import com.appsball.rapidpoll.searchpolls.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.PollsListWrapper;
 import com.appsball.rapidpoll.searchpolls.SearchPollsFragment;
 import com.appsball.rapidpoll.searchpolls.SimpleAdapter;
+import com.appsball.rapidpoll.searchpolls.listeners.PollItemClickListener;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsDataState;
 import com.appsball.rapidpoll.searchpolls.model.SearchPollsItemData;
+import com.appsball.rapidpoll.searchpolls.model.SortType;
 import com.google.common.collect.Lists;
+import com.orhanobut.hawk.Hawk;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MyPollsFragment extends SearchPollsFragment implements PollCloser, PollReopener {
 
@@ -26,12 +30,12 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
     @Override
     protected void additionalPageSetup(View rootView) {
-        rootView.findViewById(R.id.create_new_poll_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentSwitcher().toManagePoll();
-            }
-        });
+        ButterKnife.bind(this, rootView);
+    }
+
+    @OnClick(R.id.create_new_poll_layout)
+    public void toManagePoll(){
+        getFragmentSwitcher().toManagePoll();
     }
 
     @Override
@@ -65,7 +69,7 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
 
     protected SearchPollsDataState createSearchPollsDataState() {
-        return new SearchPollsDataState(OrderType.ASC, OrderKey.STATUS);
+        return new SearchPollsDataState(SortType.STATUS);
     }
 
     @Override
