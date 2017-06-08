@@ -37,7 +37,6 @@ task copyResDirectoryToClasses(type: Copy) {
     from "${projectDir}/src/test/assets"
     into "${buildDir}/intermediates/classes/test/debug/res"
 }
-assembleDebug.dependsOn(copyResDirectoryToClasses)
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

@@ -69,8 +69,7 @@ public class MyPollsFragment extends SearchPollsFragment implements PollCloser, 
 
 
     protected SearchPollsDataState createSearchPollsDataState() {
-        SortType sortType = SortType.valueOf(Hawk.get(Constants.LAST_SORTING, SortType.VOTES.name()));
-        return new SearchPollsDataState(sortType);
+        return new SearchPollsDataState(SortType.STATUS);
     }
 
     @Override
